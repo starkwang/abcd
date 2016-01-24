@@ -2,7 +2,8 @@ import React from 'react';
 import Hello from '../components/Hello';
 import Change from '../components/Change';
 import InputAddButton from '../components/InputAddButton';
-import InputArea from '../containers/InputArea';
+import InputArea from './InputArea';
+import DragBox from './DragBox';
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -14,6 +15,13 @@ class App extends React.Component{
     }
     render() {
         const { actions, text, inputs} = this.props;
+        var dragItems = [{
+            text:'abcsawfwaf'
+        },{
+            text:'wwwwwwwwww'
+        },{
+            text:'ffffffffff'
+        }];
         return (
             <div>
                 <Hello actions={actions} text={text} />
@@ -21,6 +29,8 @@ class App extends React.Component{
 
                 <InputArea inputs={inputs} actions={actions} />
                 <InputAddButton actions={actions} />
+
+                <DragBox dragItems={dragItems} />
             </div>
         );
     }
