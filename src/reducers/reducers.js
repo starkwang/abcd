@@ -4,6 +4,7 @@ const initialState = {
         content:'123'
     }]
 }
+
 export default function todoApp(state = initialState, action) {
     console.log(state);
     switch (action.type) {

@@ -21261,6 +21261,7 @@
 	        content: '123'
 	    }]
 	};
+
 	function todoApp() {
 	    var state = arguments.length <= 0 || arguments[0] === undefined ? initialState : arguments[0];
 	    var action = arguments[1];
