@@ -4,12 +4,13 @@ import { DragSource ,DropTarget} from 'react-dnd';
 const type = 'item';
 const itemSource = {
     beginDrag(props) {
-        props.beginDrag(props.index);
+        props.beginDrag(props.id);
         return {
-            text : props.text,
-            index : props.index,
             id : props.id
         };
+    },
+    endDrag(props) {
+        props.endDrag(props.id);
     }
 };
 const itemTarget = {
@@ -19,14 +20,14 @@ const itemTarget = {
 
     hover(props, monitor) {
         const { text: text } = monitor.getItem();
-        props.itemSort(monitor.getItem().index, monitor.getItem().id, props.index, props.id);
+        props.itemSort(monitor.getItem().id, props.id);
     }
 };
 
 function sourceCollect(connect, monitor) {
     return {
         connectDragSource: connect.dragSource(),
-        isDragging: monitor.isDragging()
+        //isDragging: monitor.isDragging()
     }
 }
 

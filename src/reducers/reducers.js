@@ -18,6 +18,16 @@ const initialState = {
     }]
 }
 
+function findItem(items, id){
+    var resultIndex;
+    items.forEach((item,index) => {
+        if(item.id == id){
+            resultIndex = index;
+        }
+    });
+    return resultIndex
+}
+
 export default function todoApp(state = initialState, action) {
     console.log(state);
     switch (action.type) {
@@ -46,25 +56,33 @@ export default function todoApp(state = initialState, action) {
             newState.inputs[action.index].content = action.text;
             return newState;
         case 'ITEM_SORT':
-            const {sourceIndex,sourceID,targetIndex,targetID} = action;
+            const {sourceID,targetID} = action;
             if(sourceID == targetID){
                 return Object.assign({},state);
             }else{
-                //if(sourceIndex < targetIndex){
-                    var clone = state.items.slice(0,state.items.length);   
-                    var movingItem = clone.splice(sourceIndex,1)[0];
+                var sourceIndex = findItem(state.items, sourceID);
+                var targetIndex = findItem(state.items, targetID);
 
-                    return Object.assign({},state,{
-                        items:[
-                            ...clone.slice(0,targetIndex),
-                            movingItem,
-                            ...clone.slice(targetIndex),
-                        ]
-                    });
-                //}
+                var clone = state.items.slice(0,state.items.length);   
+                var movingItem = clone.splice(sourceIndex,1)[0];
+
+                return Object.assign({},state,{
+                    items:[
+                        ...clone.slice(0,targetIndex),
+                        movingItem,
+                        ...clone.slice(targetIndex),
+                    ]
+                });
                 
             }
-            
+        case 'BEGIN_DRAG':
+            var index = findItem(state.items, action.id);
+            var newState = Object.assign({},state);
+            newState.items[index].isDragging = true;
+        case 'END_DRAG':
+            var index = findItem(state.items, action.id);
+            var newState = Object.assign({},state);
+            newState.items[index].isDragging = false;
         default:
             console.log('default reducer',state);
             return Object.assign({},state)

@@ -21263,18 +21263,31 @@
 
 	    _createClass(DragBox, [{
 	        key: 'handleClick',
-	        value: function handleClick() {
-	            //this.props.actions.changeText();
-	        }
+	        value: function handleClick() {}
+	        //this.props.actions.changeText();
+
+	        // findItem(key){
+	        //     var resultIndex;
+	        //     this.props.dragItems.forEach((item,index) => {
+	        //         if(item.key == key){
+	        //             resultIndex = item.index;
+	        //         }
+	        //     })
+	        //     return resultIndex;
+	        // }
+
 	    }, {
 	        key: 'render',
 	        value: function render() {
-	            var itemSort = this.props.actions.itemSort;
+	            var _props$actions = this.props.actions;
+	            var itemSort = _props$actions.itemSort;
+	            var beginDrag = _props$actions.beginDrag;
+	            var endDrag = _props$actions.endDrag;
 
 	            var items = [];
-	            var _this = this;
+	            //var _this = this;
 	            this.props.dragItems.forEach(function (item, index) {
-	                items.push(_react2.default.createElement(_DragItem2.default, { text: item.text, index: index, key: index, id: item.id, itemSort: itemSort }));
+	                items.push(_react2.default.createElement(_DragItem2.default, { text: item.text, isDragging: item.isDragging, index: index, key: index, id: item.id, itemSort: itemSort, beginDrag: beginDrag, endDrag: endDrag }));
 	            });
 	            return _react2.default.createElement(
 	                'div',
@@ -21318,12 +21331,13 @@
 	var type = 'item';
 	var itemSource = {
 	    beginDrag: function beginDrag(props) {
-	        props.beginDrag(props.index);
+	        props.beginDrag(props.id);
 	        return {
-	            text: props.text,
-	            index: props.index,
 	            id: props.id
 	        };
+	    },
+	    endDrag: function endDrag(props) {
+	        props.endDrag(props.id);
 	    }
 	};
 	var itemTarget = {
@@ -21335,17 +21349,17 @@
 
 	        var text = _monitor$getItem.text;
 
-	        props.itemSort(monitor.getItem().index, monitor.getItem().id, props.index, props.id);
+	        props.itemSort(monitor.getItem().id, props.id);
 	    }
 	};
 
 	function sourceCollect(connect, monitor) {
 	    return {
-	        connectDragSource: connect.dragSource(),
-	        isDragging: monitor.isDragging()
+	        connectDragSource: connect.dragSource()
 	    };
 	}
 
+	//isDragging: monitor.isDragging()
 	function targetCollect(connect) {
 	    return {
 	        connectDropTarget: connect.dropTarget()
@@ -27357,6 +27371,8 @@
 	exports.buttonClick = buttonClick;
 	exports.addInput = addInput;
 	exports.inputChange = inputChange;
+	exports.beginDrag = beginDrag;
+	exports.endDrag = endDrag;
 	exports.itemSort = itemSort;
 	function changeText() {
 	    return {
@@ -27384,14 +27400,25 @@
 	    };
 	}
 
-	function itemSort(sourceIndex, sourceID, targetIndex, targetID) {
+	function beginDrag(id) {
+	    return {
+	        type: 'BEGIN_DRAG',
+	        id: id
+	    };
+	}
+
+	function endDrag(id) {
+	    return {
+	        type: 'END_DRAG',
+	        id: id
+	    };
+	}
+
+	function itemSort(sourceID, targetID) {
 	    //console.log('itemSort',sourceIndex,targetIndex);
 	    return {
 	        type: 'ITEM_SORT',
-	        sourceIndex: sourceIndex,
 	        sourceID: sourceID,
-
-	        targetIndex: targetIndex,
 	        targetID: targetID
 	    };
 	}
@@ -27429,6 +27456,16 @@
 	    }]
 	};
 
+	function findItem(items, id) {
+	    var resultIndex;
+	    items.forEach(function (item, index) {
+	        if (item.id == id) {
+	            resultIndex = index;
+	        }
+	    });
+	    return resultIndex;
+	}
+
 	function todoApp() {
 	    var state = arguments.length <= 0 || arguments[0] === undefined ? initialState : arguments[0];
 	    var action = arguments[1];
@@ -27457,24 +27494,30 @@
 	            newState.inputs[action.index].content = action.text;
 	            return newState;
 	        case 'ITEM_SORT':
-	            var sourceIndex = action.sourceIndex;
 	            var sourceID = action.sourceID;
-	            var targetIndex = action.targetIndex;
 	            var targetID = action.targetID;
 
 	            if (sourceID == targetID) {
 	                return Object.assign({}, state);
 	            } else {
-	                //if(sourceIndex < targetIndex){
+	                var sourceIndex = findItem(state.items, sourceID);
+	                var targetIndex = findItem(state.items, targetID);
+
 	                var clone = state.items.slice(0, state.items.length);
 	                var movingItem = clone.splice(sourceIndex, 1)[0];
 
 	                return Object.assign({}, state, {
 	                    items: [].concat(_toConsumableArray(clone.slice(0, targetIndex)), [movingItem], _toConsumableArray(clone.slice(targetIndex)))
 	                });
-	                //}
 	            }
-
+	        case 'BEGIN_DRAG':
+	            var index = findItem(state.items, action.id);
+	            var newState = Object.assign({}, state);
+	            newState.items[index].isDragging = true;
+	        case 'END_DRAG':
+	            var index = findItem(state.items, action.id);
+	            var newState = Object.assign({}, state);
+	            newState.items[index].isDragging = false;
 	        default:
 	            console.log('default reducer', state);
 	            return Object.assign({}, state);

@@ -24,14 +24,25 @@ export function inputChange(text,index){
     }
 }
 
-export function itemSort(sourceIndex, sourceID, targetIndex, targetID){
+export function beginDrag(id){
+    return {
+        type: 'BEGIN_DRAG',
+        id: id
+    }
+}
+
+export function endDrag(id){
+    return {
+        type: 'END_DRAG',
+        id: id
+    }
+}
+
+export function itemSort(sourceID, targetID){
     //console.log('itemSort',sourceIndex,targetIndex);
     return {
         type:'ITEM_SORT',
-        sourceIndex:sourceIndex,
         sourceID:sourceID,
-
-        targetIndex:targetIndex,
         targetID:targetID,
     }
 }
