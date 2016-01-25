@@ -4,10 +4,11 @@ import { DragSource ,DropTarget} from 'react-dnd';
 const type = 'item';
 const itemSource = {
     beginDrag(props) {
-        console.log(props.text,props.index)
+        props.beginDrag(props.index);
         return {
             text : props.text,
-            index : props.index
+            index : props.index,
+            id : props.id
         };
     }
 };
@@ -17,15 +18,8 @@ const itemTarget = {
     },
 
     hover(props, monitor) {
-        console.log('hover!!!');
         const { text: text } = monitor.getItem();
-        console.log(text,props);
-        //const { index: overId } = props;
-
-        // if (draggedId !== overId) {
-        //     const { index: overIndex } = props.findCard(overId);
-        //     props.moveCard(draggedId, overIndex);
-        // }
+        props.itemSort(monitor.getItem().index, monitor.getItem().id, props.index, props.id);
     }
 };
 

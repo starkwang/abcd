@@ -15,10 +15,11 @@ class DragBox extends React.Component{
     }
 
     render() {
+        var { itemSort } = this.props.actions;
         var items = [];
         var _this = this;
         this.props.dragItems.forEach((item,index) => {
-            items.push(<DragItem text={item.text} index={index} key={index}/>)
+            items.push(<DragItem text={item.text} index={index} key={index} id={item.id} itemSort={itemSort}/>)
         })
         return (
             <div>

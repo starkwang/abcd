@@ -20882,6 +20882,7 @@
 	            var actions = _props.actions;
 	            var text = _props.text;
 	            var inputs = _props.inputs;
+	            var items = _props.items;
 
 	            var dragItems = [{
 	                text: 'abcsawfwaf'
@@ -20897,7 +20898,7 @@
 	                _react2.default.createElement(_Change2.default, { actions: actions }),
 	                _react2.default.createElement(_InputArea2.default, { inputs: inputs, actions: actions }),
 	                _react2.default.createElement(_InputAddButton2.default, { actions: actions }),
-	                _react2.default.createElement(_DragBox2.default, { dragItems: dragItems })
+	                _react2.default.createElement(_DragBox2.default, { dragItems: items, actions: actions })
 	            );
 	        }
 	    }]);
@@ -20908,7 +20909,8 @@
 	function mapStateToProps(state) {
 	    return {
 	        text: state.text,
-	        inputs: state.inputs
+	        inputs: state.inputs,
+	        items: state.items
 	    };
 	}
 
@@ -21267,10 +21269,12 @@
 	    }, {
 	        key: 'render',
 	        value: function render() {
+	            var itemSort = this.props.actions.itemSort;
+
 	            var items = [];
 	            var _this = this;
 	            this.props.dragItems.forEach(function (item, index) {
-	                items.push(_react2.default.createElement(_DragItem2.default, { text: item.text, index: index, key: index }));
+	                items.push(_react2.default.createElement(_DragItem2.default, { text: item.text, index: index, key: index, id: item.id, itemSort: itemSort }));
 	            });
 	            return _react2.default.createElement(
 	                'div',
@@ -21314,10 +21318,11 @@
 	var type = 'item';
 	var itemSource = {
 	    beginDrag: function beginDrag(props) {
-	        console.log(props.text, props.index);
+	        props.beginDrag(props.index);
 	        return {
 	            text: props.text,
-	            index: props.index
+	            index: props.index,
+	            id: props.id
 	        };
 	    }
 	};
@@ -21326,19 +21331,11 @@
 	        return false;
 	    },
 	    hover: function hover(props, monitor) {
-	        console.log('hover!!!');
-
 	        var _monitor$getItem = monitor.getItem();
 
 	        var text = _monitor$getItem.text;
 
-	        console.log(text, props);
-	        //const { index: overId } = props;
-
-	        // if (draggedId !== overId) {
-	        //     const { index: overIndex } = props.findCard(overId);
-	        //     props.moveCard(draggedId, overIndex);
-	        // }
+	        props.itemSort(monitor.getItem().index, monitor.getItem().id, props.index, props.id);
 	    }
 	};
 
@@ -27360,6 +27357,7 @@
 	exports.buttonClick = buttonClick;
 	exports.addInput = addInput;
 	exports.inputChange = inputChange;
+	exports.itemSort = itemSort;
 	function changeText() {
 	    return {
 	        type: 'CHANGE_TEXT'
@@ -27386,6 +27384,18 @@
 	    };
 	}
 
+	function itemSort(sourceIndex, sourceID, targetIndex, targetID) {
+	    //console.log('itemSort',sourceIndex,targetIndex);
+	    return {
+	        type: 'ITEM_SORT',
+	        sourceIndex: sourceIndex,
+	        sourceID: sourceID,
+
+	        targetIndex: targetIndex,
+	        targetID: targetID
+	    };
+	}
+
 /***/ },
 /* 291 */
 /***/ function(module, exports) {
@@ -27403,6 +27413,19 @@
 	    text: 'Hello',
 	    inputs: [{
 	        content: '123'
+	    }],
+	    items: [{
+	        text: 'aaaaaaaaaaa',
+	        id: 'key-a',
+	        isDragging: false
+	    }, {
+	        text: 'bbbbbbbbbbb',
+	        id: 'key-b',
+	        isDragging: false
+	    }, {
+	        text: 'ccccccccccc',
+	        id: 'key-c',
+	        isDragging: false
 	    }]
 	};
 
@@ -27413,37 +27436,49 @@
 	    console.log(state);
 	    switch (action.type) {
 	        case 'CHANGE_TEXT':
-	            return {
-	                text: state.text == 'Hello' ? 'Stark' : 'Hello',
-	                inputs: state.inputs
-	            };
+	            return Object.assign({}, state, {
+	                text: state.text == 'Hello' ? 'Stark' : 'Hello'
+	            });
 	        case 'BUTTON_CLICK':
-	            return {
-	                text: 'You just click button',
-	                inputs: state.inputs
-	            };
+	            return Object.assign({}, state, {
+	                text: 'You just click button'
+	            });
 	        case 'ADD_INPUT':
-	            return {
-	                text: state.text,
+	            return Object.assign({}, state, {
 	                inputs: [].concat(_toConsumableArray(state.inputs), [{
 	                    content: ''
 	                }])
-	            };
+	            });
 	        case 'INPUT_CHANGE':
-	            var newState = {
-	                text: action.text,
-	                inputs: state.inputs.slice(0, state.inputs.length)
-	            };
+	            var newState = Object.assign({}, state, {
+	                text: action.text
+	            });
+	            console.log(newState);
 	            newState.inputs[action.index].content = action.text;
 	            return newState;
+	        case 'ITEM_SORT':
+	            var sourceIndex = action.sourceIndex;
+	            var sourceID = action.sourceID;
+	            var targetIndex = action.targetIndex;
+	            var targetID = action.targetID;
+
+	            if (sourceID == targetID) {
+	                return Object.assign({}, state);
+	            } else {
+	                //if(sourceIndex < targetIndex){
+	                var clone = state.items.slice(0, state.items.length);
+	                var movingItem = clone.splice(sourceIndex, 1)[0];
+
+	                return Object.assign({}, state, {
+	                    items: [].concat(_toConsumableArray(clone.slice(0, targetIndex)), [movingItem], _toConsumableArray(clone.slice(targetIndex)))
+	                });
+	                //}
+	            }
+
 	        default:
-	            return {
-	                text: 'Hello',
-	                inputs: [{
-	                    content: '123'
-	                }]
-	            };
-	    }
+	            console.log('default reducer', state);
+	            return Object.assign({}, state);
+	    };
 	}
 
 /***/ }

@@ -14,7 +14,7 @@ class App extends React.Component{
         super(props);
     }
     render() {
-        const { actions, text, inputs} = this.props;
+        const { actions, text, inputs, items} = this.props;
         var dragItems = [{
             text:'abcsawfwaf'
         },{
@@ -30,7 +30,7 @@ class App extends React.Component{
                 <InputArea inputs={inputs} actions={actions} />
                 <InputAddButton actions={actions} />
 
-                <DragBox dragItems={dragItems} />
+                <DragBox dragItems={items} actions={actions} />
             </div>
         );
     }
@@ -39,7 +39,8 @@ class App extends React.Component{
 function mapStateToProps(state) {
     return { 
         text: state.text ,
-        inputs: state.inputs
+        inputs: state.inputs,
+        items: state.items
     }
 }
 

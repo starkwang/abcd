@@ -23,3 +23,15 @@ export function inputChange(text,index){
         index:index
     }
 }
+
+export function itemSort(sourceIndex, sourceID, targetIndex, targetID){
+    //console.log('itemSort',sourceIndex,targetIndex);
+    return {
+        type:'ITEM_SORT',
+        sourceIndex:sourceIndex,
+        sourceID:sourceID,
+
+        targetIndex:targetIndex,
+        targetID:targetID,
+    }
+}
