@@ -9,8 +9,8 @@ const itemSource = {
             id : props.id
         };
     },
-    endDrag(props) {
-        props.endDrag(props.id);
+    endDrag(props, monitor) {
+        props.endDrag(monitor.getItem().id);
     }
 };
 const itemTarget = {
@@ -49,14 +49,15 @@ class DragItem extends React.Component{
 
     render() {
         const { connectDragSource, isDragging ,connectDropTarget} = this.props;
-        const opacity = this.props.isDragging?'0':'1';
+        const opacity = isDragging=='true'?'0':'1';
+        console.log(isDragging);
         return connectDropTarget(connectDragSource(
             <div style={{
                 height:'50px',
                 width:'auto',
                 background:'#ddd',
                 margin:'10px',
-                opacity:opacity
+                //opacity:opacity
             }}> 
                 {this.props.text} 
             </div>

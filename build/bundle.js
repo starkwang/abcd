@@ -21263,19 +21263,9 @@
 
 	    _createClass(DragBox, [{
 	        key: 'handleClick',
-	        value: function handleClick() {}
-	        //this.props.actions.changeText();
-
-	        // findItem(key){
-	        //     var resultIndex;
-	        //     this.props.dragItems.forEach((item,index) => {
-	        //         if(item.key == key){
-	        //             resultIndex = item.index;
-	        //         }
-	        //     })
-	        //     return resultIndex;
-	        // }
-
+	        value: function handleClick() {
+	            //this.props.actions.changeText();
+	        }
 	    }, {
 	        key: 'render',
 	        value: function render() {
@@ -21287,6 +21277,7 @@
 	            var items = [];
 	            //var _this = this;
 	            this.props.dragItems.forEach(function (item, index) {
+	                console.log(index, item.isDragging);
 	                items.push(_react2.default.createElement(_DragItem2.default, { text: item.text, isDragging: item.isDragging, index: index, key: index, id: item.id, itemSort: itemSort, beginDrag: beginDrag, endDrag: endDrag }));
 	            });
 	            return _react2.default.createElement(
@@ -21336,8 +21327,8 @@
 	            id: props.id
 	        };
 	    },
-	    endDrag: function endDrag(props) {
-	        props.endDrag(props.id);
+	    endDrag: function endDrag(props, monitor) {
+	        props.endDrag(monitor.getItem().id);
 	    }
 	};
 	var itemTarget = {
@@ -21389,15 +21380,15 @@
 	            var isDragging = _props.isDragging;
 	            var connectDropTarget = _props.connectDropTarget;
 
-	            var opacity = this.props.isDragging ? '0' : '1';
+	            var opacity = isDragging == 'true' ? '0' : '1';
+	            console.log(isDragging);
 	            return connectDropTarget(connectDragSource(_react2.default.createElement(
 	                'div',
 	                { style: {
 	                        height: '50px',
 	                        width: 'auto',
 	                        background: '#ddd',
-	                        margin: '10px',
-	                        opacity: opacity
+	                        margin: '10px'
 	                    } },
 	                this.props.text
 	            )));
@@ -27444,15 +27435,15 @@
 	    items: [{
 	        text: 'aaaaaaaaaaa',
 	        id: 'key-a',
-	        isDragging: false
+	        isDragging: 'false'
 	    }, {
 	        text: 'bbbbbbbbbbb',
 	        id: 'key-b',
-	        isDragging: false
+	        isDragging: 'false'
 	    }, {
 	        text: 'ccccccccccc',
 	        id: 'key-c',
-	        isDragging: false
+	        isDragging: 'false'
 	    }]
 	};
 
@@ -27470,7 +27461,7 @@
 	    var state = arguments.length <= 0 || arguments[0] === undefined ? initialState : arguments[0];
 	    var action = arguments[1];
 
-	    console.log(state);
+	    //console.log(state);
 	    switch (action.type) {
 	        case 'CHANGE_TEXT':
 	            return Object.assign({}, state, {
@@ -27513,13 +27504,14 @@
 	        case 'BEGIN_DRAG':
 	            var index = findItem(state.items, action.id);
 	            var newState = Object.assign({}, state);
-	            newState.items[index].isDragging = true;
+	            newState.items[index].isDragging = 'true';
+	            return newState;
 	        case 'END_DRAG':
 	            var index = findItem(state.items, action.id);
 	            var newState = Object.assign({}, state);
-	            newState.items[index].isDragging = false;
+	            newState.items[index].isDragging = 'false';
+	            return newState;
 	        default:
-	            console.log('default reducer', state);
 	            return Object.assign({}, state);
 	    };
 	}

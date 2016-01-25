@@ -6,15 +6,15 @@ const initialState = {
     items:[{
         text:'aaaaaaaaaaa',
         id:'key-a',
-        isDragging:false
+        isDragging:'false'
     },{
         text:'bbbbbbbbbbb',
         id:'key-b',
-        isDragging:false
+        isDragging:'false'
     },{
         text:'ccccccccccc',
         id:'key-c',
-        isDragging:false
+        isDragging:'false'
     }]
 }
 
@@ -29,7 +29,7 @@ function findItem(items, id){
 }
 
 export default function todoApp(state = initialState, action) {
-    console.log(state);
+    //console.log(state);
     switch (action.type) {
         case 'CHANGE_TEXT':
             return Object.assign({},state,{
@@ -73,18 +73,18 @@ export default function todoApp(state = initialState, action) {
                         ...clone.slice(targetIndex),
                     ]
                 });
-                
             }
         case 'BEGIN_DRAG':
             var index = findItem(state.items, action.id);
             var newState = Object.assign({},state);
-            newState.items[index].isDragging = true;
+            newState.items[index].isDragging = 'true';
+            return newState;
         case 'END_DRAG':
             var index = findItem(state.items, action.id);
             var newState = Object.assign({},state);
-            newState.items[index].isDragging = false;
+            newState.items[index].isDragging = 'false';
+            return newState;
         default:
-            console.log('default reducer',state);
             return Object.assign({},state)
     };
     
