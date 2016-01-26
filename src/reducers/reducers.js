@@ -15,7 +15,8 @@ const initialState = {
         text:'ccccccccccc',
         id:'key-c',
         isDragging:'false'
-    }]
+    }],
+    styleName:'base-style'
 }
 
 function findItem(items, id){

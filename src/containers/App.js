@@ -14,7 +14,7 @@ class App extends React.Component{
         super(props);
     }
     render() {
-        const { actions, text, inputs, items} = this.props;
+        const { actions, text, inputs, items, styleName} = this.props;
         var dragItems = [{
             text:'abcsawfwaf'
         },{
@@ -22,25 +22,38 @@ class App extends React.Component{
         },{
             text:'ffffffffff'
         }];
-        return (
-            <div>
-                <Hello actions={actions} text={text} />
-                <Change actions={actions} />
+        if(styleName == 'base-style'){
+            return (
+                <div className="main-editor">
+                    <div className={styleName}>
+                        <div className="base-info">
 
-                <InputArea inputs={inputs} actions={actions} />
-                <InputAddButton actions={actions} />
+                        </div>
+                        <div className="main-info">
 
-                <DragBox dragItems={items} actions={actions} />
-            </div>
-        );
+                        </div>
+                    </div>
+                </div>
+            );
+        }
     }
 }
+
+//<Hello actions={actions} text={text} />
+//<Change actions={actions} />
+
+//<InputArea inputs={inputs} actions={actions} />
+//<InputAddButton actions={actions} />
+
+//<DragBox dragItems={items} actions={actions} />
+
 
 function mapStateToProps(state) {
     return { 
         text: state.text ,
         inputs: state.inputs,
-        items: state.items
+        items: state.items,
+        styleName: state.styleName
     }
 }
 

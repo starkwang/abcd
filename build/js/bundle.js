@@ -20883,6 +20883,7 @@
 	            var text = _props.text;
 	            var inputs = _props.inputs;
 	            var items = _props.items;
+	            var styleName = _props.styleName;
 
 	            var dragItems = [{
 	                text: 'abcsawfwaf'
@@ -20891,26 +20892,38 @@
 	            }, {
 	                text: 'ffffffffff'
 	            }];
-	            return _react2.default.createElement(
-	                'div',
-	                null,
-	                _react2.default.createElement(_Hello2.default, { actions: actions, text: text }),
-	                _react2.default.createElement(_Change2.default, { actions: actions }),
-	                _react2.default.createElement(_InputArea2.default, { inputs: inputs, actions: actions }),
-	                _react2.default.createElement(_InputAddButton2.default, { actions: actions }),
-	                _react2.default.createElement(_DragBox2.default, { dragItems: items, actions: actions })
-	            );
+	            if (styleName == 'base-style') {
+	                return _react2.default.createElement(
+	                    'div',
+	                    { className: 'main-editor' },
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: styleName },
+	                        _react2.default.createElement('div', { className: 'base-info' }),
+	                        _react2.default.createElement('div', { className: 'main-info' })
+	                    )
+	                );
+	            }
 	        }
 	    }]);
 
 	    return App;
 	}(_react2.default.Component);
 
+	//<Hello actions={actions} text={text} />
+	//<Change actions={actions} />
+
+	//<InputArea inputs={inputs} actions={actions} />
+	//<InputAddButton actions={actions} />
+
+	//<DragBox dragItems={items} actions={actions} />
+
 	function mapStateToProps(state) {
 	    return {
 	        text: state.text,
 	        inputs: state.inputs,
-	        items: state.items
+	        items: state.items,
+	        styleName: state.styleName
 	    };
 	}
 
@@ -27444,7 +27457,8 @@
 	        text: 'ccccccccccc',
 	        id: 'key-c',
 	        isDragging: 'false'
-	    }]
+	    }],
+	    styleName: 'base-style'
 	};
 
 	function findItem(items, id) {
