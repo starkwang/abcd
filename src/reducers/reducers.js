@@ -27,11 +27,27 @@ const initialState = {
             isEditting:false
         },
         contact:[{
-            name:'手机',
-            value:'13316919664'
+            id:1,
+            name:{
+                text:'手机',
+                isEditting:false
+            },
+            value:{
+                text:'13316919664',
+                isEditting:false
+            },
+            isDragging:false
         },{
-            name:'邮箱',
-            value:'wjwang13@fudan.edu.cn'
+            id:2,
+            name:{
+                text:'邮箱',
+                isEditting:false
+            },
+            value:{
+                text:'wjwang13@fudan.edu.cn',
+                isEditting:false
+            },
+            isDragging:false
         }]
     },
     mainInfo:[{
@@ -70,6 +86,7 @@ const initialState = {
 }
 
 function findItem(items, id){
+    console.log(items);
     var resultIndex;
     items.forEach((item,index) => {
         if(item.id == id){
@@ -82,60 +99,56 @@ function findItem(items, id){
 export default function todoApp(state = initialState, action) {
     //console.log(state);
     switch (action.type) {
-        case 'CHANGE_TEXT':
-            return Object.assign({},state,{
-                text:state.text=='Hello'?'Stark':'Hello'
-            })
-        case 'BUTTON_CLICK':
-            return Object.assign({},state,{
-                text: 'You just click button'
-            })
-        case 'ADD_INPUT':
-            return Object.assign({},state,{
-                inputs: [
-                    ...state.inputs,
-                    {
-                        content:''
-                    }
-                ]
-            })
-        case 'INPUT_CHANGE':
-            var newState = Object.assign({},state,{
-                text:action.text
-            });
-            console.log(newState);
-            newState.inputs[action.index].content = action.text;
-            return newState;
         case 'ITEM_SORT':
             const {sourceID,targetID} = action;
             if(sourceID == targetID){
                 return Object.assign({},state);
             }else{
-                var sourceIndex = findItem(state.items, sourceID);
-                var targetIndex = findItem(state.items, targetID);
+                if(action.location == 'contact'){
+                    var arr = state.baseInfo.contact;
 
-                var clone = state.items.slice(0,state.items.length);   
-                var movingItem = clone.splice(sourceIndex,1)[0];
+                    var sourceIndex = findItem(arr, sourceID);
+                    var targetIndex = findItem(arr, targetID);
 
-                return Object.assign({},state,{
-                    items:[
-                        ...clone.slice(0,targetIndex),
-                        movingItem,
-                        ...clone.slice(targetIndex),
-                    ]
-                });
+                    var clone = arr.slice(0,arr.length);   
+                    var movingItem = clone.splice(sourceIndex,1)[0];
+
+                    var newBaseInfo = Object.assign({},state.baseInfo,{
+                        contact:[
+                            ...clone.slice(0,targetIndex),
+                            movingItem,
+                            ...clone.slice(targetIndex),
+                        ]
+                    })
+                    return Object.assign({},state,{
+                        baseInfo:newBaseInfo
+                    });
+                }
+                
             }
         case 'BEGIN_DRAG':
-            var index = findItem(state.items, action.id);
-            var newState = Object.assign({},state);
-            newState.items[index].isDragging = true;
-            return newState;
+            if(action.location=='contact'){
+                var index = findItem(state.baseInfo.contact, action.id);
+                var baseInfo = Object.assign({},state.baseInfo);
+                baseInfo.contact[index].isDragging = true;
+                return Object.assign({},state,{
+                    baseInfo:baseInfo
+                });
+            }
+
         case 'END_DRAG':
-            var index = findItem(state.items, action.id);
-            var newState = Object.assign({},state);
-            newState.items[index].isDragging = false;
-            return newState;
+            if(action.location=='contact'){
+                console.log('END_DRAG');
+                var index = findItem(state.baseInfo.contact, action.id);
+                var baseInfo = Object.assign({},state.baseInfo);
+                baseInfo.contact[index].isDragging = false;
+                return Object.assign({},state,{
+                    baseInfo:baseInfo
+                });
+            }
+
         case 'TEXT_EDIT':
+            console.log('TEXT_EDIT',action);
             if(action.name == 'name'){
                 var newBaseInfo = Object.assign({},state.baseInfo);
                 newBaseInfo.name.isEditting = true;
@@ -150,7 +163,22 @@ export default function todoApp(state = initialState, action) {
                     baseInfo:newBaseInfo
                 });
             }
+            if(action.name == 'contact-name'){
+                var newBaseInfo = Object.assign({},state.baseInfo);
+                newBaseInfo.contact[action.index].name.isEditting = true;
+                return Object.assign({},state,{
+                    baseInfo:newBaseInfo
+                });
+            }
+            if(action.name == 'contact-value'){
+                var newBaseInfo = Object.assign({},state.baseInfo);
+                newBaseInfo.contact[action.index].value.isEditting = true;
+                return Object.assign({},state,{
+                    baseInfo:newBaseInfo
+                });
+            }
         case 'ENTER_EDIT':
+            console.log('ENTER_EDIT',action);
             if(action.name == 'name'){
                 var newBaseInfo = Object.assign({},state.baseInfo);
                 newBaseInfo.name.text = action.value;
@@ -163,6 +191,22 @@ export default function todoApp(state = initialState, action) {
                 var newBaseInfo = Object.assign({},state.baseInfo);
                 newBaseInfo.job.text = action.value;
                 newBaseInfo.job.isEditting = false;
+                return Object.assign({},state,{
+                    baseInfo:newBaseInfo
+                });
+            }
+            if(action.name == 'contact-name'){
+                var newBaseInfo = Object.assign({},state.baseInfo);
+                newBaseInfo.contact[action.index].name.text = action.value;
+                newBaseInfo.contact[action.index].name.isEditting = false;
+                return Object.assign({},state,{
+                    baseInfo:newBaseInfo
+                });
+            }
+            if(action.name == 'contact-value'){
+                var newBaseInfo = Object.assign({},state.baseInfo);
+                newBaseInfo.contact[action.index].value.text = action.value;
+                newBaseInfo.contact[action.index].value.isEditting = false;
                 return Object.assign({},state,{
                     baseInfo:newBaseInfo
                 });
