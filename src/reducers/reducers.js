@@ -1,22 +1,72 @@
 const initialState = {
-    text: 'Hello',
-    inputs:[{
-        content:'123'
-    }],
-    items:[{
-        text:'aaaaaaaaaaa',
-        id:'key-a',
-        isDragging:'false'
+    // text: 'Hello',
+    // inputs:[{
+    //     content:'123'
+    // }],
+    // items:[{
+    //     text:'aaaaaaaaaaa',
+    //     id:'key-a',
+    //     isDragging:'false'
+    // },{
+    //     text:'bbbbbbbbbbb',
+    //     id:'key-b',
+    //     isDragging:'false'
+    // },{
+    //     text:'ccccccccccc',
+    //     id:'key-c',
+    //     isDragging:'false'
+    // }],
+    styleName:'base-style',
+    baseInfo:{
+        name:{
+            text:'王小黑',
+            isEditting:false
+        },
+        job:{
+            text:'Web前端工程师',
+            isEditting:false
+        },
+        contact:[{
+            name:'手机',
+            value:'13316919664'
+        },{
+            name:'邮箱',
+            value:'wjwang13@fudan.edu.cn'
+        }]
+    },
+    mainInfo:[{
+        title:'教育经历',
+        items:[{
+            name:{
+                text:'复旦大学',
+                isEditting:true
+            },
+            time:{
+                text:'2013.09 - 2017.07',
+                isEditting:false
+            },
+            major:{
+                text:'电子信息科学与技术',
+                isEditting:false
+            }
+        },{
+            name:{
+                text:'复旦大学',
+                isEditting:false
+            },
+            time:{
+                text:'2013.09 - 2017.07',
+                isEditting:false
+            },
+            major:{
+                text:'电子信息科学与技术',
+                isEditting:false
+            }
+        }]
     },{
-        text:'bbbbbbbbbbb',
-        id:'key-b',
-        isDragging:'false'
-    },{
-        text:'ccccccccccc',
-        id:'key-c',
-        isDragging:'false'
-    }],
-    styleName:'base-style'
+        title:'专业技能',
+        items:[]
+    }]
 }
 
 function findItem(items, id){
@@ -78,13 +128,45 @@ export default function todoApp(state = initialState, action) {
         case 'BEGIN_DRAG':
             var index = findItem(state.items, action.id);
             var newState = Object.assign({},state);
-            newState.items[index].isDragging = 'true';
+            newState.items[index].isDragging = true;
             return newState;
         case 'END_DRAG':
             var index = findItem(state.items, action.id);
             var newState = Object.assign({},state);
-            newState.items[index].isDragging = 'false';
+            newState.items[index].isDragging = false;
             return newState;
+        case 'TEXT_EDIT':
+            if(action.name == 'name'){
+                var newBaseInfo = Object.assign({},state.baseInfo);
+                newBaseInfo.name.isEditting = true;
+                return Object.assign({},state,{
+                    baseInfo:newBaseInfo
+                });
+            }
+            if(action.name == 'job'){
+                var newBaseInfo = Object.assign({},state.baseInfo);
+                newBaseInfo.job.isEditting = true;
+                return Object.assign({},state,{
+                    baseInfo:newBaseInfo
+                });
+            }
+        case 'ENTER_EDIT':
+            if(action.name == 'name'){
+                var newBaseInfo = Object.assign({},state.baseInfo);
+                newBaseInfo.name.text = action.value;
+                newBaseInfo.name.isEditting = false;
+                return Object.assign({},state,{
+                    baseInfo:newBaseInfo
+                });
+            }
+            if(action.name == 'job'){
+                var newBaseInfo = Object.assign({},state.baseInfo);
+                newBaseInfo.job.text = action.value;
+                newBaseInfo.job.isEditting = false;
+                return Object.assign({},state,{
+                    baseInfo:newBaseInfo
+                });
+            }
         default:
             return Object.assign({},state)
     };

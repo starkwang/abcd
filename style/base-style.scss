@@ -1,10 +1,55 @@
 .base-info,.main-info{
     float: left;
-    height: 1357px;
+    height: 1355px;
 }
 .base-info{
     width: 320px;
     background-color: rgb(97,194,177);
+    .text-wrapper{
+        position:relative;
+    }
+    p{
+        color: white;
+        text-align: center;
+    }
+    input{
+        text-align: center;
+        border:0;
+        padding:0 !important;
+        display: block;
+        width: 100%;
+        background-color:rgba(255,255,255,0.5);
+    }
+    button{
+        position:absolute;
+        right: 0;
+        top: 0;
+    }
+    p.name{
+        font-size: 30px;
+        padding: 20px;
+    }
+    input.name{
+        font-size: 30px;
+        height:40px;
+        margin:15px 0;
+    }
+    button.name{
+        
+    }
+    p.job{
+        font-size: 20px;
+        color: rgb(35,125,113);
+    }
+    input.job{
+        font-size: 20px;
+        color: rgb(35,125,113);
+        height: 30px;
+    }
+    hr{
+        border-top:1px solid rgb(35,125,113);
+        margin: 10px 40px;
+    }
 }
 .main-info{
     width: 640px;

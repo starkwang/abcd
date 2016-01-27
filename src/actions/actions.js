@@ -46,3 +46,20 @@ export function itemSort(sourceID, targetID){
         targetID:targetID,
     }
 }
+
+export function textEdit(name, index){
+    return {
+        type: 'TEXT_EDIT',
+        name: name,
+        index: index
+    }
+}
+
+export function enterEdit(name, index, value){
+    return {
+        type: 'ENTER_EDIT',
+        name: name,
+        index: index,
+        value: value
+    }
+}

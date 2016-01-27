@@ -1,9 +1,10 @@
 import React from 'react';
-import Hello from '../components/Hello';
-import Change from '../components/Change';
-import InputAddButton from '../components/InputAddButton';
-import InputArea from './InputArea';
-import DragBox from './DragBox';
+// import Hello from '../components/Hello';
+// import Change from '../components/Change';
+// import InputAddButton from '../components/InputAddButton';
+// import InputArea from './InputArea';
+// import DragBox from './DragBox';
+import BaseInfo from './BaseInfo';
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -14,7 +15,7 @@ class App extends React.Component{
         super(props);
     }
     render() {
-        const { actions, text, inputs, items, styleName} = this.props;
+        const { actions, baseInfo, mainInfo, styleName, name} = this.props;
         var dragItems = [{
             text:'abcsawfwaf'
         },{
@@ -26,9 +27,7 @@ class App extends React.Component{
             return (
                 <div className="main-editor">
                     <div className={styleName}>
-                        <div className="base-info">
-
-                        </div>
+                        <BaseInfo baseInfo={baseInfo} actions={actions}/>
                         <div className="main-info">
 
                         </div>
@@ -49,11 +48,10 @@ class App extends React.Component{
 
 
 function mapStateToProps(state) {
-    return { 
-        text: state.text ,
-        inputs: state.inputs,
-        items: state.items,
-        styleName: state.styleName
+    return {
+        baseInfo: state.baseInfo,
+        mainInfo: state.mainInfo,
+        styleName: state.styleName,
     }
 }
 
