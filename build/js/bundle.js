@@ -20983,8 +20983,8 @@
 	            return _react2.default.createElement(
 	                'div',
 	                { className: 'base-info' },
-	                _react2.default.createElement(_Text2.default, { className: 'name', text: name.text, isEditting: name.isEditting, name: 'name', textEdit: actions.textEdit, enterEdit: actions.enterEdit }),
-	                _react2.default.createElement(_Text2.default, { className: 'job', text: job.text, isEditting: job.isEditting, name: 'job', textEdit: actions.textEdit, enterEdit: actions.enterEdit }),
+	                _react2.default.createElement(_Text2.default, { className: 'name', location: ['baseInfo', 'name'], text: name.text, isEditting: name.isEditting, textEdit: actions.textEdit, enterEdit: actions.enterEdit }),
+	                _react2.default.createElement(_Text2.default, { className: 'job', location: ['baseInfo', 'job'], text: job.text, isEditting: job.isEditting, textEdit: actions.textEdit, enterEdit: actions.enterEdit }),
 	                _react2.default.createElement('hr', null),
 	                _react2.default.createElement(_ContactCollection2.default, { contact: contact, actions: actions })
 	            );
@@ -21040,12 +21040,20 @@
 	            this.setState({
 	                value: this.props.text
 	            });
-	            this.props.textEdit(this.props.name, this.props.index);
+	            var _props = this.props;
+	            var textEdit = _props.textEdit;
+	            var location = _props.location;
+
+	            textEdit(location);
 	        }
 	    }, {
 	        key: "enterEdit",
 	        value: function enterEdit() {
-	            this.props.enterEdit(this.props.name, this.props.index, this.state.value);
+	            var _props2 = this.props;
+	            var enterEdit = _props2.enterEdit;
+	            var location = _props2.location;
+
+	            enterEdit(location, this.state.value);
 	        }
 	    }, {
 	        key: "onChange",
@@ -21057,10 +21065,10 @@
 	    }, {
 	        key: "render",
 	        value: function render() {
-	            var _props = this.props;
-	            var className = _props.className;
-	            var text = _props.text;
-	            var isEditting = _props.isEditting;
+	            var _props3 = this.props;
+	            var className = _props3.className;
+	            var text = _props3.text;
+	            var isEditting = _props3.isEditting;
 
 	            if (isEditting) {
 	                return _react2.default.createElement(
@@ -21121,13 +21129,13 @@
 	var type = 'contact-item';
 	var itemSource = {
 	    beginDrag: function beginDrag(props) {
-	        props.beginDrag(props.id, 'contact');
+	        props.beginDrag(props.id, props.location);
 	        return {
 	            id: props.id
 	        };
 	    },
 	    endDrag: function endDrag(props, monitor) {
-	        props.endDrag(monitor.getItem().id, 'contact');
+	        props.endDrag(monitor.getItem().id, props.location);
 	    }
 	};
 	var itemTarget = {
@@ -21135,7 +21143,7 @@
 	        return false;
 	    },
 	    hover: function hover(props, monitor) {
-	        props.itemSort(monitor.getItem().id, props.id, 'contact');
+	        props.itemSort(monitor.getItem().id, props.id, props.location);
 	    }
 	};
 
@@ -21184,8 +21192,8 @@
 	            return connectDropTarget(connectDragSource(_react2.default.createElement(
 	                'div',
 	                { className: 'contact-item', style: { opacity: opacity } },
-	                _react2.default.createElement(_Text2.default, { className: 'contact-name', name: 'contact-name', index: index, text: item.name.text, isEditting: item.name.isEditting, textEdit: textEdit, enterEdit: enterEdit }),
-	                _react2.default.createElement(_Text2.default, { className: 'contact-value', name: 'contact-value', index: index, text: item.value.text, isEditting: item.value.isEditting, textEdit: textEdit, enterEdit: enterEdit })
+	                _react2.default.createElement(_Text2.default, { className: 'contact-name', location: ['baseInfo', 'contact', index, 'name'], text: item.name.text, isEditting: item.name.isEditting, textEdit: textEdit, enterEdit: enterEdit }),
+	                _react2.default.createElement(_Text2.default, { className: 'contact-value', location: ['baseInfo', 'contact', index, 'value'], text: item.value.text, isEditting: item.value.isEditting, textEdit: textEdit, enterEdit: enterEdit })
 	            )));
 	        }
 	    }]);
@@ -25365,7 +25373,6 @@
 	    }, {
 	        key: 'render',
 	        value: function render() {
-	            console.log(this.props.actions);
 	            var _props$actions = this.props.actions;
 	            var itemSort = _props$actions.itemSort;
 	            var beginDrag = _props$actions.beginDrag;
@@ -25375,7 +25382,7 @@
 
 	            var contacts = [];
 	            this.props.contact.forEach(function (item, index) {
-	                contacts.push(_react2.default.createElement(_Contact2.default, { key: index, index: index, item: item, id: item.id, isDragging: item.isDragging, textEdit: textEdit, enterEdit: enterEdit, itemSort: itemSort, beginDrag: beginDrag, endDrag: endDrag }));
+	                contacts.push(_react2.default.createElement(_Contact2.default, { key: index, index: index, location: ['baseInfo', 'contact'], item: item, id: item.id, isDragging: item.isDragging, textEdit: textEdit, enterEdit: enterEdit, itemSort: itemSort, beginDrag: beginDrag, endDrag: endDrag }));
 	            });
 	            return _react2.default.createElement(
 	                'div',
@@ -27292,19 +27299,17 @@
 	    };
 	}
 
-	function textEdit(name, index) {
+	function textEdit(location) {
 	    return {
 	        type: 'TEXT_EDIT',
-	        name: name,
-	        index: index
+	        location: location
 	    };
 	}
 
-	function enterEdit(name, index, value) {
+	function enterEdit(location, value) {
 	    return {
 	        type: 'ENTER_EDIT',
-	        name: name,
-	        index: index,
+	        location: location,
 	        value: value
 	    };
 	}
@@ -27410,7 +27415,6 @@
 	};
 
 	function findItem(items, id) {
-	    console.log(items);
 	    var resultIndex;
 	    items.forEach(function (item, index) {
 	        if (item.id == id) {
@@ -27433,108 +27437,80 @@
 	            if (sourceID == targetID) {
 	                return Object.assign({}, state);
 	            } else {
-	                if (action.location == 'contact') {
-	                    var arr = state.baseInfo.contact;
-
-	                    var sourceIndex = findItem(arr, sourceID);
-	                    var targetIndex = findItem(arr, targetID);
-
-	                    var clone = arr.slice(0, arr.length);
-	                    var movingItem = clone.splice(sourceIndex, 1)[0];
-
-	                    var newBaseInfo = Object.assign({}, state.baseInfo, {
-	                        contact: [].concat(_toConsumableArray(clone.slice(0, targetIndex)), [movingItem], _toConsumableArray(clone.slice(targetIndex)))
-	                    });
-	                    return Object.assign({}, state, {
-	                        baseInfo: newBaseInfo
-	                    });
+	                console.log('ITEM_SORT', action);
+	                var category = action.location[0];
+	                var newCategory = Object.assign({}, state[category]);
+	                var targetArr = newCategory;
+	                for (var i = 1; i < action.location.length; i++) {
+	                    targetArr = targetArr[action.location[i]];
 	                }
+	                var sourceIndex = findItem(targetArr, sourceID);
+	                var targetIndex = findItem(targetArr, targetID);
+	                var clone = targetArr.slice(0, targetArr.length);
+	                var movingItem = clone.splice(sourceIndex, 1)[0];
+	                targetArr = [].concat(_toConsumableArray(clone.slice(0, targetIndex)), [movingItem], _toConsumableArray(clone.slice(targetIndex)));
+	                var targetNode = newCategory;
+	                for (var i = 1; i < action.location.length - 1; i++) {
+	                    targetNode = targetNode[action.location[i]];
+	                }
+	                targetNode[action.location[action.location.length - 1]] = targetArr;
+	                var tmp = {};
+	                tmp[action.location[0]] = newCategory;
+	                return Object.assign({}, state, tmp);
 	            }
 	        case 'BEGIN_DRAG':
-	            if (action.location == 'contact') {
-	                var index = findItem(state.baseInfo.contact, action.id);
-	                var baseInfo = Object.assign({}, state.baseInfo);
-	                baseInfo.contact[index].isDragging = true;
-	                return Object.assign({}, state, {
-	                    baseInfo: baseInfo
-	                });
+	            console.log('BEGIN_DRAG', action);
+	            var category = action.location[0];
+	            var newCategory = Object.assign({}, state[category]);
+	            var targetArr = newCategory;
+	            for (var i = 1; i < action.location.length; i++) {
+	                targetArr = targetArr[action.location[i]];
 	            }
+	            var index = findItem(targetArr, action.id);
+	            targetArr[index].isDragging = true;
+	            var tmp = {};
+	            tmp[action.location[0]] = newCategory;
+	            return Object.assign({}, state, tmp);
 
 	        case 'END_DRAG':
-	            if (action.location == 'contact') {
-	                console.log('END_DRAG');
-	                var index = findItem(state.baseInfo.contact, action.id);
-	                var baseInfo = Object.assign({}, state.baseInfo);
-	                baseInfo.contact[index].isDragging = false;
-	                return Object.assign({}, state, {
-	                    baseInfo: baseInfo
-	                });
+	            console.log('END_DRAG', action);
+	            var category = action.location[0];
+	            var newCategory = Object.assign({}, state[category]);
+	            var targetArr = newCategory;
+	            for (var i = 1; i < action.location.length; i++) {
+	                targetArr = targetArr[action.location[i]];
 	            }
+	            var index = findItem(targetArr, action.id);
+	            targetArr[index].isDragging = false;
+	            var tmp = {};
+	            tmp[action.location[0]] = newCategory;
+	            return Object.assign({}, state, tmp);
 
 	        case 'TEXT_EDIT':
 	            console.log('TEXT_EDIT', action);
-	            if (action.name == 'name') {
-	                var newBaseInfo = Object.assign({}, state.baseInfo);
-	                newBaseInfo.name.isEditting = true;
-	                return Object.assign({}, state, {
-	                    baseInfo: newBaseInfo
-	                });
+	            var category = action.location[0];
+	            var newCategory = Object.assign({}, state[category]);
+	            var targetNode = newCategory;
+	            for (var i = 1; i < action.location.length; i++) {
+	                targetNode = targetNode[action.location[i]];
 	            }
-	            if (action.name == 'job') {
-	                var newBaseInfo = Object.assign({}, state.baseInfo);
-	                newBaseInfo.job.isEditting = true;
-	                return Object.assign({}, state, {
-	                    baseInfo: newBaseInfo
-	                });
-	            }
-	            if (action.name == 'contact-name') {
-	                var newBaseInfo = Object.assign({}, state.baseInfo);
-	                newBaseInfo.contact[action.index].name.isEditting = true;
-	                return Object.assign({}, state, {
-	                    baseInfo: newBaseInfo
-	                });
-	            }
-	            if (action.name == 'contact-value') {
-	                var newBaseInfo = Object.assign({}, state.baseInfo);
-	                newBaseInfo.contact[action.index].value.isEditting = true;
-	                return Object.assign({}, state, {
-	                    baseInfo: newBaseInfo
-	                });
-	            }
+	            targetNode.isEditting = true;
+	            var tmp = {};
+	            tmp[action.location[0]] = newCategory;
+	            return Object.assign({}, state, tmp);
 	        case 'ENTER_EDIT':
 	            console.log('ENTER_EDIT', action);
-	            if (action.name == 'name') {
-	                var newBaseInfo = Object.assign({}, state.baseInfo);
-	                newBaseInfo.name.text = action.value;
-	                newBaseInfo.name.isEditting = false;
-	                return Object.assign({}, state, {
-	                    baseInfo: newBaseInfo
-	                });
+	            var category = action.location[0];
+	            var newCategory = Object.assign({}, state[category]);
+	            var targetNode = newCategory;
+	            for (var i = 1; i < action.location.length; i++) {
+	                targetNode = targetNode[action.location[i]];
 	            }
-	            if (action.name == 'job') {
-	                var newBaseInfo = Object.assign({}, state.baseInfo);
-	                newBaseInfo.job.text = action.value;
-	                newBaseInfo.job.isEditting = false;
-	                return Object.assign({}, state, {
-	                    baseInfo: newBaseInfo
-	                });
-	            }
-	            if (action.name == 'contact-name') {
-	                var newBaseInfo = Object.assign({}, state.baseInfo);
-	                newBaseInfo.contact[action.index].name.text = action.value;
-	                newBaseInfo.contact[action.index].name.isEditting = false;
-	                return Object.assign({}, state, {
-	                    baseInfo: newBaseInfo
-	                });
-	            }
-	            if (action.name == 'contact-value') {
-	                var newBaseInfo = Object.assign({}, state.baseInfo);
-	                newBaseInfo.contact[action.index].value.text = action.value;
-	                newBaseInfo.contact[action.index].value.isEditting = false;
-	                return Object.assign({}, state, {
-	                    baseInfo: newBaseInfo
-	                });
-	            }
+	            targetNode.isEditting = false;
+	            targetNode.text = action.value;
+	            var tmp = {};
+	            tmp[action.location[0]] = newCategory;
+	            return Object.assign({}, state, tmp);
 	        default:
 	            return Object.assign({}, state);
 	    };

@@ -4,13 +4,13 @@ import { DragSource ,DropTarget} from 'react-dnd';
 const type = 'contact-item';
 const itemSource = {
     beginDrag(props) {
-        props.beginDrag(props.id,'contact');
+        props.beginDrag(props.id,props.location);
         return {
             id : props.id
         };
     },
     endDrag(props, monitor) {
-        props.endDrag(monitor.getItem().id,'contact');
+        props.endDrag(monitor.getItem().id,props.location);
     }
 };
 const itemTarget = {
@@ -19,7 +19,7 @@ const itemTarget = {
     },
 
     hover(props, monitor) {
-        props.itemSort(monitor.getItem().id, props.id, 'contact');
+        props.itemSort(monitor.getItem().id, props.id, props.location);
     }
 };
 
@@ -51,8 +51,8 @@ export default class Contact extends React.Component{
         const opacity = isDragging?'0.5':'1';
         return connectDropTarget(connectDragSource((
             <div className="contact-item" style={{opacity:opacity}}>
-                <Text className="contact-name" name="contact-name" index={index} text={item.name.text} isEditting={item.name.isEditting} textEdit={textEdit} enterEdit={enterEdit} />
-                <Text className="contact-value" name="contact-value" index={index} text={item.value.text} isEditting={item.value.isEditting} textEdit={textEdit} enterEdit={enterEdit} />                   
+                <Text className="contact-name" location={['baseInfo','contact',index,'name']} text={item.name.text} isEditting={item.name.isEditting} textEdit={textEdit} enterEdit={enterEdit} />
+                <Text className="contact-value" location={['baseInfo','contact',index,'value']} text={item.value.text} isEditting={item.value.isEditting} textEdit={textEdit} enterEdit={enterEdit} />                   
             </div>
         )));
     }

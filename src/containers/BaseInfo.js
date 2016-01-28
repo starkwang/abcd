@@ -17,8 +17,8 @@ export default class BaseInfo extends React.Component{
         const { actions } = this.props;
         return(
         <div className="base-info">
-            <Text className="name" text={name.text} isEditting={name.isEditting} name="name" textEdit={actions.textEdit} enterEdit={actions.enterEdit}></Text>
-            <Text className="job" text={job.text} isEditting={job.isEditting} name="job" textEdit={actions.textEdit} enterEdit={actions.enterEdit}></Text>
+            <Text className="name" location={['baseInfo','name']} text={name.text} isEditting={name.isEditting} textEdit={actions.textEdit} enterEdit={actions.enterEdit}></Text>
+            <Text className="job" location={['baseInfo','job']} text={job.text} isEditting={job.isEditting} textEdit={actions.textEdit} enterEdit={actions.enterEdit}></Text>
             <hr/>
             <ContactCollection contact={contact} actions={actions}/>
         </div>

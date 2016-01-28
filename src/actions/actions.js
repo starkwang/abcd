@@ -50,19 +50,17 @@ export function itemSort(sourceID, targetID, location){
     }
 }
 
-export function textEdit(name, index){
+export function textEdit(location){
     return {
         type: 'TEXT_EDIT',
-        name: name,
-        index: index
+        location: location,
     }
 }
 
-export function enterEdit(name, index, value){
+export function enterEdit(location, value){
     return {
         type: 'ENTER_EDIT',
-        name: name,
-        index: index,
+        location: location,
         value: value
     }
 }

@@ -86,7 +86,6 @@ const initialState = {
 }
 
 function findItem(items, id){
-    console.log(items);
     var resultIndex;
     items.forEach((item,index) => {
         if(item.id == id){
@@ -100,117 +99,88 @@ export default function todoApp(state = initialState, action) {
     //console.log(state);
     switch (action.type) {
         case 'ITEM_SORT':
-            const {sourceID,targetID} = action;
+            var {sourceID,targetID} = action;
             if(sourceID == targetID){
                 return Object.assign({},state);
             }else{
-                if(action.location == 'contact'){
-                    var arr = state.baseInfo.contact;
-
-                    var sourceIndex = findItem(arr, sourceID);
-                    var targetIndex = findItem(arr, targetID);
-
-                    var clone = arr.slice(0,arr.length);   
-                    var movingItem = clone.splice(sourceIndex,1)[0];
-
-                    var newBaseInfo = Object.assign({},state.baseInfo,{
-                        contact:[
-                            ...clone.slice(0,targetIndex),
-                            movingItem,
-                            ...clone.slice(targetIndex),
-                        ]
-                    })
-                    return Object.assign({},state,{
-                        baseInfo:newBaseInfo
-                    });
+                console.log('ITEM_SORT',action);
+                var category = action.location[0];
+                var newCategory = Object.assign({},state[category]);
+                var targetArr = newCategory;
+                for(var i = 1 ; i < action.location.length ; i++){
+                    targetArr = targetArr[action.location[i]];
                 }
-                
+                var sourceIndex = findItem(targetArr, sourceID);
+                var targetIndex = findItem(targetArr, targetID);
+                var clone = targetArr.slice(0,targetArr.length);   
+                var movingItem = clone.splice(sourceIndex,1)[0];
+                targetArr = [
+                    ...clone.slice(0,targetIndex),
+                    movingItem,
+                    ...clone.slice(targetIndex),
+                ]
+                var targetNode = newCategory;
+                for(var i = 1 ; i < action.location.length-1 ; i++){
+                    targetNode = targetNode[action.location[i]];
+                }
+                targetNode[action.location[action.location.length-1]] = targetArr;
+                var tmp = {};
+                tmp[action.location[0]] = newCategory;
+                return Object.assign({},state,tmp);
             }
         case 'BEGIN_DRAG':
-            if(action.location=='contact'){
-                var index = findItem(state.baseInfo.contact, action.id);
-                var baseInfo = Object.assign({},state.baseInfo);
-                baseInfo.contact[index].isDragging = true;
-                return Object.assign({},state,{
-                    baseInfo:baseInfo
-                });
+            console.log('BEGIN_DRAG',action);
+            var category = action.location[0];
+            var newCategory = Object.assign({},state[category]);
+            var targetArr = newCategory;
+            for(var i = 1 ; i < action.location.length ; i++){
+                targetArr = targetArr[action.location[i]];
             }
+            var index = findItem(targetArr, action.id);
+            targetArr[index].isDragging = true;
+            var tmp = {};
+            tmp[action.location[0]] = newCategory;
+            return Object.assign({},state,tmp);
 
         case 'END_DRAG':
-            if(action.location=='contact'){
-                console.log('END_DRAG');
-                var index = findItem(state.baseInfo.contact, action.id);
-                var baseInfo = Object.assign({},state.baseInfo);
-                baseInfo.contact[index].isDragging = false;
-                return Object.assign({},state,{
-                    baseInfo:baseInfo
-                });
+            console.log('END_DRAG',action);
+            var category = action.location[0];
+            var newCategory = Object.assign({},state[category]);
+            var targetArr = newCategory;
+            for(var i = 1 ; i < action.location.length ; i++){
+                targetArr = targetArr[action.location[i]];
             }
+            var index = findItem(targetArr, action.id);
+            targetArr[index].isDragging = false;
+            var tmp = {};
+            tmp[action.location[0]] = newCategory;
+            return Object.assign({},state,tmp);
 
         case 'TEXT_EDIT':
             console.log('TEXT_EDIT',action);
-            if(action.name == 'name'){
-                var newBaseInfo = Object.assign({},state.baseInfo);
-                newBaseInfo.name.isEditting = true;
-                return Object.assign({},state,{
-                    baseInfo:newBaseInfo
-                });
+            var category = action.location[0];
+            var newCategory = Object.assign({},state[category]);
+            var targetNode = newCategory;
+            for(var i = 1 ; i < action.location.length ; i++){
+                targetNode = targetNode[action.location[i]];
             }
-            if(action.name == 'job'){
-                var newBaseInfo = Object.assign({},state.baseInfo);
-                newBaseInfo.job.isEditting = true;
-                return Object.assign({},state,{
-                    baseInfo:newBaseInfo
-                });
-            }
-            if(action.name == 'contact-name'){
-                var newBaseInfo = Object.assign({},state.baseInfo);
-                newBaseInfo.contact[action.index].name.isEditting = true;
-                return Object.assign({},state,{
-                    baseInfo:newBaseInfo
-                });
-            }
-            if(action.name == 'contact-value'){
-                var newBaseInfo = Object.assign({},state.baseInfo);
-                newBaseInfo.contact[action.index].value.isEditting = true;
-                return Object.assign({},state,{
-                    baseInfo:newBaseInfo
-                });
-            }
+            targetNode.isEditting = true;
+            var tmp = {};
+            tmp[action.location[0]] = newCategory;
+            return Object.assign({},state,tmp);
         case 'ENTER_EDIT':
             console.log('ENTER_EDIT',action);
-            if(action.name == 'name'){
-                var newBaseInfo = Object.assign({},state.baseInfo);
-                newBaseInfo.name.text = action.value;
-                newBaseInfo.name.isEditting = false;
-                return Object.assign({},state,{
-                    baseInfo:newBaseInfo
-                });
+            var category = action.location[0];
+            var newCategory = Object.assign({},state[category]);
+            var targetNode = newCategory;
+            for(var i = 1 ; i < action.location.length ; i++){
+                targetNode = targetNode[action.location[i]];
             }
-            if(action.name == 'job'){
-                var newBaseInfo = Object.assign({},state.baseInfo);
-                newBaseInfo.job.text = action.value;
-                newBaseInfo.job.isEditting = false;
-                return Object.assign({},state,{
-                    baseInfo:newBaseInfo
-                });
-            }
-            if(action.name == 'contact-name'){
-                var newBaseInfo = Object.assign({},state.baseInfo);
-                newBaseInfo.contact[action.index].name.text = action.value;
-                newBaseInfo.contact[action.index].name.isEditting = false;
-                return Object.assign({},state,{
-                    baseInfo:newBaseInfo
-                });
-            }
-            if(action.name == 'contact-value'){
-                var newBaseInfo = Object.assign({},state.baseInfo);
-                newBaseInfo.contact[action.index].value.text = action.value;
-                newBaseInfo.contact[action.index].value.isEditting = false;
-                return Object.assign({},state,{
-                    baseInfo:newBaseInfo
-                });
-            }
+            targetNode.isEditting = false;
+            targetNode.text = action.value;
+            var tmp = {};
+            tmp[action.location[0]] = newCategory;
+            return Object.assign({},state,tmp);
         default:
             return Object.assign({},state)
     };

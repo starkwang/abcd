@@ -11,11 +11,13 @@ export default class Text extends React.Component{
         this.setState({
             value: this.props.text
         });
-        this.props.textEdit(this.props.name, this.props.index);
+        const { textEdit, location} = this.props;
+        textEdit(location);
     }
 
     enterEdit(){
-        this.props.enterEdit(this.props.name, this.props.index, this.state.value);
+        const { enterEdit, location} = this.props;
+        enterEdit(location, this.state.value);
     }
 
     onChange(e){

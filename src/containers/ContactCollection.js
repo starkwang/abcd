@@ -15,13 +15,12 @@ class ContactCollection extends React.Component{
     }
 
     render() {
-        console.log(this.props.actions);
         var { itemSort, beginDrag, endDrag, textEdit, enterEdit} = this.props.actions;
 
         var contacts = [];
         this.props.contact.forEach((item, index)=>{
             contacts.push(
-                <Contact key={index} index={index} item={item} id={item.id} isDragging={item.isDragging} textEdit={textEdit} enterEdit={enterEdit} itemSort={itemSort} beginDrag={beginDrag} endDrag={endDrag}/>
+                <Contact key={index} index={index} location={['baseInfo','contact']} item={item} id={item.id} isDragging={item.isDragging} textEdit={textEdit} enterEdit={enterEdit} itemSort={itemSort} beginDrag={beginDrag} endDrag={endDrag}/>
             )
         })
         return (
