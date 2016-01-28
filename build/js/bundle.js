@@ -60,7 +60,7 @@
 
 	var _App2 = _interopRequireDefault(_App);
 
-	var _reducers = __webpack_require__(288);
+	var _reducers = __webpack_require__(289);
 
 	var _reducers2 = _interopRequireDefault(_reducers);
 
@@ -20836,7 +20836,7 @@
 
 	var _redux = __webpack_require__(159);
 
-	var _actions = __webpack_require__(287);
+	var _actions = __webpack_require__(288);
 
 	var Actions = _interopRequireWildcard(_actions);
 
@@ -20951,6 +20951,10 @@
 
 	var _ContactCollection2 = _interopRequireDefault(_ContactCollection);
 
+	var _Avatar = __webpack_require__(287);
+
+	var _Avatar2 = _interopRequireDefault(_Avatar);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -20978,11 +20982,13 @@
 	            var name = _props$baseInfo.name;
 	            var job = _props$baseInfo.job;
 	            var contact = _props$baseInfo.contact;
+	            var avatar = _props$baseInfo.avatar;
 	            var actions = this.props.actions;
 
 	            return _react2.default.createElement(
 	                'div',
 	                { className: 'base-info' },
+	                _react2.default.createElement(_Avatar2.default, { imgUrl: avatar.imgUrl, isEditting: avatar.isEditting, editAvatar: actions.editAvatar, enterAvatar: actions.enterAvatar }),
 	                _react2.default.createElement(_Text2.default, { className: 'name', location: ['baseInfo', 'name'], text: name.text, isEditting: name.isEditting, textEdit: actions.textEdit, enterEdit: actions.enterEdit }),
 	                _react2.default.createElement(_Text2.default, { className: 'job', location: ['baseInfo', 'job'], text: job.text, isEditting: job.isEditting, textEdit: actions.textEdit, enterEdit: actions.enterEdit }),
 	                _react2.default.createElement('hr', null),
@@ -25379,6 +25385,7 @@
 	            var endDrag = _props$actions.endDrag;
 	            var textEdit = _props$actions.textEdit;
 	            var enterEdit = _props$actions.enterEdit;
+	            var addContact = _props$actions.addContact;
 
 	            var contacts = [];
 	            this.props.contact.forEach(function (item, index) {
@@ -25387,7 +25394,12 @@
 	            return _react2.default.createElement(
 	                'div',
 	                { className: 'contact' },
-	                contacts
+	                contacts,
+	                _react2.default.createElement(
+	                    'button',
+	                    { onClick: addContact },
+	                    ' + '
+	                )
 	            );
 	        }
 	    }]);
@@ -27231,6 +27243,112 @@
 
 /***/ },
 /* 287 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var Avatar = function (_React$Component) {
+	    _inherits(Avatar, _React$Component);
+
+	    function Avatar(props) {
+	        _classCallCheck(this, Avatar);
+
+	        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Avatar).call(this, props));
+
+	        _this.onChange = _this.onChange.bind(_this);
+	        _this.enterAvatar = _this.enterAvatar.bind(_this);
+	        _this.editAvatar = _this.editAvatar.bind(_this);
+	        return _this;
+	    }
+
+	    _createClass(Avatar, [{
+	        key: "editAvatar",
+	        value: function editAvatar() {
+	            var _props = this.props;
+	            var imgUrl = _props.imgUrl;
+	            var editAvatar = _props.editAvatar;
+
+	            this.setState({
+	                value: imgUrl
+	            });
+	            editAvatar();
+	        }
+	    }, {
+	        key: "enterAvatar",
+	        value: function enterAvatar() {
+	            this.props.enterAvatar(this.state.value);
+	        }
+	    }, {
+	        key: "onChange",
+	        value: function onChange(e) {
+	            this.setState({
+	                value: e.target.value
+	            });
+	        }
+	    }, {
+	        key: "render",
+	        value: function render() {
+	            var _props2 = this.props;
+	            var isEditting = _props2.isEditting;
+	            var imgUrl = _props2.imgUrl;
+	            var editAvatar = _props2.editAvatar;
+	            var enterAvatar = _props2.enterAvatar;
+
+	            if (isEditting) {
+	                return _react2.default.createElement(
+	                    "div",
+	                    { className: "avatar" },
+	                    _react2.default.createElement(
+	                        "div",
+	                        { className: "avatar-img" },
+	                        _react2.default.createElement("img", { onClick: this.editAvatar, src: imgUrl })
+	                    ),
+	                    _react2.default.createElement("input", { onChange: this.onChange, defaultValue: imgUrl }),
+	                    _react2.default.createElement(
+	                        "button",
+	                        { onClick: this.enterAvatar },
+	                        "确认"
+	                    )
+	                );
+	            } else {
+	                return _react2.default.createElement(
+	                    "div",
+	                    { className: "avatar" },
+	                    _react2.default.createElement(
+	                        "div",
+	                        { className: "avatar-img" },
+	                        _react2.default.createElement("img", { onClick: this.editAvatar, src: imgUrl })
+	                    )
+	                );
+	            }
+	        }
+	    }]);
+
+	    return Avatar;
+	}(_react2.default.Component);
+
+	exports.default = Avatar;
+
+/***/ },
+/* 288 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -27247,6 +27365,9 @@
 	exports.itemSort = itemSort;
 	exports.textEdit = textEdit;
 	exports.enterEdit = enterEdit;
+	exports.addContact = addContact;
+	exports.editAvatar = editAvatar;
+	exports.enterAvatar = enterAvatar;
 	function changeText() {
 	    return {
 	        type: 'CHANGE_TEXT'
@@ -27314,8 +27435,27 @@
 	    };
 	}
 
+	function addContact() {
+	    return {
+	        type: 'ADD_CONTACT'
+	    };
+	}
+
+	function editAvatar() {
+	    return {
+	        type: 'EDIT_AVATAR'
+	    };
+	}
+
+	function enterAvatar(url) {
+	    return {
+	        type: 'ENTER_AVATAR',
+	        url: url
+	    };
+	}
+
 /***/ },
-/* 288 */
+/* 289 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -27347,6 +27487,10 @@
 	    // }],
 	    styleName: 'base-style',
 	    baseInfo: {
+	        avatar: {
+	            imgUrl: 'http://sfault-avatar.b0.upaiyun.com/253/959/2539590481-562f620530b4c_huge256',
+	            isEditting: false
+	        },
 	        name: {
 	            text: '王小黑',
 	            isEditting: false
@@ -27511,6 +27655,39 @@
 	            var tmp = {};
 	            tmp[action.location[0]] = newCategory;
 	            return Object.assign({}, state, tmp);
+
+	        case 'ADD_CONTACT':
+	            var newBaseInfo = Object.assign({}, state.baseInfo);
+	            var id = newBaseInfo.contact.length + 1;
+	            newBaseInfo.contact.push({
+	                id: id,
+	                name: {
+	                    text: '名称',
+	                    isEditting: false
+	                },
+	                value: {
+	                    text: '值',
+	                    isEditting: false
+	                },
+	                isDragging: false
+	            });
+	            return Object.assign({}, state, {
+	                baseInfo: newBaseInfo
+	            });
+	        case 'EDIT_AVATAR':
+	            var newBaseInfo = Object.assign({}, state.baseInfo);
+	            newBaseInfo.avatar.isEditting = true;
+	            return Object.assign({}, state, {
+	                baseInfo: newBaseInfo
+	            });
+	        case 'ENTER_AVATAR':
+	            console.log('ENTER_AVATAR', action);
+	            var newBaseInfo = Object.assign({}, state.baseInfo);
+	            newBaseInfo.avatar.isEditting = false;
+	            newBaseInfo.avatar.imgUrl = action.url;
+	            return Object.assign({}, state, {
+	                baseInfo: newBaseInfo
+	            });
 	        default:
 	            return Object.assign({}, state);
 	    };

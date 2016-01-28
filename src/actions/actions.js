@@ -64,3 +64,22 @@ export function enterEdit(location, value){
         value: value
     }
 }
+
+export function addContact(){
+    return {
+        type:'ADD_CONTACT'
+    }
+}
+
+export function editAvatar(){
+    return {
+        type:'EDIT_AVATAR'
+    }
+}
+
+export function enterAvatar(url){
+    return {
+        type: 'ENTER_AVATAR',
+        url: url
+    }
+}

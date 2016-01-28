@@ -15,7 +15,7 @@ class ContactCollection extends React.Component{
     }
 
     render() {
-        var { itemSort, beginDrag, endDrag, textEdit, enterEdit} = this.props.actions;
+        var { itemSort, beginDrag, endDrag, textEdit, enterEdit, addContact} = this.props.actions;
 
         var contacts = [];
         this.props.contact.forEach((item, index)=>{
@@ -26,6 +26,7 @@ class ContactCollection extends React.Component{
         return (
             <div className="contact">
                 {contacts}
+                <button onClick={addContact}> + </button>
             </div>
         );
     }

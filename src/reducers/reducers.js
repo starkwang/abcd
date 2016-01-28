@@ -18,6 +18,10 @@ const initialState = {
     // }],
     styleName:'base-style',
     baseInfo:{
+        avatar:{
+            imgUrl:'http://sfault-avatar.b0.upaiyun.com/253/959/2539590481-562f620530b4c_huge256',
+            isEditting:false
+        },
         name:{
             text:'王小黑',
             isEditting:false
@@ -181,6 +185,39 @@ export default function todoApp(state = initialState, action) {
             var tmp = {};
             tmp[action.location[0]] = newCategory;
             return Object.assign({},state,tmp);
+
+        case 'ADD_CONTACT':
+            var newBaseInfo = Object.assign({},state.baseInfo);
+            var id = newBaseInfo.contact.length+1;
+            newBaseInfo.contact.push({
+                id:id,
+                name:{
+                    text:'名称',
+                    isEditting:false
+                },
+                value:{
+                    text:'值',
+                    isEditting:false
+                },
+                isDragging:false
+            })
+            return Object.assign({},state,{
+                baseInfo: newBaseInfo
+            })
+        case 'EDIT_AVATAR':
+            var newBaseInfo = Object.assign({},state.baseInfo);
+            newBaseInfo.avatar.isEditting = true;
+            return Object.assign({},state,{
+                baseInfo: newBaseInfo
+            });
+        case 'ENTER_AVATAR':
+            console.log('ENTER_AVATAR',action);
+            var newBaseInfo = Object.assign({},state.baseInfo);
+            newBaseInfo.avatar.isEditting = false;
+            newBaseInfo.avatar.imgUrl = action.url;
+            return Object.assign({},state,{
+                baseInfo: newBaseInfo
+            });
         default:
             return Object.assign({},state)
     };
