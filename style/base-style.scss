@@ -5,6 +5,7 @@
 .base-info{
     width: 320px;
     background-color: rgb(97,194,177);
+    //background-color: #42a5f5;
     .text-wrapper{
         position:relative;
     }
@@ -44,6 +45,7 @@
     p.name{
         font-size: 30px;
         padding: 20px;
+        font-weight: bold;
     }
     input.name{
         font-size: 30px;
@@ -56,6 +58,7 @@
     p.job{
         font-size: 20px;
         color: rgb(35,125,113);
+        font-weight: bold;
     }
     input.job{
         font-size: 20px;
@@ -99,4 +102,48 @@
 }
 .main-info{
     width: 640px;
+    .education{
+        padding:40px;
+        i{
+            float: left;
+            font-size: 24px;
+            color: #fff;
+            margin-right: 10px;
+            background-color:#666;
+            border-radius:100%;
+            line-height: 32px;
+            width: 32px;
+            height: 32px;
+            text-align: center;
+        }
+        .title{
+            font-size:32px;
+            font-weight: bold;
+            color: #666;
+            margin-bottom: 10px;
+        }
+        .item{
+            overflow: hidden;
+            .name{
+                color:#61c2b1;
+                font-size: 24px;
+                float: left;
+                font-weight: bold;
+            }
+            .time{
+                float: left;
+                color: #237d71;
+                line-height: 24px;
+                font-size: 16px;
+                margin-left: 20px;
+            }
+            .major{
+                float: left;
+                width: 100%;
+                color: #777;
+                font-size:18px;
+                margin-top: 10px;
+            }
+        }
+    }
 }

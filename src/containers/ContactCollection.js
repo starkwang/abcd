@@ -1,9 +1,6 @@
 import React from 'react';
 import Contact from '../components/Contact';
 
-import { DragDropContext } from 'react-dnd';
-import HTML5Backend from 'react-dnd-html5-backend';
-
 class ContactCollection extends React.Component{
     constructor(props) {
         super(props);
@@ -32,4 +29,4 @@ class ContactCollection extends React.Component{
     }
 }
 
-export default DragDropContext(HTML5Backend)(ContactCollection);
+export default ContactCollection;

@@ -30,6 +30,7 @@ const initialState = {
             text:'Web前端工程师',
             isEditting:false
         },
+        basic_info:[],
         contact:[{
             id:1,
             name:{
@@ -52,38 +53,41 @@ const initialState = {
                 isEditting:false
             },
             isDragging:false
+        },{
+            id:3,
+            name:{
+                text:'个人博客',
+                isEditting:false
+            },
+            value:{
+                text:'blog.starkwang.com',
+                isEditting:false
+            },
+            isDragging:false
         }]
     },
     mainInfo:[{
-        title:'教育经历',
+        type:'education',
+        title:{
+            text:'教育经历',
+            isEditting:false
+        },
         items:[{
             name:{
                 text:'复旦大学',
-                isEditting:true
-            },
-            time:{
-                text:'2013.09 - 2017.07',
-                isEditting:false
-            },
-            major:{
-                text:'电子信息科学与技术',
-                isEditting:false
-            }
-        },{
-            name:{
-                text:'复旦大学',
                 isEditting:false
             },
             time:{
-                text:'2013.09 - 2017.07',
+                text:'2013年9月至2017年7月',
                 isEditting:false
             },
             major:{
-                text:'电子信息科学与技术',
+                text:'本科生，电子信息科学与技术专业',
                 isEditting:false
             }
         }]
     },{
+        type:'skill',
         title:'专业技能',
         items:[]
     }]
@@ -163,7 +167,7 @@ export default function todoApp(state = initialState, action) {
         case 'TEXT_EDIT':
             console.log('TEXT_EDIT',action);
             var category = action.location[0];
-            var newCategory = Object.assign({},state[category]);
+            var newCategory = category=='baseInfo'?Object.assign({},state[category]):Object.assign([],state[category]);
             var targetNode = newCategory;
             for(var i = 1 ; i < action.location.length ; i++){
                 targetNode = targetNode[action.location[i]];
@@ -175,7 +179,7 @@ export default function todoApp(state = initialState, action) {
         case 'ENTER_EDIT':
             console.log('ENTER_EDIT',action);
             var category = action.location[0];
-            var newCategory = Object.assign({},state[category]);
+            var newCategory = category=='baseInfo'?Object.assign({},state[category]):Object.assign([],state[category]);
             var targetNode = newCategory;
             for(var i = 1 ; i < action.location.length ; i++){
                 targetNode = targetNode[action.location[i]];

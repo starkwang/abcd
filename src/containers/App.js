@@ -5,10 +5,14 @@ import React from 'react';
 // import InputArea from './InputArea';
 // import DragBox from './DragBox';
 import BaseInfo from './BaseInfo';
+import MainInfo from './MainInfo';
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import * as Actions from '../actions/actions';
+
+import { DragDropContext } from 'react-dnd';
+import HTML5Backend from 'react-dnd-html5-backend';
 
 class App extends React.Component{
     constructor(props) {
@@ -28,9 +32,7 @@ class App extends React.Component{
                 <div className="main-editor">
                     <div className={styleName}>
                         <BaseInfo baseInfo={baseInfo} actions={actions}/>
-                        <div className="main-info">
-
-                        </div>
+                        <MainInfo mainInfo={mainInfo} actions={actions}/>
                     </div>
                 </div>
             );
@@ -61,4 +63,5 @@ function mapDispatchToProps(dispatch){
     }
 }
 
-export default App = connect(mapStateToProps,mapDispatchToProps)(App)
+App = connect(mapStateToProps,mapDispatchToProps)(App);
+export default App = DragDropContext(HTML5Backend)(App);
