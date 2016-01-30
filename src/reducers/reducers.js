@@ -1,3 +1,4 @@
+import shortid from 'shortid';
 const initialState = {
     // text: 'Hello',
     // inputs:[{
@@ -32,7 +33,7 @@ const initialState = {
         },
         basic_info:[],
         contact:[{
-            id:1,
+            id:shortid.generate(),
             name:{
                 text:'手机',
                 isEditting:false
@@ -43,7 +44,7 @@ const initialState = {
             },
             isDragging:false
         },{
-            id:2,
+            id:shortid.generate(),
             name:{
                 text:'邮箱',
                 isEditting:false
@@ -54,7 +55,7 @@ const initialState = {
             },
             isDragging:false
         },{
-            id:3,
+            id:shortid.generate(),
             name:{
                 text:'个人博客',
                 isEditting:false
@@ -67,14 +68,13 @@ const initialState = {
         }]
     },
     mainInfo:[{
-        id:1,
+        id:shortid.generate(),
         type:'education',
         title:{
             text:'教育经历',
             isEditting:false
         },
         items:[{
-            id:1,
             name:{
                 text:'复旦大学',
                 isEditting:false
@@ -88,7 +88,6 @@ const initialState = {
                 isEditting:false
             }
         },{
-            id:2,
             name:{
                 text:'复旦大学',
                 isEditting:false
@@ -103,7 +102,7 @@ const initialState = {
             }
         }]
     },{
-        id:2,
+        id:shortid.generate(),
         type:'skill',
         title:'专业技能',
         items:[]
@@ -121,14 +120,13 @@ function findItem(items, id){
 }
 
 export default function todoApp(state = initialState, action) {
-    //console.log(state);
+    console.log(action.type, action);
     switch (action.type) {
         case 'ITEM_SORT':
             var {sourceID,targetID} = action;
             if(sourceID == targetID){
                 return Object.assign({},state);
             }else{
-                console.log('ITEM_SORT',action);
                 var category = action.location[0];
                 var newCategory = Object.assign({},state[category]);
                 var targetArr = newCategory;
@@ -154,7 +152,6 @@ export default function todoApp(state = initialState, action) {
                 return Object.assign({},state,tmp);
             }
         case 'BEGIN_DRAG':
-            console.log('BEGIN_DRAG',action);
             var category = action.location[0];
             var newCategory = Object.assign({},state[category]);
             var targetArr = newCategory;
@@ -168,7 +165,6 @@ export default function todoApp(state = initialState, action) {
             return Object.assign({},state,tmp);
 
         case 'END_DRAG':
-            console.log('END_DRAG',action);
             var category = action.location[0];
             var newCategory = Object.assign({},state[category]);
             var targetArr = newCategory;
@@ -182,7 +178,6 @@ export default function todoApp(state = initialState, action) {
             return Object.assign({},state,tmp);
 
         case 'TEXT_EDIT':
-            console.log('TEXT_EDIT',action);
             var category = action.location[0];
             var newCategory = category=='baseInfo'?Object.assign({},state[category]):Object.assign([],state[category]);
             var targetNode = newCategory;
@@ -194,7 +189,6 @@ export default function todoApp(state = initialState, action) {
             tmp[action.location[0]] = newCategory;
             return Object.assign({},state,tmp);
         case 'ENTER_EDIT':
-            console.log('ENTER_EDIT',action);
             var category = action.location[0];
             var newCategory = category=='baseInfo'?Object.assign({},state[category]):Object.assign([],state[category]);
             var targetNode = newCategory;
@@ -209,7 +203,7 @@ export default function todoApp(state = initialState, action) {
 
         case 'ADD_CONTACT':
             var newBaseInfo = Object.assign({},state.baseInfo);
-            var id = newBaseInfo.contact.length+1;
+            var id = shortid.generate();
             newBaseInfo.contact.push({
                 id:id,
                 name:{
@@ -225,6 +219,12 @@ export default function todoApp(state = initialState, action) {
             return Object.assign({},state,{
                 baseInfo: newBaseInfo
             })
+        case 'DELETE_CONTACT':
+            var newBaseInfo = Object.assign({},state.baseInfo);
+            newBaseInfo.contact.splice(action.index,1);
+            return Object.assign({},state,{
+                baseInfo: newBaseInfo
+            })
         case 'EDIT_AVATAR':
             var newBaseInfo = Object.assign({},state.baseInfo);
             newBaseInfo.avatar.isEditting = true;
@@ -232,7 +232,6 @@ export default function todoApp(state = initialState, action) {
                 baseInfo: newBaseInfo
             });
         case 'ENTER_AVATAR':
-            console.log('ENTER_AVATAR',action);
             var newBaseInfo = Object.assign({},state.baseInfo);
             newBaseInfo.avatar.isEditting = false;
             newBaseInfo.avatar.imgUrl = action.url;
@@ -240,11 +239,9 @@ export default function todoApp(state = initialState, action) {
                 baseInfo: newBaseInfo
             });
         case 'ADD_EDUCATION':
-            console.log('ADD_EDUCATION',action);
             var newMainInfo = Object.assign([],state.mainInfo);
             var targetArr = newMainInfo[action.indexInMainInfo].items;
             targetArr.push({
-                id: targetArr.length + 1,
                 name:{
                     text:'这里填入名称',
                     isEditting:false

@@ -21183,14 +21183,21 @@
 	    function Contact(props) {
 	        _classCallCheck(this, Contact);
 
-	        return _possibleConstructorReturn(this, Object.getPrototypeOf(Contact).call(this, props));
-	        //this.handleClick = this.handleClick.bind(this);
+	        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Contact).call(this, props));
+
+	        _this.deleteContact = _this.deleteContact.bind(_this);
+	        return _this;
 	    }
 
 	    _createClass(Contact, [{
 	        key: 'handleClick',
 	        value: function handleClick() {
 	            //this.props.actions.changeText();
+	        }
+	    }, {
+	        key: 'deleteContact',
+	        value: function deleteContact() {
+	            this.props.deleteContact(this.props.index);
 	        }
 	    }, {
 	        key: 'render',
@@ -21209,6 +21216,11 @@
 	            return connectDropTarget(connectDragSource(_react2.default.createElement(
 	                'div',
 	                { className: 'contact-item', style: { opacity: opacity } },
+	                _react2.default.createElement(
+	                    'button',
+	                    { className: 'delete', onClick: this.deleteContact },
+	                    '-'
+	                ),
 	                _react2.default.createElement(_Text2.default, { className: 'contact-name', location: ['baseInfo', 'contact', index, 'name'], text: item.name.text, isEditting: item.name.isEditting, textEdit: textEdit, enterEdit: enterEdit }),
 	                _react2.default.createElement(_Text2.default, { className: 'contact-value', location: ['baseInfo', 'contact', index, 'value'], text: item.value.text, isEditting: item.value.isEditting, textEdit: textEdit, enterEdit: enterEdit })
 	            )));
@@ -25391,10 +25403,11 @@
 	            var textEdit = _props$actions.textEdit;
 	            var enterEdit = _props$actions.enterEdit;
 	            var addContact = _props$actions.addContact;
+	            var deleteContact = _props$actions.deleteContact;
 
 	            var contacts = [];
 	            this.props.contact.forEach(function (item, index) {
-	                contacts.push(_react2.default.createElement(_Contact2.default, { key: index, index: index, location: ['baseInfo', 'contact'], item: item, id: item.id, isDragging: item.isDragging, textEdit: textEdit, enterEdit: enterEdit, itemSort: itemSort, beginDrag: beginDrag, endDrag: endDrag }));
+	                contacts.push(_react2.default.createElement(_Contact2.default, { key: index, index: index, location: ['baseInfo', 'contact'], item: item, id: item.id, isDragging: item.isDragging, textEdit: textEdit, enterEdit: enterEdit, itemSort: itemSort, beginDrag: beginDrag, endDrag: endDrag, deleteContact: deleteContact }));
 	            });
 	            return _react2.default.createElement(
 	                'div',
@@ -25765,6 +25778,7 @@
 	exports.textEdit = textEdit;
 	exports.enterEdit = enterEdit;
 	exports.addContact = addContact;
+	exports.deleteContact = deleteContact;
 	exports.editAvatar = editAvatar;
 	exports.enterAvatar = enterAvatar;
 	exports.addEducation = addEducation;
@@ -25838,6 +25852,13 @@
 	function addContact() {
 	    return {
 	        type: 'ADD_CONTACT'
+	    };
+	}
+
+	function deleteContact(index) {
+	    return {
+	        type: 'DELETE_CONTACT',
+	        index: index
 	    };
 	}
 
@@ -27695,7 +27716,7 @@
 
 /***/ },
 /* 292 */
-/***/ function(module, exports) {
+/***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
@@ -27703,6 +27724,12 @@
 	    value: true
 	});
 	exports.default = todoApp;
+
+	var _shortid = __webpack_require__(293);
+
+	var _shortid2 = _interopRequireDefault(_shortid);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
@@ -27740,7 +27767,7 @@
 	        },
 	        basic_info: [],
 	        contact: [{
-	            id: 1,
+	            id: _shortid2.default.generate(),
 	            name: {
 	                text: '手机',
 	                isEditting: false
@@ -27751,7 +27778,7 @@
 	            },
 	            isDragging: false
 	        }, {
-	            id: 2,
+	            id: _shortid2.default.generate(),
 	            name: {
 	                text: '邮箱',
 	                isEditting: false
@@ -27762,7 +27789,7 @@
 	            },
 	            isDragging: false
 	        }, {
-	            id: 3,
+	            id: _shortid2.default.generate(),
 	            name: {
 	                text: '个人博客',
 	                isEditting: false
@@ -27775,14 +27802,13 @@
 	        }]
 	    },
 	    mainInfo: [{
-	        id: 1,
+	        id: _shortid2.default.generate(),
 	        type: 'education',
 	        title: {
 	            text: '教育经历',
 	            isEditting: false
 	        },
 	        items: [{
-	            id: 1,
 	            name: {
 	                text: '复旦大学',
 	                isEditting: false
@@ -27796,7 +27822,6 @@
 	                isEditting: false
 	            }
 	        }, {
-	            id: 2,
 	            name: {
 	                text: '复旦大学',
 	                isEditting: false
@@ -27811,7 +27836,7 @@
 	            }
 	        }]
 	    }, {
-	        id: 2,
+	        id: _shortid2.default.generate(),
 	        type: 'skill',
 	        title: '专业技能',
 	        items: []
@@ -27832,7 +27857,7 @@
 	    var state = arguments.length <= 0 || arguments[0] === undefined ? initialState : arguments[0];
 	    var action = arguments[1];
 
-	    //console.log(state);
+	    console.log(action.type, action);
 	    switch (action.type) {
 	        case 'ITEM_SORT':
 	            var sourceID = action.sourceID;
@@ -27841,7 +27866,6 @@
 	            if (sourceID == targetID) {
 	                return Object.assign({}, state);
 	            } else {
-	                console.log('ITEM_SORT', action);
 	                var category = action.location[0];
 	                var newCategory = Object.assign({}, state[category]);
 	                var targetArr = newCategory;
@@ -27863,7 +27887,6 @@
 	                return Object.assign({}, state, tmp);
 	            }
 	        case 'BEGIN_DRAG':
-	            console.log('BEGIN_DRAG', action);
 	            var category = action.location[0];
 	            var newCategory = Object.assign({}, state[category]);
 	            var targetArr = newCategory;
@@ -27877,7 +27900,6 @@
 	            return Object.assign({}, state, tmp);
 
 	        case 'END_DRAG':
-	            console.log('END_DRAG', action);
 	            var category = action.location[0];
 	            var newCategory = Object.assign({}, state[category]);
 	            var targetArr = newCategory;
@@ -27891,7 +27913,6 @@
 	            return Object.assign({}, state, tmp);
 
 	        case 'TEXT_EDIT':
-	            console.log('TEXT_EDIT', action);
 	            var category = action.location[0];
 	            var newCategory = category == 'baseInfo' ? Object.assign({}, state[category]) : Object.assign([], state[category]);
 	            var targetNode = newCategory;
@@ -27903,7 +27924,6 @@
 	            tmp[action.location[0]] = newCategory;
 	            return Object.assign({}, state, tmp);
 	        case 'ENTER_EDIT':
-	            console.log('ENTER_EDIT', action);
 	            var category = action.location[0];
 	            var newCategory = category == 'baseInfo' ? Object.assign({}, state[category]) : Object.assign([], state[category]);
 	            var targetNode = newCategory;
@@ -27918,7 +27938,7 @@
 
 	        case 'ADD_CONTACT':
 	            var newBaseInfo = Object.assign({}, state.baseInfo);
-	            var id = newBaseInfo.contact.length + 1;
+	            var id = _shortid2.default.generate();
 	            newBaseInfo.contact.push({
 	                id: id,
 	                name: {
@@ -27934,6 +27954,12 @@
 	            return Object.assign({}, state, {
 	                baseInfo: newBaseInfo
 	            });
+	        case 'DELETE_CONTACT':
+	            var newBaseInfo = Object.assign({}, state.baseInfo);
+	            newBaseInfo.contact.splice(action.index, 1);
+	            return Object.assign({}, state, {
+	                baseInfo: newBaseInfo
+	            });
 	        case 'EDIT_AVATAR':
 	            var newBaseInfo = Object.assign({}, state.baseInfo);
 	            newBaseInfo.avatar.isEditting = true;
@@ -27941,7 +27967,6 @@
 	                baseInfo: newBaseInfo
 	            });
 	        case 'ENTER_AVATAR':
-	            console.log('ENTER_AVATAR', action);
 	            var newBaseInfo = Object.assign({}, state.baseInfo);
 	            newBaseInfo.avatar.isEditting = false;
 	            newBaseInfo.avatar.imgUrl = action.url;
@@ -27949,11 +27974,9 @@
 	                baseInfo: newBaseInfo
 	            });
 	        case 'ADD_EDUCATION':
-	            console.log('ADD_EDUCATION', action);
 	            var newMainInfo = Object.assign([], state.mainInfo);
 	            var targetArr = newMainInfo[action.indexInMainInfo].items;
 	            targetArr.push({
-	                id: targetArr.length + 1,
 	                name: {
 	                    text: '这里填入名称',
 	                    isEditting: false
@@ -27974,6 +27997,357 @@
 	            return Object.assign({}, state);
 	    };
 	}
+
+/***/ },
+/* 293 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	module.exports = __webpack_require__(294);
+
+
+/***/ },
+/* 294 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var alphabet = __webpack_require__(295);
+	var encode = __webpack_require__(297);
+	var decode = __webpack_require__(299);
+	var isValid = __webpack_require__(300);
+
+	// Ignore all milliseconds before a certain time to reduce the size of the date entropy without sacrificing uniqueness.
+	// This number should be updated every year or so to keep the generated id short.
+	// To regenerate `new Date() - 0` and bump the version. Always bump the version!
+	var REDUCE_TIME = 1426452414093;
+
+	// don't change unless we change the algos or REDUCE_TIME
+	// must be an integer and less than 16
+	var version = 5;
+
+	// if you are using cluster or multiple servers use this to make each instance
+	// has a unique value for worker
+	// Note: I don't know if this is automatically set when using third
+	// party cluster solutions such as pm2.
+	var clusterWorkerId = __webpack_require__(301) || 0;
+
+	// Counter is used when shortid is called multiple times in one second.
+	var counter;
+
+	// Remember the last time shortid was called in case counter is needed.
+	var previousSeconds;
+
+	/**
+	 * Generate unique id
+	 * Returns string id
+	 */
+	function generate() {
+
+	    var str = '';
+
+	    var seconds = Math.floor((Date.now() - REDUCE_TIME) * 0.001);
+
+	    if (seconds === previousSeconds) {
+	        counter++;
+	    } else {
+	        counter = 0;
+	        previousSeconds = seconds;
+	    }
+
+	    str = str + encode(alphabet.lookup, version);
+	    str = str + encode(alphabet.lookup, clusterWorkerId);
+	    if (counter > 0) {
+	        str = str + encode(alphabet.lookup, counter);
+	    }
+	    str = str + encode(alphabet.lookup, seconds);
+
+	    return str;
+	}
+
+
+	/**
+	 * Set the seed.
+	 * Highly recommended if you don't want people to try to figure out your id schema.
+	 * exposed as shortid.seed(int)
+	 * @param seed Integer value to seed the random alphabet.  ALWAYS USE THE SAME SEED or you might get overlaps.
+	 */
+	function seed(seedValue) {
+	    alphabet.seed(seedValue);
+	    return module.exports;
+	}
+
+	/**
+	 * Set the cluster worker or machine id
+	 * exposed as shortid.worker(int)
+	 * @param workerId worker must be positive integer.  Number less than 16 is recommended.
+	 * returns shortid module so it can be chained.
+	 */
+	function worker(workerId) {
+	    clusterWorkerId = workerId;
+	    return module.exports;
+	}
+
+	/**
+	 *
+	 * sets new characters to use in the alphabet
+	 * returns the shuffled alphabet
+	 */
+	function characters(newCharacters) {
+	    if (newCharacters !== undefined) {
+	        alphabet.characters(newCharacters);
+	    }
+
+	    return alphabet.shuffled();
+	}
+
+
+	// Export all other functions as properties of the generate function
+	module.exports = generate;
+	module.exports.generate = generate;
+	module.exports.seed = seed;
+	module.exports.worker = worker;
+	module.exports.characters = characters;
+	module.exports.decode = decode;
+	module.exports.isValid = isValid;
+
+
+/***/ },
+/* 295 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var randomFromSeed = __webpack_require__(296);
+
+	var ORIGINAL = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-';
+	var alphabet;
+	var previousSeed;
+
+	var shuffled;
+
+	function reset() {
+	    shuffled = false;
+	}
+
+	function setCharacters(_alphabet_) {
+	    if (!_alphabet_) {
+	        if (alphabet !== ORIGINAL) {
+	            alphabet = ORIGINAL;
+	            reset();
+	        }
+	        return;
+	    }
+
+	    if (_alphabet_ === alphabet) {
+	        return;
+	    }
+
+	    if (_alphabet_.length !== ORIGINAL.length) {
+	        throw new Error('Custom alphabet for shortid must be ' + ORIGINAL.length + ' unique characters. You submitted ' + _alphabet_.length + ' characters: ' + _alphabet_);
+	    }
+
+	    var unique = _alphabet_.split('').filter(function(item, ind, arr){
+	       return ind !== arr.lastIndexOf(item);
+	    });
+
+	    if (unique.length) {
+	        throw new Error('Custom alphabet for shortid must be ' + ORIGINAL.length + ' unique characters. These characters were not unique: ' + unique.join(', '));
+	    }
+
+	    alphabet = _alphabet_;
+	    reset();
+	}
+
+	function characters(_alphabet_) {
+	    setCharacters(_alphabet_);
+	    return alphabet;
+	}
+
+	function setSeed(seed) {
+	    randomFromSeed.seed(seed);
+	    if (previousSeed !== seed) {
+	        reset();
+	        previousSeed = seed;
+	    }
+	}
+
+	function shuffle() {
+	    if (!alphabet) {
+	        setCharacters(ORIGINAL);
+	    }
+
+	    var sourceArray = alphabet.split('');
+	    var targetArray = [];
+	    var r = randomFromSeed.nextValue();
+	    var characterIndex;
+
+	    while (sourceArray.length > 0) {
+	        r = randomFromSeed.nextValue();
+	        characterIndex = Math.floor(r * sourceArray.length);
+	        targetArray.push(sourceArray.splice(characterIndex, 1)[0]);
+	    }
+	    return targetArray.join('');
+	}
+
+	function getShuffled() {
+	    if (shuffled) {
+	        return shuffled;
+	    }
+	    shuffled = shuffle();
+	    return shuffled;
+	}
+
+	/**
+	 * lookup shuffled letter
+	 * @param index
+	 * @returns {string}
+	 */
+	function lookup(index) {
+	    var alphabetShuffled = getShuffled();
+	    return alphabetShuffled[index];
+	}
+
+	module.exports = {
+	    characters: characters,
+	    seed: setSeed,
+	    lookup: lookup,
+	    shuffled: getShuffled
+	};
+
+
+/***/ },
+/* 296 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	// Found this seed-based random generator somewhere
+	// Based on The Central Randomizer 1.3 (C) 1997 by Paul Houle (houle@msc.cornell.edu)
+
+	var seed = 1;
+
+	/**
+	 * return a random number based on a seed
+	 * @param seed
+	 * @returns {number}
+	 */
+	function getNextValue() {
+	    seed = (seed * 9301 + 49297) % 233280;
+	    return seed/(233280.0);
+	}
+
+	function setSeed(_seed_) {
+	    seed = _seed_;
+	}
+
+	module.exports = {
+	    nextValue: getNextValue,
+	    seed: setSeed
+	};
+
+
+/***/ },
+/* 297 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var randomByte = __webpack_require__(298);
+
+	function encode(lookup, number) {
+	    var loopCounter = 0;
+	    var done;
+
+	    var str = '';
+
+	    while (!done) {
+	        str = str + lookup( ( (number >> (4 * loopCounter)) & 0x0f ) | randomByte() );
+	        done = number < (Math.pow(16, loopCounter + 1 ) );
+	        loopCounter++;
+	    }
+	    return str;
+	}
+
+	module.exports = encode;
+
+
+/***/ },
+/* 298 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	var crypto = window.crypto || window.msCrypto; // IE 11 uses window.msCrypto
+
+	function randomByte() {
+	    if (!crypto || !crypto.getRandomValues) {
+	        return Math.floor(Math.random() * 256) & 0x30;
+	    }
+	    var dest = new Uint8Array(1);
+	    crypto.getRandomValues(dest);
+	    return dest[0] & 0x30;
+	}
+
+	module.exports = randomByte;
+
+
+/***/ },
+/* 299 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var alphabet = __webpack_require__(295);
+
+	/**
+	 * Decode the id to get the version and worker
+	 * Mainly for debugging and testing.
+	 * @param id - the shortid-generated id.
+	 */
+	function decode(id) {
+	    var characters = alphabet.shuffled();
+	    return {
+	        version: characters.indexOf(id.substr(0, 1)) & 0x0f,
+	        worker: characters.indexOf(id.substr(1, 1)) & 0x0f
+	    };
+	}
+
+	module.exports = decode;
+
+
+/***/ },
+/* 300 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+	var alphabet = __webpack_require__(295);
+
+	function isShortId(id) {
+	    if (!id || typeof id !== 'string' || id.length < 6 ) {
+	        return false;
+	    }
+
+	    var characters = alphabet.characters();
+	    var invalidCharacters = id.split('').map(function(char){
+	        if (characters.indexOf(char) === -1) {
+	            return char;
+	        }
+	    }).join('').split('').join('');
+
+	    return invalidCharacters.length === 0;
+	}
+
+	module.exports = isShortId;
+
+
+/***/ },
+/* 301 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	module.exports = 0;
+
 
 /***/ }
 /******/ ]);

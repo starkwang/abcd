@@ -39,11 +39,15 @@ function targetCollect(connect) {
 export default class Contact extends React.Component{
     constructor(props) {
         super(props);
-        //this.handleClick = this.handleClick.bind(this);
+        this.deleteContact = this.deleteContact.bind(this);
     }
 
     handleClick(){
         //this.props.actions.changeText();
+    }
+
+    deleteContact(){
+        this.props.deleteContact(this.props.index);
     }
 
     render() {
@@ -51,6 +55,7 @@ export default class Contact extends React.Component{
         const opacity = isDragging?'0.5':'1';
         return connectDropTarget(connectDragSource((
             <div className="contact-item" style={{opacity:opacity}}>
+                <button className="delete" onClick={this.deleteContact}>-</button>
                 <Text className="contact-name" location={['baseInfo','contact',index,'name']} text={item.name.text} isEditting={item.name.isEditting} textEdit={textEdit} enterEdit={enterEdit} />
                 <Text className="contact-value" location={['baseInfo','contact',index,'value']} text={item.value.text} isEditting={item.value.isEditting} textEdit={textEdit} enterEdit={enterEdit} />                   
             </div>

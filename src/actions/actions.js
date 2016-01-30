@@ -71,6 +71,13 @@ export function addContact(){
     }
 }
 
+export function deleteContact(index){
+    return {
+        type: 'DELETE_CONTACT',
+        index: index
+    }
+}
+
 export function editAvatar(){
     return {
         type:'EDIT_AVATAR'
