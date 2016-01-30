@@ -67,12 +67,28 @@ const initialState = {
         }]
     },
     mainInfo:[{
+        id:1,
         type:'education',
         title:{
             text:'教育经历',
             isEditting:false
         },
         items:[{
+            id:1,
+            name:{
+                text:'复旦大学',
+                isEditting:false
+            },
+            time:{
+                text:'2013年9月至2017年7月',
+                isEditting:false
+            },
+            major:{
+                text:'本科生，电子信息科学与技术专业',
+                isEditting:false
+            }
+        },{
+            id:2,
             name:{
                 text:'复旦大学',
                 isEditting:false
@@ -87,6 +103,7 @@ const initialState = {
             }
         }]
     },{
+        id:2,
         type:'skill',
         title:'专业技能',
         items:[]
@@ -221,6 +238,28 @@ export default function todoApp(state = initialState, action) {
             newBaseInfo.avatar.imgUrl = action.url;
             return Object.assign({},state,{
                 baseInfo: newBaseInfo
+            });
+        case 'ADD_EDUCATION':
+            console.log('ADD_EDUCATION',action);
+            var newMainInfo = Object.assign([],state.mainInfo);
+            var targetArr = newMainInfo[action.indexInMainInfo].items;
+            targetArr.push({
+                id: targetArr.length + 1,
+                name:{
+                    text:'这里填入名称',
+                    isEditting:false
+                },
+                time:{
+                    text:'这里填入时间',
+                    isEditting:false
+                },
+                major:{
+                    text:'这里填入简介',
+                    isEditting:false
+                }
+            });
+            return Object.assign({},state,{
+                mainInfo: newMainInfo
             });
         default:
             return Object.assign({},state)

@@ -16,7 +16,7 @@ export default class MainInfo extends React.Component{
         var { actions } = this.props;
         this.props.mainInfo.forEach((item,index)=>{
             if(item.type == 'education'){
-                mainInfo.push(<EducationCollection data={item} actions={actions} indexInMainInfo={index}/>);
+                mainInfo.push(<EducationCollection key={index} data={item} actions={actions} indexInMainInfo={index}/>);
             }
         })
         return(

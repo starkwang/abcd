@@ -120,20 +120,21 @@
             font-size:32px;
             font-weight: bold;
             color: #666;
-            margin-bottom: 10px;
         }
         .item{
+            margin-top: 10px;
             overflow: hidden;
             .name{
                 color:#61c2b1;
                 font-size: 24px;
                 float: left;
                 font-weight: bold;
+                line-height: 26px;
             }
             .time{
                 float: left;
                 color: #237d71;
-                line-height: 24px;
+                line-height: 26px;
                 font-size: 16px;
                 margin-left: 20px;
             }

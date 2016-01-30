@@ -83,3 +83,10 @@ export function enterAvatar(url){
         url: url
     }
 }
+
+export function addEducation(indexInMainInfo){
+    return{
+        type: 'ADD_EDUCATION',
+        indexInMainInfo: indexInMainInfo
+    }
+}

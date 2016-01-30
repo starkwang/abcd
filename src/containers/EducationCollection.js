@@ -4,6 +4,11 @@ import Text from '../components/Text';
 export default class EducationCollection extends React.Component{
     constructor(props) {
         super(props);
+        this.addEducation = this.addEducation.bind(this);
+    }
+
+    addEducation(){
+        this.props.actions.addEducation(this.props.indexInMainInfo);
     }
 
     render() {
@@ -17,6 +22,7 @@ export default class EducationCollection extends React.Component{
             <div className="education">
                 <i className="iconfont">&#xe603;</i>
                 <Text className="title" text={title.text} isEditting={title.isEditting} location={['mainInfo',indexInMainInfo,'title']} textEdit={actions.textEdit} enterEdit={actions.enterEdit} />
+                <button onClick={this.addEducation}>+</button>
                 {educations}
             </div>
         );

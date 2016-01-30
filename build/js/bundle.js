@@ -25572,7 +25572,7 @@
 
 	            this.props.mainInfo.forEach(function (item, index) {
 	                if (item.type == 'education') {
-	                    mainInfo.push(_react2.default.createElement(_EducationCollection2.default, { data: item, actions: actions, indexInMainInfo: index }));
+	                    mainInfo.push(_react2.default.createElement(_EducationCollection2.default, { key: index, data: item, actions: actions, indexInMainInfo: index }));
 	                }
 	            });
 	            return _react2.default.createElement(
@@ -25626,10 +25626,18 @@
 	    function EducationCollection(props) {
 	        _classCallCheck(this, EducationCollection);
 
-	        return _possibleConstructorReturn(this, Object.getPrototypeOf(EducationCollection).call(this, props));
+	        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(EducationCollection).call(this, props));
+
+	        _this.addEducation = _this.addEducation.bind(_this);
+	        return _this;
 	    }
 
 	    _createClass(EducationCollection, [{
+	        key: 'addEducation',
+	        value: function addEducation() {
+	            this.props.actions.addEducation(this.props.indexInMainInfo);
+	        }
+	    }, {
 	        key: 'render',
 	        value: function render() {
 	            var _props$data = this.props.data;
@@ -25652,6 +25660,11 @@
 	                    ''
 	                ),
 	                _react2.default.createElement(_Text2.default, { className: 'title', text: title.text, isEditting: title.isEditting, location: ['mainInfo', indexInMainInfo, 'title'], textEdit: actions.textEdit, enterEdit: actions.enterEdit }),
+	                _react2.default.createElement(
+	                    'button',
+	                    { onClick: this.addEducation },
+	                    '+'
+	                ),
 	                educations
 	            );
 	        }
@@ -25754,6 +25767,7 @@
 	exports.addContact = addContact;
 	exports.editAvatar = editAvatar;
 	exports.enterAvatar = enterAvatar;
+	exports.addEducation = addEducation;
 	function changeText() {
 	    return {
 	        type: 'CHANGE_TEXT'
@@ -25837,6 +25851,13 @@
 	    return {
 	        type: 'ENTER_AVATAR',
 	        url: url
+	    };
+	}
+
+	function addEducation(indexInMainInfo) {
+	    return {
+	        type: 'ADD_EDUCATION',
+	        indexInMainInfo: indexInMainInfo
 	    };
 	}
 
@@ -27754,12 +27775,28 @@
 	        }]
 	    },
 	    mainInfo: [{
+	        id: 1,
 	        type: 'education',
 	        title: {
 	            text: '教育经历',
 	            isEditting: false
 	        },
 	        items: [{
+	            id: 1,
+	            name: {
+	                text: '复旦大学',
+	                isEditting: false
+	            },
+	            time: {
+	                text: '2013年9月至2017年7月',
+	                isEditting: false
+	            },
+	            major: {
+	                text: '本科生，电子信息科学与技术专业',
+	                isEditting: false
+	            }
+	        }, {
+	            id: 2,
 	            name: {
 	                text: '复旦大学',
 	                isEditting: false
@@ -27774,6 +27811,7 @@
 	            }
 	        }]
 	    }, {
+	        id: 2,
 	        type: 'skill',
 	        title: '专业技能',
 	        items: []
@@ -27909,6 +27947,28 @@
 	            newBaseInfo.avatar.imgUrl = action.url;
 	            return Object.assign({}, state, {
 	                baseInfo: newBaseInfo
+	            });
+	        case 'ADD_EDUCATION':
+	            console.log('ADD_EDUCATION', action);
+	            var newMainInfo = Object.assign([], state.mainInfo);
+	            var targetArr = newMainInfo[action.indexInMainInfo].items;
+	            targetArr.push({
+	                id: targetArr.length + 1,
+	                name: {
+	                    text: '这里填入名称',
+	                    isEditting: false
+	                },
+	                time: {
+	                    text: '这里填入时间',
+	                    isEditting: false
+	                },
+	                major: {
+	                    text: '这里填入简介',
+	                    isEditting: false
+	                }
+	            });
+	            return Object.assign({}, state, {
+	                mainInfo: newMainInfo
 	            });
 	        default:
 	            return Object.assign({}, state);
