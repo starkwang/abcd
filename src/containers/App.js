@@ -14,6 +14,12 @@ import * as Actions from '../actions/actions';
 import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 
+import { createAction, handleAction, handleActions } from 'redux-actions';
+
+setInterval(function(){
+    createAction('ADD_CONTACT');
+},1000);
+
 class App extends React.Component{
     constructor(props) {
         super(props);
@@ -33,6 +39,10 @@ class App extends React.Component{
                     <div className={styleName}>
                         <BaseInfo baseInfo={baseInfo} actions={actions}/>
                         <MainInfo mainInfo={mainInfo} actions={actions}/>
+                    </div>
+                    <div className="control">
+                        <button onClick={actions.historyBackward}>后退</button>
+                        <button onClick={actions.historyForward}>前进</button>
                     </div>
                 </div>
             );

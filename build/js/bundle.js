@@ -60,7 +60,7 @@
 
 	var _App2 = _interopRequireDefault(_App);
 
-	var _reducers = __webpack_require__(292);
+	var _reducers = __webpack_require__(304);
 
 	var _reducers2 = _interopRequireDefault(_reducers);
 
@@ -20850,6 +20850,8 @@
 
 	var _reactDndHtml5Backend2 = _interopRequireDefault(_reactDndHtml5Backend);
 
+	var _reduxActions = __webpack_require__(292);
+
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
@@ -20864,6 +20866,10 @@
 	// import InputAddButton from '../components/InputAddButton';
 	// import InputArea from './InputArea';
 	// import DragBox from './DragBox';
+
+	setInterval(function () {
+	    (0, _reduxActions.createAction)('ADD_CONTACT');
+	}, 1000);
 
 	var App = function (_React$Component) {
 	    _inherits(App, _React$Component);
@@ -20900,6 +20906,20 @@
 	                        { className: styleName },
 	                        _react2.default.createElement(_BaseInfo2.default, { baseInfo: baseInfo, actions: actions }),
 	                        _react2.default.createElement(_MainInfo2.default, { mainInfo: mainInfo, actions: actions })
+	                    ),
+	                    _react2.default.createElement(
+	                        'div',
+	                        { className: 'control' },
+	                        _react2.default.createElement(
+	                            'button',
+	                            { onClick: actions.historyBackward },
+	                            '后退'
+	                        ),
+	                        _react2.default.createElement(
+	                            'button',
+	                            { onClick: actions.historyForward },
+	                            '前进'
+	                        )
 	                    )
 	                );
 	            }
@@ -25782,6 +25802,8 @@
 	exports.editAvatar = editAvatar;
 	exports.enterAvatar = enterAvatar;
 	exports.addEducation = addEducation;
+	exports.historyBackward = historyBackward;
+	exports.historyForward = historyForward;
 	function changeText() {
 	    return {
 	        type: 'CHANGE_TEXT'
@@ -25879,6 +25901,18 @@
 	    return {
 	        type: 'ADD_EDUCATION',
 	        indexInMainInfo: indexInMainInfo
+	    };
+	}
+
+	function historyBackward() {
+	    return {
+	        type: 'HISTORY_BACKWARD'
+	    };
+	}
+
+	function historyForward() {
+	    return {
+	        type: 'HISTORY_FORWARD'
 	    };
 	}
 
@@ -27720,129 +27754,1073 @@
 
 	'use strict';
 
+	exports.__esModule = true;
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _createAction = __webpack_require__(293);
+
+	var _createAction2 = _interopRequireDefault(_createAction);
+
+	var _handleAction = __webpack_require__(294);
+
+	var _handleAction2 = _interopRequireDefault(_handleAction);
+
+	var _handleActions = __webpack_require__(301);
+
+	var _handleActions2 = _interopRequireDefault(_handleActions);
+
+	exports.createAction = _createAction2['default'];
+	exports.handleAction = _handleAction2['default'];
+	exports.handleActions = _handleActions2['default'];
+
+/***/ },
+/* 293 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	exports.__esModule = true;
+	exports['default'] = createAction;
+	function identity(t) {
+	  return t;
+	}
+
+	function createAction(type, actionCreator, metaCreator) {
+	  var finalActionCreator = typeof actionCreator === 'function' ? actionCreator : identity;
+
+	  return function () {
+	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
+
+	    var action = {
+	      type: type,
+	      payload: finalActionCreator.apply(undefined, args)
+	    };
+
+	    if (args.length === 1 && args[0] instanceof Error) {
+	      // Handle FSA errors where the payload is an Error object. Set error.
+	      action.error = true;
+	    }
+
+	    if (typeof metaCreator === 'function') {
+	      action.meta = metaCreator.apply(undefined, args);
+	    }
+
+	    return action;
+	  };
+	}
+
+	module.exports = exports['default'];
+
+/***/ },
+/* 294 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	exports.__esModule = true;
+	exports['default'] = handleAction;
+
+	var _fluxStandardAction = __webpack_require__(295);
+
+	function isFunction(val) {
+	  return typeof val === 'function';
+	}
+
+	function handleAction(type, reducers) {
+	  return function (state, action) {
+	    // If action type does not match, return previous state
+	    if (action.type !== type) return state;
+
+	    var handlerKey = _fluxStandardAction.isError(action) ? 'throw' : 'next';
+
+	    // If function is passed instead of map, use as reducer
+	    if (isFunction(reducers)) {
+	      reducers.next = reducers['throw'] = reducers;
+	    }
+
+	    // Otherwise, assume an action map was passed
+	    var reducer = reducers[handlerKey];
+
+	    return isFunction(reducer) ? reducer(state, action) : state;
+	  };
+	}
+
+	module.exports = exports['default'];
+
+/***/ },
+/* 295 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	exports.__esModule = true;
+	exports.isFSA = isFSA;
+	exports.isError = isError;
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _lodashIsplainobject = __webpack_require__(296);
+
+	var _lodashIsplainobject2 = _interopRequireDefault(_lodashIsplainobject);
+
+	var validKeys = ['type', 'payload', 'error', 'meta'];
+
+	function isValidKey(key) {
+	  return validKeys.indexOf(key) > -1;
+	}
+
+	function isFSA(action) {
+	  return _lodashIsplainobject2['default'](action) && typeof action.type !== 'undefined' && Object.keys(action).every(isValidKey);
+	}
+
+	function isError(action) {
+	  return action.error === true;
+	}
+
+/***/ },
+/* 296 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * lodash 3.2.0 (Custom Build) <https://lodash.com/>
+	 * Build: `lodash modern modularize exports="npm" -o ./`
+	 * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
+	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+	 * Available under MIT license <https://lodash.com/license>
+	 */
+	var baseFor = __webpack_require__(297),
+	    isArguments = __webpack_require__(298),
+	    keysIn = __webpack_require__(299);
+
+	/** `Object#toString` result references. */
+	var objectTag = '[object Object]';
+
+	/**
+	 * Checks if `value` is object-like.
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
+	 */
+	function isObjectLike(value) {
+	  return !!value && typeof value == 'object';
+	}
+
+	/** Used for native method references. */
+	var objectProto = Object.prototype;
+
+	/** Used to check objects for own properties. */
+	var hasOwnProperty = objectProto.hasOwnProperty;
+
+	/**
+	 * Used to resolve the [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)
+	 * of values.
+	 */
+	var objToString = objectProto.toString;
+
+	/**
+	 * The base implementation of `_.forIn` without support for callback
+	 * shorthands and `this` binding.
+	 *
+	 * @private
+	 * @param {Object} object The object to iterate over.
+	 * @param {Function} iteratee The function invoked per iteration.
+	 * @returns {Object} Returns `object`.
+	 */
+	function baseForIn(object, iteratee) {
+	  return baseFor(object, iteratee, keysIn);
+	}
+
+	/**
+	 * Checks if `value` is a plain object, that is, an object created by the
+	 * `Object` constructor or one with a `[[Prototype]]` of `null`.
+	 *
+	 * **Note:** This method assumes objects created by the `Object` constructor
+	 * have no inherited enumerable properties.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is a plain object, else `false`.
+	 * @example
+	 *
+	 * function Foo() {
+	 *   this.a = 1;
+	 * }
+	 *
+	 * _.isPlainObject(new Foo);
+	 * // => false
+	 *
+	 * _.isPlainObject([1, 2, 3]);
+	 * // => false
+	 *
+	 * _.isPlainObject({ 'x': 0, 'y': 0 });
+	 * // => true
+	 *
+	 * _.isPlainObject(Object.create(null));
+	 * // => true
+	 */
+	function isPlainObject(value) {
+	  var Ctor;
+
+	  // Exit early for non `Object` objects.
+	  if (!(isObjectLike(value) && objToString.call(value) == objectTag && !isArguments(value)) ||
+	      (!hasOwnProperty.call(value, 'constructor') && (Ctor = value.constructor, typeof Ctor == 'function' && !(Ctor instanceof Ctor)))) {
+	    return false;
+	  }
+	  // IE < 9 iterates inherited properties before own properties. If the first
+	  // iterated property is an object's own property then there are no inherited
+	  // enumerable properties.
+	  var result;
+	  // In most environments an object's own properties are iterated before
+	  // its inherited properties. If the last iterated property is an object's
+	  // own property then there are no inherited enumerable properties.
+	  baseForIn(value, function(subValue, key) {
+	    result = key;
+	  });
+	  return result === undefined || hasOwnProperty.call(value, result);
+	}
+
+	module.exports = isPlainObject;
+
+
+/***/ },
+/* 297 */
+/***/ function(module, exports) {
+
+	/**
+	 * lodash 3.0.3 (Custom Build) <https://lodash.com/>
+	 * Build: `lodash modularize exports="npm" -o ./`
+	 * Copyright 2012-2016 The Dojo Foundation <http://dojofoundation.org/>
+	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+	 * Copyright 2009-2016 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+	 * Available under MIT license <https://lodash.com/license>
+	 */
+
+	/**
+	 * The base implementation of `baseForIn` and `baseForOwn` which iterates
+	 * over `object` properties returned by `keysFunc` invoking `iteratee` for
+	 * each property. Iteratee functions may exit iteration early by explicitly
+	 * returning `false`.
+	 *
+	 * @private
+	 * @param {Object} object The object to iterate over.
+	 * @param {Function} iteratee The function invoked per iteration.
+	 * @param {Function} keysFunc The function to get the keys of `object`.
+	 * @returns {Object} Returns `object`.
+	 */
+	var baseFor = createBaseFor();
+
+	/**
+	 * Creates a base function for methods like `_.forIn`.
+	 *
+	 * @private
+	 * @param {boolean} [fromRight] Specify iterating from right to left.
+	 * @returns {Function} Returns the new base function.
+	 */
+	function createBaseFor(fromRight) {
+	  return function(object, iteratee, keysFunc) {
+	    var index = -1,
+	        iterable = Object(object),
+	        props = keysFunc(object),
+	        length = props.length;
+
+	    while (length--) {
+	      var key = props[fromRight ? length : ++index];
+	      if (iteratee(iterable[key], key, iterable) === false) {
+	        break;
+	      }
+	    }
+	    return object;
+	  };
+	}
+
+	module.exports = baseFor;
+
+
+/***/ },
+/* 298 */
+/***/ function(module, exports) {
+
+	/* WEBPACK VAR INJECTION */(function(global) {/**
+	 * lodash 3.0.5 (Custom Build) <https://lodash.com/>
+	 * Build: `lodash modularize exports="npm" -o ./`
+	 * Copyright 2012-2016 The Dojo Foundation <http://dojofoundation.org/>
+	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+	 * Copyright 2009-2016 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+	 * Available under MIT license <https://lodash.com/license>
+	 */
+
+	/** Used as references for various `Number` constants. */
+	var MAX_SAFE_INTEGER = 9007199254740991;
+
+	/** `Object#toString` result references. */
+	var argsTag = '[object Arguments]',
+	    funcTag = '[object Function]',
+	    genTag = '[object GeneratorFunction]';
+
+	/** Used for built-in method references. */
+	var objectProto = global.Object.prototype;
+
+	/** Used to check objects for own properties. */
+	var hasOwnProperty = objectProto.hasOwnProperty;
+
+	/**
+	 * Used to resolve the [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)
+	 * of values.
+	 */
+	var objectToString = objectProto.toString;
+
+	/** Built-in value references. */
+	var propertyIsEnumerable = objectProto.propertyIsEnumerable;
+
+	/**
+	 * The base implementation of `_.property` without support for deep paths.
+	 *
+	 * @private
+	 * @param {string} key The key of the property to get.
+	 * @returns {Function} Returns the new function.
+	 */
+	function baseProperty(key) {
+	  return function(object) {
+	    return object == null ? undefined : object[key];
+	  };
+	}
+
+	/**
+	 * Gets the "length" property value of `object`.
+	 *
+	 * **Note:** This function is used to avoid a [JIT bug](https://bugs.webkit.org/show_bug.cgi?id=142792)
+	 * that affects Safari on at least iOS 8.1-8.3 ARM64.
+	 *
+	 * @private
+	 * @param {Object} object The object to query.
+	 * @returns {*} Returns the "length" value.
+	 */
+	var getLength = baseProperty('length');
+
+	/**
+	 * Checks if `value` is likely an `arguments` object.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
+	 * @example
+	 *
+	 * _.isArguments(function() { return arguments; }());
+	 * // => true
+	 *
+	 * _.isArguments([1, 2, 3]);
+	 * // => false
+	 */
+	function isArguments(value) {
+	  // Safari 8.1 incorrectly makes `arguments.callee` enumerable in strict mode.
+	  return isArrayLikeObject(value) && hasOwnProperty.call(value, 'callee') &&
+	    (!propertyIsEnumerable.call(value, 'callee') || objectToString.call(value) == argsTag);
+	}
+
+	/**
+	 * Checks if `value` is array-like. A value is considered array-like if it's
+	 * not a function and has a `value.length` that's an integer greater than or
+	 * equal to `0` and less than or equal to `Number.MAX_SAFE_INTEGER`.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @type Function
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is array-like, else `false`.
+	 * @example
+	 *
+	 * _.isArrayLike([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isArrayLike(document.body.children);
+	 * // => true
+	 *
+	 * _.isArrayLike('abc');
+	 * // => true
+	 *
+	 * _.isArrayLike(_.noop);
+	 * // => false
+	 */
+	function isArrayLike(value) {
+	  return value != null &&
+	    !(typeof value == 'function' && isFunction(value)) && isLength(getLength(value));
+	}
+
+	/**
+	 * This method is like `_.isArrayLike` except that it also checks if `value`
+	 * is an object.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @type Function
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is an array-like object, else `false`.
+	 * @example
+	 *
+	 * _.isArrayLikeObject([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isArrayLikeObject(document.body.children);
+	 * // => true
+	 *
+	 * _.isArrayLikeObject('abc');
+	 * // => false
+	 *
+	 * _.isArrayLikeObject(_.noop);
+	 * // => false
+	 */
+	function isArrayLikeObject(value) {
+	  return isObjectLike(value) && isArrayLike(value);
+	}
+
+	/**
+	 * Checks if `value` is classified as a `Function` object.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
+	 * @example
+	 *
+	 * _.isFunction(_);
+	 * // => true
+	 *
+	 * _.isFunction(/abc/);
+	 * // => false
+	 */
+	function isFunction(value) {
+	  // The use of `Object#toString` avoids issues with the `typeof` operator
+	  // in Safari 8 which returns 'object' for typed array constructors, and
+	  // PhantomJS 1.9 which returns 'function' for `NodeList` instances.
+	  var tag = isObject(value) ? objectToString.call(value) : '';
+	  return tag == funcTag || tag == genTag;
+	}
+
+	/**
+	 * Checks if `value` is a valid array-like length.
+	 *
+	 * **Note:** This function is loosely based on [`ToLength`](http://ecma-international.org/ecma-262/6.0/#sec-tolength).
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is a valid length, else `false`.
+	 * @example
+	 *
+	 * _.isLength(3);
+	 * // => true
+	 *
+	 * _.isLength(Number.MIN_VALUE);
+	 * // => false
+	 *
+	 * _.isLength(Infinity);
+	 * // => false
+	 *
+	 * _.isLength('3');
+	 * // => false
+	 */
+	function isLength(value) {
+	  return typeof value == 'number' && value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
+	}
+
+	/**
+	 * Checks if `value` is the [language type](https://es5.github.io/#x8) of `Object`.
+	 * (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is an object, else `false`.
+	 * @example
+	 *
+	 * _.isObject({});
+	 * // => true
+	 *
+	 * _.isObject([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isObject(_.noop);
+	 * // => true
+	 *
+	 * _.isObject(null);
+	 * // => false
+	 */
+	function isObject(value) {
+	  // Avoid a V8 JIT bug in Chrome 19-20.
+	  // See https://code.google.com/p/v8/issues/detail?id=2291 for more details.
+	  var type = typeof value;
+	  return !!value && (type == 'object' || type == 'function');
+	}
+
+	/**
+	 * Checks if `value` is object-like. A value is object-like if it's not `null`
+	 * and has a `typeof` result of "object".
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
+	 * @example
+	 *
+	 * _.isObjectLike({});
+	 * // => true
+	 *
+	 * _.isObjectLike([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isObjectLike(_.noop);
+	 * // => false
+	 *
+	 * _.isObjectLike(null);
+	 * // => false
+	 */
+	function isObjectLike(value) {
+	  return !!value && typeof value == 'object';
+	}
+
+	module.exports = isArguments;
+
+	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
+
+/***/ },
+/* 299 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * lodash 3.0.8 (Custom Build) <https://lodash.com/>
+	 * Build: `lodash modern modularize exports="npm" -o ./`
+	 * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
+	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+	 * Available under MIT license <https://lodash.com/license>
+	 */
+	var isArguments = __webpack_require__(298),
+	    isArray = __webpack_require__(300);
+
+	/** Used to detect unsigned integer values. */
+	var reIsUint = /^\d+$/;
+
+	/** Used for native method references. */
+	var objectProto = Object.prototype;
+
+	/** Used to check objects for own properties. */
+	var hasOwnProperty = objectProto.hasOwnProperty;
+
+	/**
+	 * Used as the [maximum length](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-number.max_safe_integer)
+	 * of an array-like value.
+	 */
+	var MAX_SAFE_INTEGER = 9007199254740991;
+
+	/**
+	 * Checks if `value` is a valid array-like index.
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @param {number} [length=MAX_SAFE_INTEGER] The upper bounds of a valid index.
+	 * @returns {boolean} Returns `true` if `value` is a valid index, else `false`.
+	 */
+	function isIndex(value, length) {
+	  value = (typeof value == 'number' || reIsUint.test(value)) ? +value : -1;
+	  length = length == null ? MAX_SAFE_INTEGER : length;
+	  return value > -1 && value % 1 == 0 && value < length;
+	}
+
+	/**
+	 * Checks if `value` is a valid array-like length.
+	 *
+	 * **Note:** This function is based on [`ToLength`](https://people.mozilla.org/~jorendorff/es6-draft.html#sec-tolength).
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is a valid length, else `false`.
+	 */
+	function isLength(value) {
+	  return typeof value == 'number' && value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
+	}
+
+	/**
+	 * Checks if `value` is the [language type](https://es5.github.io/#x8) of `Object`.
+	 * (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is an object, else `false`.
+	 * @example
+	 *
+	 * _.isObject({});
+	 * // => true
+	 *
+	 * _.isObject([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isObject(1);
+	 * // => false
+	 */
+	function isObject(value) {
+	  // Avoid a V8 JIT bug in Chrome 19-20.
+	  // See https://code.google.com/p/v8/issues/detail?id=2291 for more details.
+	  var type = typeof value;
+	  return !!value && (type == 'object' || type == 'function');
+	}
+
+	/**
+	 * Creates an array of the own and inherited enumerable property names of `object`.
+	 *
+	 * **Note:** Non-object values are coerced to objects.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Object
+	 * @param {Object} object The object to query.
+	 * @returns {Array} Returns the array of property names.
+	 * @example
+	 *
+	 * function Foo() {
+	 *   this.a = 1;
+	 *   this.b = 2;
+	 * }
+	 *
+	 * Foo.prototype.c = 3;
+	 *
+	 * _.keysIn(new Foo);
+	 * // => ['a', 'b', 'c'] (iteration order is not guaranteed)
+	 */
+	function keysIn(object) {
+	  if (object == null) {
+	    return [];
+	  }
+	  if (!isObject(object)) {
+	    object = Object(object);
+	  }
+	  var length = object.length;
+	  length = (length && isLength(length) &&
+	    (isArray(object) || isArguments(object)) && length) || 0;
+
+	  var Ctor = object.constructor,
+	      index = -1,
+	      isProto = typeof Ctor == 'function' && Ctor.prototype === object,
+	      result = Array(length),
+	      skipIndexes = length > 0;
+
+	  while (++index < length) {
+	    result[index] = (index + '');
+	  }
+	  for (var key in object) {
+	    if (!(skipIndexes && isIndex(key, length)) &&
+	        !(key == 'constructor' && (isProto || !hasOwnProperty.call(object, key)))) {
+	      result.push(key);
+	    }
+	  }
+	  return result;
+	}
+
+	module.exports = keysIn;
+
+
+/***/ },
+/* 300 */
+/***/ function(module, exports) {
+
+	/**
+	 * lodash 3.0.4 (Custom Build) <https://lodash.com/>
+	 * Build: `lodash modern modularize exports="npm" -o ./`
+	 * Copyright 2012-2015 The Dojo Foundation <http://dojofoundation.org/>
+	 * Based on Underscore.js 1.8.3 <http://underscorejs.org/LICENSE>
+	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
+	 * Available under MIT license <https://lodash.com/license>
+	 */
+
+	/** `Object#toString` result references. */
+	var arrayTag = '[object Array]',
+	    funcTag = '[object Function]';
+
+	/** Used to detect host constructors (Safari > 5). */
+	var reIsHostCtor = /^\[object .+?Constructor\]$/;
+
+	/**
+	 * Checks if `value` is object-like.
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is object-like, else `false`.
+	 */
+	function isObjectLike(value) {
+	  return !!value && typeof value == 'object';
+	}
+
+	/** Used for native method references. */
+	var objectProto = Object.prototype;
+
+	/** Used to resolve the decompiled source of functions. */
+	var fnToString = Function.prototype.toString;
+
+	/** Used to check objects for own properties. */
+	var hasOwnProperty = objectProto.hasOwnProperty;
+
+	/**
+	 * Used to resolve the [`toStringTag`](http://ecma-international.org/ecma-262/6.0/#sec-object.prototype.tostring)
+	 * of values.
+	 */
+	var objToString = objectProto.toString;
+
+	/** Used to detect if a method is native. */
+	var reIsNative = RegExp('^' +
+	  fnToString.call(hasOwnProperty).replace(/[\\^$.*+?()[\]{}|]/g, '\\$&')
+	  .replace(/hasOwnProperty|(function).*?(?=\\\()| for .+?(?=\\\])/g, '$1.*?') + '$'
+	);
+
+	/* Native method references for those with the same name as other `lodash` methods. */
+	var nativeIsArray = getNative(Array, 'isArray');
+
+	/**
+	 * Used as the [maximum length](http://ecma-international.org/ecma-262/6.0/#sec-number.max_safe_integer)
+	 * of an array-like value.
+	 */
+	var MAX_SAFE_INTEGER = 9007199254740991;
+
+	/**
+	 * Gets the native function at `key` of `object`.
+	 *
+	 * @private
+	 * @param {Object} object The object to query.
+	 * @param {string} key The key of the method to get.
+	 * @returns {*} Returns the function if it's native, else `undefined`.
+	 */
+	function getNative(object, key) {
+	  var value = object == null ? undefined : object[key];
+	  return isNative(value) ? value : undefined;
+	}
+
+	/**
+	 * Checks if `value` is a valid array-like length.
+	 *
+	 * **Note:** This function is based on [`ToLength`](http://ecma-international.org/ecma-262/6.0/#sec-tolength).
+	 *
+	 * @private
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is a valid length, else `false`.
+	 */
+	function isLength(value) {
+	  return typeof value == 'number' && value > -1 && value % 1 == 0 && value <= MAX_SAFE_INTEGER;
+	}
+
+	/**
+	 * Checks if `value` is classified as an `Array` object.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
+	 * @example
+	 *
+	 * _.isArray([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isArray(function() { return arguments; }());
+	 * // => false
+	 */
+	var isArray = nativeIsArray || function(value) {
+	  return isObjectLike(value) && isLength(value.length) && objToString.call(value) == arrayTag;
+	};
+
+	/**
+	 * Checks if `value` is classified as a `Function` object.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is correctly classified, else `false`.
+	 * @example
+	 *
+	 * _.isFunction(_);
+	 * // => true
+	 *
+	 * _.isFunction(/abc/);
+	 * // => false
+	 */
+	function isFunction(value) {
+	  // The use of `Object#toString` avoids issues with the `typeof` operator
+	  // in older versions of Chrome and Safari which return 'function' for regexes
+	  // and Safari 8 equivalents which return 'object' for typed array constructors.
+	  return isObject(value) && objToString.call(value) == funcTag;
+	}
+
+	/**
+	 * Checks if `value` is the [language type](https://es5.github.io/#x8) of `Object`.
+	 * (e.g. arrays, functions, objects, regexes, `new Number(0)`, and `new String('')`)
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is an object, else `false`.
+	 * @example
+	 *
+	 * _.isObject({});
+	 * // => true
+	 *
+	 * _.isObject([1, 2, 3]);
+	 * // => true
+	 *
+	 * _.isObject(1);
+	 * // => false
+	 */
+	function isObject(value) {
+	  // Avoid a V8 JIT bug in Chrome 19-20.
+	  // See https://code.google.com/p/v8/issues/detail?id=2291 for more details.
+	  var type = typeof value;
+	  return !!value && (type == 'object' || type == 'function');
+	}
+
+	/**
+	 * Checks if `value` is a native function.
+	 *
+	 * @static
+	 * @memberOf _
+	 * @category Lang
+	 * @param {*} value The value to check.
+	 * @returns {boolean} Returns `true` if `value` is a native function, else `false`.
+	 * @example
+	 *
+	 * _.isNative(Array.prototype.push);
+	 * // => true
+	 *
+	 * _.isNative(_);
+	 * // => false
+	 */
+	function isNative(value) {
+	  if (value == null) {
+	    return false;
+	  }
+	  if (isFunction(value)) {
+	    return reIsNative.test(fnToString.call(value));
+	  }
+	  return isObjectLike(value) && reIsHostCtor.test(value);
+	}
+
+	module.exports = isArray;
+
+
+/***/ },
+/* 301 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	exports.__esModule = true;
+	exports['default'] = handleActions;
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
+
+	var _handleAction = __webpack_require__(294);
+
+	var _handleAction2 = _interopRequireDefault(_handleAction);
+
+	var _ownKeys = __webpack_require__(302);
+
+	var _ownKeys2 = _interopRequireDefault(_ownKeys);
+
+	var _reduceReducers = __webpack_require__(303);
+
+	var _reduceReducers2 = _interopRequireDefault(_reduceReducers);
+
+	function handleActions(handlers, defaultState) {
+	  var reducers = _ownKeys2['default'](handlers).map(function (type) {
+	    return _handleAction2['default'](type, handlers[type]);
+	  });
+
+	  return typeof defaultState !== 'undefined' ? function (state, action) {
+	    if (state === undefined) state = defaultState;
+	    return _reduceReducers2['default'].apply(undefined, reducers)(state, action);
+	  } : _reduceReducers2['default'].apply(undefined, reducers);
+	}
+
+	module.exports = exports['default'];
+
+/***/ },
+/* 302 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	exports.__esModule = true;
+	exports['default'] = ownKeys;
+
+	function ownKeys(object) {
+	  if (typeof Reflect !== 'undefined' && typeof Reflect.ownKeys === 'function') {
+	    return Reflect.ownKeys(object);
+	  }
+
+	  var keys = Object.getOwnPropertyNames(object);
+
+	  if (typeof Object.getOwnPropertySymbols === 'function') {
+	    keys = keys.concat(Object.getOwnPropertySymbols(object));
+	  }
+
+	  return keys;
+	}
+
+	module.exports = exports['default'];
+
+/***/ },
+/* 303 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+	exports.__esModule = true;
+	exports["default"] = reduceReducers;
+
+	function reduceReducers() {
+	  for (var _len = arguments.length, reducers = Array(_len), _key = 0; _key < _len; _key++) {
+	    reducers[_key] = arguments[_key];
+	  }
+
+	  return function (previous, current) {
+	    return reducers.reduce(function (p, r) {
+	      return r(p, current);
+	    }, previous);
+	  };
+	}
+
+	module.exports = exports["default"];
+
+/***/ },
+/* 304 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
 	Object.defineProperty(exports, "__esModule", {
 	    value: true
 	});
 	exports.default = todoApp;
 
-	var _shortid = __webpack_require__(293);
+	var _shortid = __webpack_require__(305);
 
 	var _shortid2 = _interopRequireDefault(_shortid);
+
+	var _initialState = __webpack_require__(314);
+
+	var _History = __webpack_require__(315);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
-	var initialState = {
-	    // text: 'Hello',
-	    // inputs:[{
-	    //     content:'123'
-	    // }],
-	    // items:[{
-	    //     text:'aaaaaaaaaaa',
-	    //     id:'key-a',
-	    //     isDragging:'false'
-	    // },{
-	    //     text:'bbbbbbbbbbb',
-	    //     id:'key-b',
-	    //     isDragging:'false'
-	    // },{
-	    //     text:'ccccccccccc',
-	    //     id:'key-c',
-	    //     isDragging:'false'
-	    // }],
-	    styleName: 'base-style',
-	    baseInfo: {
-	        avatar: {
-	            imgUrl: 'http://sfault-avatar.b0.upaiyun.com/253/959/2539590481-562f620530b4c_huge256',
-	            isEditting: false
-	        },
-	        name: {
-	            text: '王小黑',
-	            isEditting: false
-	        },
-	        job: {
-	            text: 'Web前端工程师',
-	            isEditting: false
-	        },
-	        basic_info: [],
-	        contact: [{
-	            id: _shortid2.default.generate(),
-	            name: {
-	                text: '手机',
-	                isEditting: false
-	            },
-	            value: {
-	                text: '13316919664',
-	                isEditting: false
-	            },
-	            isDragging: false
-	        }, {
-	            id: _shortid2.default.generate(),
-	            name: {
-	                text: '邮箱',
-	                isEditting: false
-	            },
-	            value: {
-	                text: 'wjwang13@fudan.edu.cn',
-	                isEditting: false
-	            },
-	            isDragging: false
-	        }, {
-	            id: _shortid2.default.generate(),
-	            name: {
-	                text: '个人博客',
-	                isEditting: false
-	            },
-	            value: {
-	                text: 'blog.starkwang.com',
-	                isEditting: false
-	            },
-	            isDragging: false
-	        }]
-	    },
-	    mainInfo: [{
-	        id: _shortid2.default.generate(),
-	        type: 'education',
-	        title: {
-	            text: '教育经历',
-	            isEditting: false
-	        },
-	        items: [{
-	            name: {
-	                text: '复旦大学',
-	                isEditting: false
-	            },
-	            time: {
-	                text: '2013年9月至2017年7月',
-	                isEditting: false
-	            },
-	            major: {
-	                text: '本科生，电子信息科学与技术专业',
-	                isEditting: false
-	            }
-	        }, {
-	            name: {
-	                text: '复旦大学',
-	                isEditting: false
-	            },
-	            time: {
-	                text: '2013年9月至2017年7月',
-	                isEditting: false
-	            },
-	            major: {
-	                text: '本科生，电子信息科学与技术专业',
-	                isEditting: false
-	            }
-	        }]
-	    }, {
-	        id: _shortid2.default.generate(),
-	        type: 'skill',
-	        title: '专业技能',
-	        items: []
-	    }]
-	};
-
+	// var History = [];
+	// const initialState = {
+	//     styleName:'base-style',
+	//     baseInfo:{
+	//         avatar:{
+	//             imgUrl:'http://sfault-avatar.b0.upaiyun.com/253/959/2539590481-562f620530b4c_huge256',
+	//             isEditting:false
+	//         },
+	//         name:{
+	//             text:'王小黑',
+	//             isEditting:false
+	//         },
+	//         job:{
+	//             text:'Web前端工程师',
+	//             isEditting:false
+	//         },
+	//         basic_info:[],
+	//         contact:[{
+	//             id:shortid.generate(),
+	//             name:{
+	//                 text:'手机',
+	//                 isEditting:false
+	//             },
+	//             value:{
+	//                 text:'13316919664',
+	//                 isEditting:false
+	//             },
+	//             isDragging:false
+	//         },{
+	//             id:shortid.generate(),
+	//             name:{
+	//                 text:'邮箱',
+	//                 isEditting:false
+	//             },
+	//             value:{
+	//                 text:'wjwang13@fudan.edu.cn',
+	//                 isEditting:false
+	//             },
+	//             isDragging:false
+	//         },{
+	//             id:shortid.generate(),
+	//             name:{
+	//                 text:'个人博客',
+	//                 isEditting:false
+	//             },
+	//             value:{
+	//                 text:'blog.starkwang.com',
+	//                 isEditting:false
+	//             },
+	//             isDragging:false
+	//         }]
+	//     },
+	//     mainInfo:[{
+	//         id:shortid.generate(),
+	//         type:'education',
+	//         title:{
+	//             text:'教育经历',
+	//             isEditting:false
+	//         },
+	//         items:[{
+	//             name:{
+	//                 text:'复旦大学',
+	//                 isEditting:false
+	//             },
+	//             time:{
+	//                 text:'2013年9月至2017年7月',
+	//                 isEditting:false
+	//             },
+	//             major:{
+	//                 text:'本科生，电子信息科学与技术专业',
+	//                 isEditting:false
+	//             }
+	//         },{
+	//             name:{
+	//                 text:'复旦大学',
+	//                 isEditting:false
+	//             },
+	//             time:{
+	//                 text:'2013年9月至2017年7月',
+	//                 isEditting:false
+	//             },
+	//             major:{
+	//                 text:'本科生，电子信息科学与技术专业',
+	//                 isEditting:false
+	//             }
+	//         }]
+	//     },{
+	//         id:shortid.generate(),
+	//         type:'skill',
+	//         title:'专业技能',
+	//         items:[]
+	//     }]
+	// }
 	function findItem(items, id) {
 	    var resultIndex;
 	    items.forEach(function (item, index) {
@@ -27852,9 +28830,9 @@
 	    });
 	    return resultIndex;
 	}
-
+	console.log('initialState', _initialState.initialState);
 	function todoApp() {
-	    var state = arguments.length <= 0 || arguments[0] === undefined ? initialState : arguments[0];
+	    var state = arguments.length <= 0 || arguments[0] === undefined ? _initialState.initialState : arguments[0];
 	    var action = arguments[1];
 
 	    console.log(action.type, action);
@@ -27884,6 +28862,7 @@
 	                targetNode[action.location[action.location.length - 1]] = targetArr;
 	                var tmp = {};
 	                tmp[action.location[0]] = newCategory;
+	                //History.add(Object.assign({},state,tmp));
 	                return Object.assign({}, state, tmp);
 	            }
 	        case 'BEGIN_DRAG':
@@ -27910,6 +28889,7 @@
 	            targetArr[index].isDragging = false;
 	            var tmp = {};
 	            tmp[action.location[0]] = newCategory;
+	            _History.History.add(Object.assign({}, state, tmp));
 	            return Object.assign({}, state, tmp);
 
 	        case 'TEXT_EDIT':
@@ -27922,6 +28902,7 @@
 	            targetNode.isEditting = true;
 	            var tmp = {};
 	            tmp[action.location[0]] = newCategory;
+	            _History.History.add(Object.assign({}, state, tmp));
 	            return Object.assign({}, state, tmp);
 	        case 'ENTER_EDIT':
 	            var category = action.location[0];
@@ -27934,6 +28915,7 @@
 	            targetNode.text = action.value;
 	            var tmp = {};
 	            tmp[action.location[0]] = newCategory;
+	            _History.History.add(Object.assign({}, state, tmp));
 	            return Object.assign({}, state, tmp);
 
 	        case 'ADD_CONTACT':
@@ -27951,18 +28933,27 @@
 	                },
 	                isDragging: false
 	            });
+	            _History.History.add(Object.assign({}, state, {
+	                baseInfo: newBaseInfo
+	            }));
 	            return Object.assign({}, state, {
 	                baseInfo: newBaseInfo
 	            });
 	        case 'DELETE_CONTACT':
 	            var newBaseInfo = Object.assign({}, state.baseInfo);
 	            newBaseInfo.contact.splice(action.index, 1);
+	            _History.History.add(Object.assign({}, state, {
+	                baseInfo: newBaseInfo
+	            }));
 	            return Object.assign({}, state, {
 	                baseInfo: newBaseInfo
 	            });
 	        case 'EDIT_AVATAR':
 	            var newBaseInfo = Object.assign({}, state.baseInfo);
 	            newBaseInfo.avatar.isEditting = true;
+	            _History.History.add(Object.assign({}, state, {
+	                baseInfo: newBaseInfo
+	            }));
 	            return Object.assign({}, state, {
 	                baseInfo: newBaseInfo
 	            });
@@ -27970,6 +28961,9 @@
 	            var newBaseInfo = Object.assign({}, state.baseInfo);
 	            newBaseInfo.avatar.isEditting = false;
 	            newBaseInfo.avatar.imgUrl = action.url;
+	            _History.History.add(Object.assign({}, state, {
+	                baseInfo: newBaseInfo
+	            }));
 	            return Object.assign({}, state, {
 	                baseInfo: newBaseInfo
 	            });
@@ -27990,8 +28984,27 @@
 	                    isEditting: false
 	                }
 	            });
+	            _History.History.add(Object.assign({}, state, {
+	                mainInfo: newMainInfo
+	            }));
 	            return Object.assign({}, state, {
 	                mainInfo: newMainInfo
+	            });
+	        case 'HISTORY_BACKWARD':
+	            var tmp = Object.assign({}, _History.History.backward());
+	            var mainInfo = Object.assign([], tmp.mainInfo);
+	            var baseInfo = Object.assign({}, tmp.baseInfo);
+	            return Object.assign({}, tmp, {
+	                mainInfo: mainInfo,
+	                baseInfo: baseInfo
+	            });
+	        case 'HISTORY_FORWARD':
+	            var tmp = Object.assign({}, _History.History.forward());
+	            var mainInfo = Object.assign([], tmp.mainInfo);
+	            var baseInfo = Object.assign({}, tmp.baseInfo);
+	            return Object.assign({}, tmp, {
+	                mainInfo: mainInfo,
+	                baseInfo: baseInfo
 	            });
 	        default:
 	            return Object.assign({}, state);
@@ -27999,23 +29012,23 @@
 	}
 
 /***/ },
-/* 293 */
+/* 305 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	module.exports = __webpack_require__(294);
+	module.exports = __webpack_require__(306);
 
 
 /***/ },
-/* 294 */
+/* 306 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var alphabet = __webpack_require__(295);
-	var encode = __webpack_require__(297);
-	var decode = __webpack_require__(299);
-	var isValid = __webpack_require__(300);
+	var alphabet = __webpack_require__(307);
+	var encode = __webpack_require__(309);
+	var decode = __webpack_require__(311);
+	var isValid = __webpack_require__(312);
 
 	// Ignore all milliseconds before a certain time to reduce the size of the date entropy without sacrificing uniqueness.
 	// This number should be updated every year or so to keep the generated id short.
@@ -28030,7 +29043,7 @@
 	// has a unique value for worker
 	// Note: I don't know if this is automatically set when using third
 	// party cluster solutions such as pm2.
-	var clusterWorkerId = __webpack_require__(301) || 0;
+	var clusterWorkerId = __webpack_require__(313) || 0;
 
 	// Counter is used when shortid is called multiple times in one second.
 	var counter;
@@ -28113,12 +29126,12 @@
 
 
 /***/ },
-/* 295 */
+/* 307 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var randomFromSeed = __webpack_require__(296);
+	var randomFromSeed = __webpack_require__(308);
 
 	var ORIGINAL = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-';
 	var alphabet;
@@ -28217,7 +29230,7 @@
 
 
 /***/ },
-/* 296 */
+/* 308 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -28248,12 +29261,12 @@
 
 
 /***/ },
-/* 297 */
+/* 309 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var randomByte = __webpack_require__(298);
+	var randomByte = __webpack_require__(310);
 
 	function encode(lookup, number) {
 	    var loopCounter = 0;
@@ -28273,7 +29286,7 @@
 
 
 /***/ },
-/* 298 */
+/* 310 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -28293,11 +29306,11 @@
 
 
 /***/ },
-/* 299 */
+/* 311 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var alphabet = __webpack_require__(295);
+	var alphabet = __webpack_require__(307);
 
 	/**
 	 * Decode the id to get the version and worker
@@ -28316,11 +29329,11 @@
 
 
 /***/ },
-/* 300 */
+/* 312 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var alphabet = __webpack_require__(295);
+	var alphabet = __webpack_require__(307);
 
 	function isShortId(id) {
 	    if (!id || typeof id !== 'string' || id.length < 6 ) {
@@ -28341,13 +29354,165 @@
 
 
 /***/ },
-/* 301 */
+/* 313 */
 /***/ function(module, exports) {
 
 	'use strict';
 
 	module.exports = 0;
 
+
+/***/ },
+/* 314 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.initialState = undefined;
+
+	var _shortid = __webpack_require__(305);
+
+	var _shortid2 = _interopRequireDefault(_shortid);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	var initialState = exports.initialState = {
+	    styleName: 'base-style',
+	    baseInfo: {
+	        avatar: {
+	            imgUrl: 'http://sfault-avatar.b0.upaiyun.com/253/959/2539590481-562f620530b4c_huge256',
+	            isEditting: false
+	        },
+	        name: {
+	            text: '王小黑',
+	            isEditting: false
+	        },
+	        job: {
+	            text: 'Web前端工程师',
+	            isEditting: false
+	        },
+	        basic_info: [],
+	        contact: [{
+	            id: _shortid2.default.generate(),
+	            name: {
+	                text: '手机',
+	                isEditting: false
+	            },
+	            value: {
+	                text: '13316919664',
+	                isEditting: false
+	            },
+	            isDragging: false
+	        }, {
+	            id: _shortid2.default.generate(),
+	            name: {
+	                text: '邮箱',
+	                isEditting: false
+	            },
+	            value: {
+	                text: 'wjwang13@fudan.edu.cn',
+	                isEditting: false
+	            },
+	            isDragging: false
+	        }, {
+	            id: _shortid2.default.generate(),
+	            name: {
+	                text: '个人博客',
+	                isEditting: false
+	            },
+	            value: {
+	                text: 'blog.starkwang.com',
+	                isEditting: false
+	            },
+	            isDragging: false
+	        }]
+	    },
+	    mainInfo: [{
+	        id: _shortid2.default.generate(),
+	        type: 'education',
+	        title: {
+	            text: '教育经历',
+	            isEditting: false
+	        },
+	        items: [{
+	            name: {
+	                text: '复旦大学',
+	                isEditting: false
+	            },
+	            time: {
+	                text: '2013年9月至2017年7月',
+	                isEditting: false
+	            },
+	            major: {
+	                text: '本科生，电子信息科学与技术专业',
+	                isEditting: false
+	            }
+	        }, {
+	            name: {
+	                text: '复旦大学',
+	                isEditting: false
+	            },
+	            time: {
+	                text: '2013年9月至2017年7月',
+	                isEditting: false
+	            },
+	            major: {
+	                text: '本科生，电子信息科学与技术专业',
+	                isEditting: false
+	            }
+	        }]
+	    }, {
+	        id: _shortid2.default.generate(),
+	        type: 'skill',
+	        title: '专业技能',
+	        items: []
+	    }]
+	};
+
+/***/ },
+/* 315 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.History = undefined;
+
+	var _initialState = __webpack_require__(314);
+
+	var init = JSON.stringify(_initialState.initialState);
+	var History = exports.History = {
+	    histories: [init],
+	    now: 1,
+	    add: function add(state) {
+	        this.histories = this.histories.slice(0, this.now + 1);
+	        this.histories.push(JSON.stringify(state));
+	        this.now++;
+	        console.log('add history', this.histories);
+	    },
+	    backward: function backward() {
+	        if (this.now == 1) {
+	            return JSON.parse(init);
+	        } else {
+	            this.now--;
+	            return JSON.parse(this.histories[this.now - 1]);
+	        }
+	    },
+	    forward: function forward() {
+	        if (this.now == this.histories.length) {
+	            return JSON.parse(this.histories[this.now - 1]);
+	        } else {
+	            this.now++;
+	            return JSON.parse(this.histories[this.now - 1]);
+	        }
+	    }
+
+	};
 
 /***/ }
 /******/ ]);

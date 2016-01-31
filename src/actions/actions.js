@@ -1,30 +1,30 @@
-export function changeText(){
+export function changeText() {
     return {
-        type:'CHANGE_TEXT'
+        type: 'CHANGE_TEXT'
     }
 }
 
-export function buttonClick(){
+export function buttonClick() {
     return {
-        type:'BUTTON_CLICK'
+        type: 'BUTTON_CLICK'
     }
 }
 
-export function addInput(){
+export function addInput() {
     return {
-        type:'ADD_INPUT'
+        type: 'ADD_INPUT'
     }
 }
 
-export function inputChange(text,index){
+export function inputChange(text, index) {
     return {
-        type:'INPUT_CHANGE',
-        text:text,
-        index:index
+        type: 'INPUT_CHANGE',
+        text: text,
+        index: index
     }
 }
 
-export function beginDrag(id, location){
+export function beginDrag(id, location) {
     return {
         type: 'BEGIN_DRAG',
         id: id,
@@ -32,7 +32,7 @@ export function beginDrag(id, location){
     }
 }
 
-export function endDrag(id, location){
+export function endDrag(id, location) {
     return {
         type: 'END_DRAG',
         id: id,
@@ -40,24 +40,24 @@ export function endDrag(id, location){
     }
 }
 
-export function itemSort(sourceID, targetID, location){
+export function itemSort(sourceID, targetID, location) {
     //console.log('itemSort',sourceIndex,targetIndex);
     return {
-        type:'ITEM_SORT',
-        sourceID:sourceID,
-        targetID:targetID,
+        type: 'ITEM_SORT',
+        sourceID: sourceID,
+        targetID: targetID,
         location: location
     }
 }
 
-export function textEdit(location){
+export function textEdit(location) {
     return {
         type: 'TEXT_EDIT',
         location: location,
     }
 }
 
-export function enterEdit(location, value){
+export function enterEdit(location, value) {
     return {
         type: 'ENTER_EDIT',
         location: location,
@@ -65,35 +65,47 @@ export function enterEdit(location, value){
     }
 }
 
-export function addContact(){
+export function addContact() {
     return {
-        type:'ADD_CONTACT'
+        type: 'ADD_CONTACT'
     }
 }
 
-export function deleteContact(index){
+export function deleteContact(index) {
     return {
         type: 'DELETE_CONTACT',
         index: index
     }
 }
 
-export function editAvatar(){
+export function editAvatar() {
     return {
-        type:'EDIT_AVATAR'
+        type: 'EDIT_AVATAR'
     }
 }
 
-export function enterAvatar(url){
+export function enterAvatar(url) {
     return {
         type: 'ENTER_AVATAR',
         url: url
     }
 }
 
-export function addEducation(indexInMainInfo){
-    return{
+export function addEducation(indexInMainInfo) {
+    return {
         type: 'ADD_EDUCATION',
         indexInMainInfo: indexInMainInfo
+    }
+}
+
+export function historyBackward() {
+    return {
+        type:'HISTORY_BACKWARD'
+    }
+}
+
+export function historyForward() {
+    return {
+        type:'HISTORY_FORWARD'
     }
 }
