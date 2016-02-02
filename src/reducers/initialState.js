@@ -70,24 +70,22 @@ export const initialState = {
                 text:'本科生，电子信息科学与技术专业',
                 isEditting:false
             }
-        },{
-            name:{
-                text:'复旦大学',
-                isEditting:false
-            },
-            time:{
-                text:'2013年9月至2017年7月',
-                isEditting:false
-            },
-            major:{
-                text:'本科生，电子信息科学与技术专业',
-                isEditting:false
-            }
         }]
     },{
         id:shortid.generate(),
         type:'skill',
-        title:'专业技能',
-        items:[]
+        title:{
+            text:'专业技能',
+            isEditting:false
+        },
+        items:[{
+            id:shortid.generate(),
+            text:'专业技能abcdjfalfsjkafw javascript 专业技能专业技能专业技能专业技能专业技能专业技能专业技能专业技能专业技能专业技能专业技能专业技能专业技能',
+            isEditting:false
+        },{
+            id:shortid.generate(),
+            text:'专业技能专业技能专业技能专业技能专业技能专业技能专业技能专业技能专业技能专业技能专业技能专业技能专业技能专业技能',
+            isEditting:false
+        }]
     }]
 }

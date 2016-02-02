@@ -91,9 +91,10 @@ export function enterAvatar(url) {
     }
 }
 
-export function addEducation(indexInMainInfo) {
+export function addItemInMainInfo(indexInMainInfo, category) {
     return {
-        type: 'ADD_EDUCATION',
+        type: 'ADD_ITEM_IN_MAIN_INFO',
+        category: category,// 'education'/'skill'
         indexInMainInfo: indexInMainInfo
     }
 }

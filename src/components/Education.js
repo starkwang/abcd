@@ -5,10 +5,6 @@ export default class Education extends React.Component{
         super(props);
     }
 
-    handleClick(){
-        this.props.actions.changeText();
-    }
-
     render() {
         const { name, time, major } = this.props.item;
         const { textEdit, enterEdit } = this.props.actions;

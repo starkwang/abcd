@@ -110,8 +110,8 @@
 }
 .main-info{
     width: 640px;
-    .education{
-        padding:40px;
+    .education,.skill{
+        padding:40px 40px 0 40px;
         i{
             float: left;
             font-size: 24px;
@@ -132,6 +132,11 @@
         .item{
             margin-top: 10px;
             overflow: hidden;
+            .text{
+                color: #777;
+                font-size: 18px;
+                line-height: 27px;
+            }
             .name{
                 color:#61c2b1;
                 font-size: 24px;

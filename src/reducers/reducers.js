@@ -103,7 +103,6 @@ function findItem(items, id){
     });
     return resultIndex
 }
-console.log('initialState',initialState);
 export default function todoApp(state = initialState, action) {
     console.log(action.type, action);
     switch (action.type) {
@@ -113,7 +112,7 @@ export default function todoApp(state = initialState, action) {
                 return Object.assign({},state);
             }else{
                 var category = action.location[0];
-                var newCategory = Object.assign({},state[category]);
+                var newCategory = category=='baseInfo'?Object.assign({},state[category]):Object.assign([],state[category]);
                 var targetArr = newCategory;
                 for(var i = 1 ; i < action.location.length ; i++){
                     targetArr = targetArr[action.location[i]];
@@ -139,7 +138,7 @@ export default function todoApp(state = initialState, action) {
             }
         case 'BEGIN_DRAG':
             var category = action.location[0];
-            var newCategory = Object.assign({},state[category]);
+            var newCategory = category=='baseInfo'?Object.assign({},state[category]):Object.assign([],state[category]);
             var targetArr = newCategory;
             for(var i = 1 ; i < action.location.length ; i++){
                 targetArr = targetArr[action.location[i]];
@@ -152,7 +151,7 @@ export default function todoApp(state = initialState, action) {
 
         case 'END_DRAG':
             var category = action.location[0];
-            var newCategory = Object.assign({},state[category]);
+            var newCategory = category=='baseInfo'?Object.assign({},state[category]):Object.assign([],state[category]);
             var targetArr = newCategory;
             for(var i = 1 ; i < action.location.length ; i++){
                 targetArr = targetArr[action.location[i]];
@@ -239,23 +238,32 @@ export default function todoApp(state = initialState, action) {
             return Object.assign({},state,{
                 baseInfo: newBaseInfo
             });
-        case 'ADD_EDUCATION':
+        case 'ADD_ITEM_IN_MAIN_INFO':
             var newMainInfo = Object.assign([],state.mainInfo);
             var targetArr = newMainInfo[action.indexInMainInfo].items;
-            targetArr.push({
-                name:{
-                    text:'这里填入名称',
-                    isEditting:false
-                },
-                time:{
-                    text:'这里填入时间',
-                    isEditting:false
-                },
-                major:{
-                    text:'这里填入简介',
-                    isEditting:false
-                }
-            });
+            if(action.category == 'education'){
+                targetArr.push({
+                    name:{
+                        text:'这里填入名称',
+                        isEditting:false
+                    },
+                    time:{
+                        text:'这里填入时间',
+                        isEditting:false
+                    },
+                    major:{
+                        text:'这里填入简介',
+                        isEditting:false
+                    }
+                });
+            }
+            if(action.category == 'skill'){
+                targetArr.push({
+                        id:shortid.generate(),
+                        text:'这里填入专业技能',
+                        isEditting:false
+                });
+            }
             History.add(Object.assign({},state,{
                 mainInfo: newMainInfo
             }));
@@ -263,21 +271,9 @@ export default function todoApp(state = initialState, action) {
                 mainInfo: newMainInfo
             });
         case 'HISTORY_BACKWARD':
-            var tmp = Object.assign({},History.backward());
-            var mainInfo = Object.assign([],tmp.mainInfo);
-            var baseInfo = Object.assign({},tmp.baseInfo);
-            return Object.assign({},tmp,{
-                mainInfo: mainInfo,
-                baseInfo: baseInfo
-            });
+            return History.backward();
         case 'HISTORY_FORWARD':
-            var tmp = Object.assign({},History.forward());
-            var mainInfo = Object.assign([],tmp.mainInfo);
-            var baseInfo = Object.assign({},tmp.baseInfo);
-            return Object.assign({},tmp,{
-                mainInfo: mainInfo,
-                baseInfo: baseInfo
-            });
+            return History.forward();
         default:
             return Object.assign({},state)
     };

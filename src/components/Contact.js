@@ -1,6 +1,7 @@
 import React from 'react';
 import Text from './Text';
 import { DragSource ,DropTarget} from 'react-dnd';
+
 const type = 'contact-item';
 const itemSource = {
     beginDrag(props) {

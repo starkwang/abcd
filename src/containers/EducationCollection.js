@@ -4,11 +4,11 @@ import Text from '../components/Text';
 export default class EducationCollection extends React.Component{
     constructor(props) {
         super(props);
-        this.addEducation = this.addEducation.bind(this);
+        this.addItemInMainInfo = this.addItemInMainInfo.bind(this);
     }
 
-    addEducation(){
-        this.props.actions.addEducation(this.props.indexInMainInfo);
+    addItemInMainInfo(){
+        this.props.actions.addItemInMainInfo(this.props.indexInMainInfo, 'education');
     }
 
     render() {
