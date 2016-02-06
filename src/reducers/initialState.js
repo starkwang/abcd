@@ -66,7 +66,7 @@ export const initialState = {
                 text:'2013年9月至2017年7月',
                 isEditting:false
             },
-            major:{
+            content:{
                 text:'本科生，电子信息科学与技术专业',
                 isEditting:false
             }
@@ -86,6 +86,42 @@ export const initialState = {
             id:shortid.generate(),
             text:'专业技能专业技能专业技能专业技能专业技能专业技能专业技能专业技能专业技能专业技能专业技能专业技能专业技能专业技能',
             isEditting:false
+        }]
+    },{
+        id:shortid.generate(),
+        type:'practice',
+        title:{
+            text:'实践经历',
+            isEditting:false
+        },
+        items:[{
+            id:shortid.generate(),
+            name:{
+                text:'项目名称abcdehgga项目名称',
+                isEditting:false
+            },
+            time:{
+                text:'项目时间',
+                isEditting:false
+            },
+            content:{
+                text:'项目内容项目内容项目内容项目内容项目内容项目内容项目内容abcdefgh项目内容项目内容',
+                isEditting:false
+            }
+        },{
+            id:shortid.generate(),
+            name:{
+                text:'项目名称abcdehgga项目名称',
+                isEditting:false
+            },
+            time:{
+                text:'项目时间',
+                isEditting:false
+            },
+            content:{
+                text:'项目内容项目内容项目内容项目内容项目内容项目内容项目内容abcdefgh项目内容项目内容',
+                isEditting:false
+            }
         }]
     }]
 }

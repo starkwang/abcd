@@ -60,7 +60,7 @@
 
 	var _App2 = _interopRequireDefault(_App);
 
-	var _reducers = __webpack_require__(306);
+	var _reducers = __webpack_require__(307);
 
 	var _reducers2 = _interopRequireDefault(_reducers);
 
@@ -20840,17 +20840,17 @@
 
 	var _redux = __webpack_require__(159);
 
-	var _actions = __webpack_require__(262);
+	var _actions = __webpack_require__(263);
 
 	var Actions = _interopRequireWildcard(_actions);
 
 	var _reactDnd = __webpack_require__(181);
 
-	var _reactDndHtml5Backend = __webpack_require__(263);
+	var _reactDndHtml5Backend = __webpack_require__(264);
 
 	var _reactDndHtml5Backend2 = _interopRequireDefault(_reactDndHtml5Backend);
 
-	var _reduxActions = __webpack_require__(294);
+	var _reduxActions = __webpack_require__(295);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -25581,6 +25581,10 @@
 
 	var _SkillCollection2 = _interopRequireDefault(_SkillCollection);
 
+	var _PracticeCollection = __webpack_require__(262);
+
+	var _PracticeCollection2 = _interopRequireDefault(_PracticeCollection);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -25608,11 +25612,16 @@
 	            var actions = this.props.actions;
 
 	            this.props.mainInfo.forEach(function (item, index) {
-	                if (item.type == 'education') {
-	                    mainInfo.push(_react2.default.createElement(_EducationCollection2.default, { key: index, data: item, actions: actions, indexInMainInfo: index }));
-	                }
-	                if (item.type == 'skill') {
-	                    mainInfo.push(_react2.default.createElement(_SkillCollection2.default, { key: index, data: item, actions: actions, indexInMainInfo: index }));
+	                switch (item.type) {
+	                    case 'education':
+	                        mainInfo.push(_react2.default.createElement(_EducationCollection2.default, { key: index, data: item, actions: actions, indexInMainInfo: index }));
+	                        break;
+	                    case 'skill':
+	                        mainInfo.push(_react2.default.createElement(_SkillCollection2.default, { key: index, data: item, actions: actions, indexInMainInfo: index }));
+	                        break;
+	                    case 'practice':
+	                        mainInfo.push(_react2.default.createElement(_PracticeCollection2.default, { key: index, data: item, actions: actions, indexInMainInfo: index }));
+	                        break;
 	                }
 	            });
 	            return _react2.default.createElement(
@@ -25702,7 +25711,7 @@
 	                _react2.default.createElement(_Text2.default, { className: 'title', text: title.text, isEditting: title.isEditting, location: ['mainInfo', indexInMainInfo, 'title'], textEdit: actions.textEdit, enterEdit: actions.enterEdit }),
 	                _react2.default.createElement(
 	                    'button',
-	                    { onClick: this.addEducation },
+	                    { onClick: this.addItemInMainInfo },
 	                    '+'
 	                ),
 	                educations
@@ -25758,7 +25767,7 @@
 	            var _props$item = this.props.item;
 	            var name = _props$item.name;
 	            var time = _props$item.time;
-	            var major = _props$item.major;
+	            var content = _props$item.content;
 	            var _props$actions = this.props.actions;
 	            var textEdit = _props$actions.textEdit;
 	            var enterEdit = _props$actions.enterEdit;
@@ -25771,7 +25780,7 @@
 	                { className: 'item' },
 	                _react2.default.createElement(_Text2.default, { className: 'name', text: name.text, isEditting: name.isEditting, textEdit: textEdit, enterEdit: enterEdit, location: ['mainInfo', indexInMainInfo, 'items', index, 'name'] }),
 	                _react2.default.createElement(_Text2.default, { className: 'time', text: time.text, isEditting: time.isEditting, textEdit: textEdit, enterEdit: enterEdit, location: ['mainInfo', indexInMainInfo, 'items', index, 'time'] }),
-	                _react2.default.createElement(_Text2.default, { className: 'major', text: major.text, isEditting: major.isEditting, textEdit: textEdit, enterEdit: enterEdit, location: ['mainInfo', indexInMainInfo, 'items', index, 'major'] })
+	                _react2.default.createElement(_Text2.default, { className: 'content', text: content.text, isEditting: content.isEditting, textEdit: textEdit, enterEdit: enterEdit, location: ['mainInfo', indexInMainInfo, 'items', index, 'major'] })
 	            );
 	        }
 	    }]);
@@ -25972,6 +25981,93 @@
 
 /***/ },
 /* 262 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _Education = __webpack_require__(259);
+
+	var _Education2 = _interopRequireDefault(_Education);
+
+	var _Text = __webpack_require__(179);
+
+	var _Text2 = _interopRequireDefault(_Text);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var PracticeCollection = function (_React$Component) {
+	    _inherits(PracticeCollection, _React$Component);
+
+	    function PracticeCollection(props) {
+	        _classCallCheck(this, PracticeCollection);
+
+	        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(PracticeCollection).call(this, props));
+
+	        _this.addItemInMainInfo = _this.addItemInMainInfo.bind(_this);
+	        return _this;
+	    }
+
+	    _createClass(PracticeCollection, [{
+	        key: 'addItemInMainInfo',
+	        value: function addItemInMainInfo() {
+	            this.props.actions.addItemInMainInfo(this.props.indexInMainInfo, 'practice');
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            var _props$data = this.props.data;
+	            var title = _props$data.title;
+	            var items = _props$data.items;
+	            var _props = this.props;
+	            var actions = _props.actions;
+	            var indexInMainInfo = _props.indexInMainInfo;
+
+	            var practices = [];
+	            items.forEach(function (item, index) {
+	                practices.push(_react2.default.createElement(_Education2.default, { item: item, actions: actions, indexInMainInfo: indexInMainInfo, index: index, key: index }));
+	            });
+	            return _react2.default.createElement(
+	                'div',
+	                { className: 'practice' },
+	                _react2.default.createElement(
+	                    'i',
+	                    { className: 'iconfont' },
+	                    ''
+	                ),
+	                _react2.default.createElement(_Text2.default, { className: 'title', text: title.text, isEditting: title.isEditting, location: ['mainInfo', indexInMainInfo, 'title'], textEdit: actions.textEdit, enterEdit: actions.enterEdit }),
+	                _react2.default.createElement(
+	                    'button',
+	                    { onClick: this.addItemInMainInfo },
+	                    '+'
+	                ),
+	                practices
+	            );
+	        }
+	    }]);
+
+	    return PracticeCollection;
+	}(_react2.default.Component);
+
+	exports.default = PracticeCollection;
+
+/***/ },
+/* 263 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -26109,7 +26205,7 @@
 	}
 
 /***/ },
-/* 263 */
+/* 264 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26121,15 +26217,15 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _HTML5Backend = __webpack_require__(264);
+	var _HTML5Backend = __webpack_require__(265);
 
 	var _HTML5Backend2 = _interopRequireDefault(_HTML5Backend);
 
-	var _getEmptyImage = __webpack_require__(293);
+	var _getEmptyImage = __webpack_require__(294);
 
 	var _getEmptyImage2 = _interopRequireDefault(_getEmptyImage);
 
-	var _NativeTypes = __webpack_require__(292);
+	var _NativeTypes = __webpack_require__(293);
 
 	var NativeTypes = _interopRequireWildcard(_NativeTypes);
 
@@ -26141,7 +26237,7 @@
 	}
 
 /***/ },
-/* 264 */
+/* 265 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26154,25 +26250,25 @@
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-	var _lodashObjectDefaults = __webpack_require__(265);
+	var _lodashObjectDefaults = __webpack_require__(266);
 
 	var _lodashObjectDefaults2 = _interopRequireDefault(_lodashObjectDefaults);
 
-	var _shallowEqual = __webpack_require__(278);
+	var _shallowEqual = __webpack_require__(279);
 
 	var _shallowEqual2 = _interopRequireDefault(_shallowEqual);
 
-	var _EnterLeaveCounter = __webpack_require__(279);
+	var _EnterLeaveCounter = __webpack_require__(280);
 
 	var _EnterLeaveCounter2 = _interopRequireDefault(_EnterLeaveCounter);
 
-	var _BrowserDetector = __webpack_require__(282);
+	var _BrowserDetector = __webpack_require__(283);
 
-	var _OffsetUtils = __webpack_require__(289);
+	var _OffsetUtils = __webpack_require__(290);
 
-	var _NativeDragSources = __webpack_require__(291);
+	var _NativeDragSources = __webpack_require__(292);
 
-	var _NativeTypes = __webpack_require__(292);
+	var _NativeTypes = __webpack_require__(293);
 
 	var NativeTypes = _interopRequireWildcard(_NativeTypes);
 
@@ -26706,12 +26802,12 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 265 */
+/* 266 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var assign = __webpack_require__(266),
-	    assignDefaults = __webpack_require__(276),
-	    createDefaults = __webpack_require__(277);
+	var assign = __webpack_require__(267),
+	    assignDefaults = __webpack_require__(277),
+	    createDefaults = __webpack_require__(278);
 
 	/**
 	 * Assigns own enumerable properties of source object(s) to the destination
@@ -26737,12 +26833,12 @@
 
 
 /***/ },
-/* 266 */
+/* 267 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var assignWith = __webpack_require__(267),
-	    baseAssign = __webpack_require__(270),
-	    createAssigner = __webpack_require__(272);
+	var assignWith = __webpack_require__(268),
+	    baseAssign = __webpack_require__(271),
+	    createAssigner = __webpack_require__(273);
 
 	/**
 	 * Assigns own enumerable properties of source object(s) to the destination
@@ -26786,10 +26882,10 @@
 
 
 /***/ },
-/* 267 */
+/* 268 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var keys = __webpack_require__(268);
+	var keys = __webpack_require__(269);
 
 	/**
 	 * A specialized version of `_.assign` for customizing assigned values without
@@ -26824,13 +26920,13 @@
 
 
 /***/ },
-/* 268 */
+/* 269 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var getNative = __webpack_require__(190),
 	    isArrayLike = __webpack_require__(206),
 	    isObject = __webpack_require__(193),
-	    shimKeys = __webpack_require__(269);
+	    shimKeys = __webpack_require__(270);
 
 	/* Native method references for those with the same name as other `lodash` methods. */
 	var nativeKeys = getNative(Object, 'keys');
@@ -26875,7 +26971,7 @@
 
 
 /***/ },
-/* 269 */
+/* 270 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var isArguments = __webpack_require__(233),
@@ -26922,11 +27018,11 @@
 
 
 /***/ },
-/* 270 */
+/* 271 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var baseCopy = __webpack_require__(271),
-	    keys = __webpack_require__(268);
+	var baseCopy = __webpack_require__(272),
+	    keys = __webpack_require__(269);
 
 	/**
 	 * The base implementation of `_.assign` without support for argument juggling,
@@ -26947,7 +27043,7 @@
 
 
 /***/ },
-/* 271 */
+/* 272 */
 /***/ function(module, exports) {
 
 	/**
@@ -26976,11 +27072,11 @@
 
 
 /***/ },
-/* 272 */
+/* 273 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var bindCallback = __webpack_require__(273),
-	    isIterateeCall = __webpack_require__(275),
+	var bindCallback = __webpack_require__(274),
+	    isIterateeCall = __webpack_require__(276),
 	    restParam = __webpack_require__(209);
 
 	/**
@@ -27023,10 +27119,10 @@
 
 
 /***/ },
-/* 273 */
+/* 274 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var identity = __webpack_require__(274);
+	var identity = __webpack_require__(275);
 
 	/**
 	 * A specialized version of `baseCallback` which only supports `this` binding
@@ -27068,7 +27164,7 @@
 
 
 /***/ },
-/* 274 */
+/* 275 */
 /***/ function(module, exports) {
 
 	/**
@@ -27094,7 +27190,7 @@
 
 
 /***/ },
-/* 275 */
+/* 276 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var isArrayLike = __webpack_require__(206),
@@ -27128,7 +27224,7 @@
 
 
 /***/ },
-/* 276 */
+/* 277 */
 /***/ function(module, exports) {
 
 	/**
@@ -27147,7 +27243,7 @@
 
 
 /***/ },
-/* 277 */
+/* 278 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var restParam = __webpack_require__(209);
@@ -27175,7 +27271,7 @@
 
 
 /***/ },
-/* 278 */
+/* 279 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -27216,7 +27312,7 @@
 	module.exports = exports["default"];
 
 /***/ },
-/* 279 */
+/* 280 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -27227,7 +27323,7 @@
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-	var _lodashArrayUnion = __webpack_require__(280);
+	var _lodashArrayUnion = __webpack_require__(281);
 
 	var _lodashArrayUnion2 = _interopRequireDefault(_lodashArrayUnion);
 
@@ -27273,10 +27369,10 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 280 */
+/* 281 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var baseFlatten = __webpack_require__(281),
+	var baseFlatten = __webpack_require__(282),
 	    baseUniq = __webpack_require__(214),
 	    restParam = __webpack_require__(209);
 
@@ -27303,7 +27399,7 @@
 
 
 /***/ },
-/* 281 */
+/* 282 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var arrayPush = __webpack_require__(213),
@@ -27350,7 +27446,7 @@
 
 
 /***/ },
-/* 282 */
+/* 283 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -27359,7 +27455,7 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _lodashFunctionMemoize = __webpack_require__(283);
+	var _lodashFunctionMemoize = __webpack_require__(284);
 
 	var _lodashFunctionMemoize2 = _interopRequireDefault(_lodashFunctionMemoize);
 
@@ -27375,10 +27471,10 @@
 	exports.isSafari = isSafari;
 
 /***/ },
-/* 283 */
+/* 284 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var MapCache = __webpack_require__(284);
+	var MapCache = __webpack_require__(285);
 
 	/** Used as the `TypeError` message for "Functions" methods. */
 	var FUNC_ERROR_TEXT = 'Expected a function';
@@ -27461,13 +27557,13 @@
 
 
 /***/ },
-/* 284 */
+/* 285 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var mapDelete = __webpack_require__(285),
-	    mapGet = __webpack_require__(286),
-	    mapHas = __webpack_require__(287),
-	    mapSet = __webpack_require__(288);
+	var mapDelete = __webpack_require__(286),
+	    mapGet = __webpack_require__(287),
+	    mapHas = __webpack_require__(288),
+	    mapSet = __webpack_require__(289);
 
 	/**
 	 * Creates a cache object to store key/value pairs.
@@ -27491,7 +27587,7 @@
 
 
 /***/ },
-/* 285 */
+/* 286 */
 /***/ function(module, exports) {
 
 	/**
@@ -27511,7 +27607,7 @@
 
 
 /***/ },
-/* 286 */
+/* 287 */
 /***/ function(module, exports) {
 
 	/**
@@ -27531,7 +27627,7 @@
 
 
 /***/ },
-/* 287 */
+/* 288 */
 /***/ function(module, exports) {
 
 	/** Used for native method references. */
@@ -27557,7 +27653,7 @@
 
 
 /***/ },
-/* 288 */
+/* 289 */
 /***/ function(module, exports) {
 
 	/**
@@ -27581,7 +27677,7 @@
 
 
 /***/ },
-/* 289 */
+/* 290 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -27593,9 +27689,9 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _BrowserDetector = __webpack_require__(282);
+	var _BrowserDetector = __webpack_require__(283);
 
-	var _MonotonicInterpolant = __webpack_require__(290);
+	var _MonotonicInterpolant = __webpack_require__(291);
 
 	var _MonotonicInterpolant2 = _interopRequireDefault(_MonotonicInterpolant);
 
@@ -27681,7 +27777,7 @@
 	}
 
 /***/ },
-/* 290 */
+/* 291 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -27798,7 +27894,7 @@
 	module.exports = exports["default"];
 
 /***/ },
-/* 291 */
+/* 292 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -27816,7 +27912,7 @@
 
 	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-	var _NativeTypes = __webpack_require__(292);
+	var _NativeTypes = __webpack_require__(293);
 
 	var NativeTypes = _interopRequireWildcard(_NativeTypes);
 
@@ -27906,7 +28002,7 @@
 	}
 
 /***/ },
-/* 292 */
+/* 293 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -27920,7 +28016,7 @@
 	exports.TEXT = TEXT;
 
 /***/ },
-/* 293 */
+/* 294 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -27941,7 +28037,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 294 */
+/* 295 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -27950,15 +28046,15 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _createAction = __webpack_require__(295);
+	var _createAction = __webpack_require__(296);
 
 	var _createAction2 = _interopRequireDefault(_createAction);
 
-	var _handleAction = __webpack_require__(296);
+	var _handleAction = __webpack_require__(297);
 
 	var _handleAction2 = _interopRequireDefault(_handleAction);
 
-	var _handleActions = __webpack_require__(303);
+	var _handleActions = __webpack_require__(304);
 
 	var _handleActions2 = _interopRequireDefault(_handleActions);
 
@@ -27967,7 +28063,7 @@
 	exports.handleActions = _handleActions2['default'];
 
 /***/ },
-/* 295 */
+/* 296 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -28007,7 +28103,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 296 */
+/* 297 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -28015,7 +28111,7 @@
 	exports.__esModule = true;
 	exports['default'] = handleAction;
 
-	var _fluxStandardAction = __webpack_require__(297);
+	var _fluxStandardAction = __webpack_require__(298);
 
 	function isFunction(val) {
 	  return typeof val === 'function';
@@ -28043,7 +28139,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 297 */
+/* 298 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -28054,7 +28150,7 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _lodashIsplainobject = __webpack_require__(298);
+	var _lodashIsplainobject = __webpack_require__(299);
 
 	var _lodashIsplainobject2 = _interopRequireDefault(_lodashIsplainobject);
 
@@ -28073,7 +28169,7 @@
 	}
 
 /***/ },
-/* 298 */
+/* 299 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -28084,9 +28180,9 @@
 	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 * Available under MIT license <https://lodash.com/license>
 	 */
-	var baseFor = __webpack_require__(299),
-	    isArguments = __webpack_require__(300),
-	    keysIn = __webpack_require__(301);
+	var baseFor = __webpack_require__(300),
+	    isArguments = __webpack_require__(301),
+	    keysIn = __webpack_require__(302);
 
 	/** `Object#toString` result references. */
 	var objectTag = '[object Object]';
@@ -28182,7 +28278,7 @@
 
 
 /***/ },
-/* 299 */
+/* 300 */
 /***/ function(module, exports) {
 
 	/**
@@ -28236,7 +28332,7 @@
 
 
 /***/ },
-/* 300 */
+/* 301 */
 /***/ function(module, exports) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {/**
@@ -28490,7 +28586,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 301 */
+/* 302 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -28501,8 +28597,8 @@
 	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 * Available under MIT license <https://lodash.com/license>
 	 */
-	var isArguments = __webpack_require__(300),
-	    isArray = __webpack_require__(302);
+	var isArguments = __webpack_require__(301),
+	    isArray = __webpack_require__(303);
 
 	/** Used to detect unsigned integer values. */
 	var reIsUint = /^\d+$/;
@@ -28628,7 +28724,7 @@
 
 
 /***/ },
-/* 302 */
+/* 303 */
 /***/ function(module, exports) {
 
 	/**
@@ -28814,7 +28910,7 @@
 
 
 /***/ },
-/* 303 */
+/* 304 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -28824,15 +28920,15 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _handleAction = __webpack_require__(296);
+	var _handleAction = __webpack_require__(297);
 
 	var _handleAction2 = _interopRequireDefault(_handleAction);
 
-	var _ownKeys = __webpack_require__(304);
+	var _ownKeys = __webpack_require__(305);
 
 	var _ownKeys2 = _interopRequireDefault(_ownKeys);
 
-	var _reduceReducers = __webpack_require__(305);
+	var _reduceReducers = __webpack_require__(306);
 
 	var _reduceReducers2 = _interopRequireDefault(_reduceReducers);
 
@@ -28850,7 +28946,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 304 */
+/* 305 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -28875,7 +28971,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 305 */
+/* 306 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -28898,7 +28994,7 @@
 	module.exports = exports["default"];
 
 /***/ },
-/* 306 */
+/* 307 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -28908,13 +29004,13 @@
 	});
 	exports.default = todoApp;
 
-	var _shortid = __webpack_require__(307);
+	var _shortid = __webpack_require__(308);
 
 	var _shortid2 = _interopRequireDefault(_shortid);
 
-	var _initialState = __webpack_require__(316);
+	var _initialState = __webpack_require__(317);
 
-	var _History = __webpack_require__(317);
+	var _History = __webpack_require__(318);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -29056,6 +29152,8 @@
 	                //History.add(Object.assign({},state,tmp));
 	                return Object.assign({}, state, tmp);
 	            }
+	            break;
+
 	        case 'BEGIN_DRAG':
 	            var category = action.location[0];
 	            var newCategory = category == 'baseInfo' ? Object.assign({}, state[category]) : Object.assign([], state[category]);
@@ -29068,6 +29166,7 @@
 	            var tmp = {};
 	            tmp[action.location[0]] = newCategory;
 	            return Object.assign({}, state, tmp);
+	            break;
 
 	        case 'END_DRAG':
 	            var category = action.location[0];
@@ -29082,6 +29181,7 @@
 	            tmp[action.location[0]] = newCategory;
 	            _History.History.add(Object.assign({}, state, tmp));
 	            return Object.assign({}, state, tmp);
+	            break;
 
 	        case 'TEXT_EDIT':
 	            var category = action.location[0];
@@ -29095,6 +29195,8 @@
 	            tmp[action.location[0]] = newCategory;
 	            _History.History.add(Object.assign({}, state, tmp));
 	            return Object.assign({}, state, tmp);
+	            break;
+
 	        case 'ENTER_EDIT':
 	            var category = action.location[0];
 	            var newCategory = category == 'baseInfo' ? Object.assign({}, state[category]) : Object.assign([], state[category]);
@@ -29108,6 +29210,7 @@
 	            tmp[action.location[0]] = newCategory;
 	            _History.History.add(Object.assign({}, state, tmp));
 	            return Object.assign({}, state, tmp);
+	            break;
 
 	        case 'ADD_CONTACT':
 	            var newBaseInfo = Object.assign({}, state.baseInfo);
@@ -29130,6 +29233,8 @@
 	            return Object.assign({}, state, {
 	                baseInfo: newBaseInfo
 	            });
+	            break;
+
 	        case 'DELETE_CONTACT':
 	            var newBaseInfo = Object.assign({}, state.baseInfo);
 	            newBaseInfo.contact.splice(action.index, 1);
@@ -29139,6 +29244,8 @@
 	            return Object.assign({}, state, {
 	                baseInfo: newBaseInfo
 	            });
+	            break;
+
 	        case 'EDIT_AVATAR':
 	            var newBaseInfo = Object.assign({}, state.baseInfo);
 	            newBaseInfo.avatar.isEditting = true;
@@ -29148,6 +29255,8 @@
 	            return Object.assign({}, state, {
 	                baseInfo: newBaseInfo
 	            });
+	            break;
+
 	        case 'ENTER_AVATAR':
 	            var newBaseInfo = Object.assign({}, state.baseInfo);
 	            newBaseInfo.avatar.isEditting = false;
@@ -29158,6 +29267,8 @@
 	            return Object.assign({}, state, {
 	                baseInfo: newBaseInfo
 	            });
+	            break;
+
 	        case 'ADD_ITEM_IN_MAIN_INFO':
 	            var newMainInfo = Object.assign([], state.mainInfo);
 	            var targetArr = newMainInfo[action.indexInMainInfo].items;
@@ -29184,39 +29295,63 @@
 	                    isEditting: false
 	                });
 	            }
+	            if (action.category == 'practice') {
+	                targetArr.push({
+	                    id: _shortid2.default.generate(),
+	                    name: {
+	                        text: '项目名称abcdehgga项目名称',
+	                        isEditting: false
+	                    },
+	                    time: {
+	                        text: '项目时间',
+	                        isEditting: false
+	                    },
+	                    content: {
+	                        text: '项目内容项目内容项目内容项目内容项目内容项目内容项目内容abcdefgh项目内容项目内容',
+	                        isEditting: false
+	                    }
+	                });
+	            }
 	            _History.History.add(Object.assign({}, state, {
 	                mainInfo: newMainInfo
 	            }));
 	            return Object.assign({}, state, {
 	                mainInfo: newMainInfo
 	            });
+	            break;
+
 	        case 'HISTORY_BACKWARD':
 	            return _History.History.backward();
+	            break;
+
 	        case 'HISTORY_FORWARD':
 	            return _History.History.forward();
+	            break;
+
 	        default:
 	            return Object.assign({}, state);
+	            break;
 	    };
 	}
-
-/***/ },
-/* 307 */
-/***/ function(module, exports, __webpack_require__) {
-
-	'use strict';
-	module.exports = __webpack_require__(308);
-
 
 /***/ },
 /* 308 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
+	module.exports = __webpack_require__(309);
 
-	var alphabet = __webpack_require__(309);
-	var encode = __webpack_require__(311);
-	var decode = __webpack_require__(313);
-	var isValid = __webpack_require__(314);
+
+/***/ },
+/* 309 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var alphabet = __webpack_require__(310);
+	var encode = __webpack_require__(312);
+	var decode = __webpack_require__(314);
+	var isValid = __webpack_require__(315);
 
 	// Ignore all milliseconds before a certain time to reduce the size of the date entropy without sacrificing uniqueness.
 	// This number should be updated every year or so to keep the generated id short.
@@ -29231,7 +29366,7 @@
 	// has a unique value for worker
 	// Note: I don't know if this is automatically set when using third
 	// party cluster solutions such as pm2.
-	var clusterWorkerId = __webpack_require__(315) || 0;
+	var clusterWorkerId = __webpack_require__(316) || 0;
 
 	// Counter is used when shortid is called multiple times in one second.
 	var counter;
@@ -29314,12 +29449,12 @@
 
 
 /***/ },
-/* 309 */
+/* 310 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var randomFromSeed = __webpack_require__(310);
+	var randomFromSeed = __webpack_require__(311);
 
 	var ORIGINAL = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-';
 	var alphabet;
@@ -29418,7 +29553,7 @@
 
 
 /***/ },
-/* 310 */
+/* 311 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -29449,12 +29584,12 @@
 
 
 /***/ },
-/* 311 */
+/* 312 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var randomByte = __webpack_require__(312);
+	var randomByte = __webpack_require__(313);
 
 	function encode(lookup, number) {
 	    var loopCounter = 0;
@@ -29474,7 +29609,7 @@
 
 
 /***/ },
-/* 312 */
+/* 313 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -29494,11 +29629,11 @@
 
 
 /***/ },
-/* 313 */
+/* 314 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var alphabet = __webpack_require__(309);
+	var alphabet = __webpack_require__(310);
 
 	/**
 	 * Decode the id to get the version and worker
@@ -29517,11 +29652,11 @@
 
 
 /***/ },
-/* 314 */
+/* 315 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var alphabet = __webpack_require__(309);
+	var alphabet = __webpack_require__(310);
 
 	function isShortId(id) {
 	    if (!id || typeof id !== 'string' || id.length < 6 ) {
@@ -29542,7 +29677,7 @@
 
 
 /***/ },
-/* 315 */
+/* 316 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -29551,7 +29686,7 @@
 
 
 /***/ },
-/* 316 */
+/* 317 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -29561,7 +29696,7 @@
 	});
 	exports.initialState = undefined;
 
-	var _shortid = __webpack_require__(307);
+	var _shortid = __webpack_require__(308);
 
 	var _shortid2 = _interopRequireDefault(_shortid);
 
@@ -29634,7 +29769,7 @@
 	                text: '2013年9月至2017年7月',
 	                isEditting: false
 	            },
-	            major: {
+	            content: {
 	                text: '本科生，电子信息科学与技术专业',
 	                isEditting: false
 	            }
@@ -29655,11 +29790,47 @@
 	            text: '专业技能专业技能专业技能专业技能专业技能专业技能专业技能专业技能专业技能专业技能专业技能专业技能专业技能专业技能',
 	            isEditting: false
 	        }]
+	    }, {
+	        id: _shortid2.default.generate(),
+	        type: 'practice',
+	        title: {
+	            text: '实践经历',
+	            isEditting: false
+	        },
+	        items: [{
+	            id: _shortid2.default.generate(),
+	            name: {
+	                text: '项目名称abcdehgga项目名称',
+	                isEditting: false
+	            },
+	            time: {
+	                text: '项目时间',
+	                isEditting: false
+	            },
+	            content: {
+	                text: '项目内容项目内容项目内容项目内容项目内容项目内容项目内容abcdefgh项目内容项目内容',
+	                isEditting: false
+	            }
+	        }, {
+	            id: _shortid2.default.generate(),
+	            name: {
+	                text: '项目名称abcdehgga项目名称',
+	                isEditting: false
+	            },
+	            time: {
+	                text: '项目时间',
+	                isEditting: false
+	            },
+	            content: {
+	                text: '项目内容项目内容项目内容项目内容项目内容项目内容项目内容abcdefgh项目内容项目内容',
+	                isEditting: false
+	            }
+	        }]
 	    }]
 	};
 
 /***/ },
-/* 317 */
+/* 318 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -29669,7 +29840,7 @@
 	});
 	exports.History = undefined;
 
-	var _initialState = __webpack_require__(316);
+	var _initialState = __webpack_require__(317);
 
 	var init = JSON.stringify(_initialState.initialState);
 	var History = exports.History = {
@@ -29679,7 +29850,6 @@
 	        this.histories = this.histories.slice(0, this.now + 1);
 	        this.histories.push(JSON.stringify(state));
 	        this.now++;
-	        console.log('add history', this.histories);
 	    },
 	    backward: function backward() {
 	        if (this.now == 1) {

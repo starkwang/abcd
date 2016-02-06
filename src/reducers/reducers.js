@@ -136,6 +136,8 @@ export default function todoApp(state = initialState, action) {
                 //History.add(Object.assign({},state,tmp));
                 return Object.assign({},state,tmp);
             }
+            break;
+
         case 'BEGIN_DRAG':
             var category = action.location[0];
             var newCategory = category=='baseInfo'?Object.assign({},state[category]):Object.assign([],state[category]);
@@ -148,6 +150,7 @@ export default function todoApp(state = initialState, action) {
             var tmp = {};
             tmp[action.location[0]] = newCategory;
             return Object.assign({},state,tmp);
+            break;
 
         case 'END_DRAG':
             var category = action.location[0];
@@ -162,6 +165,7 @@ export default function todoApp(state = initialState, action) {
             tmp[action.location[0]] = newCategory;
             History.add(Object.assign({},state,tmp));
             return Object.assign({},state,tmp);
+            break;
 
         case 'TEXT_EDIT':
             var category = action.location[0];
@@ -175,6 +179,8 @@ export default function todoApp(state = initialState, action) {
             tmp[action.location[0]] = newCategory;
             History.add(Object.assign({},state,tmp));
             return Object.assign({},state,tmp);
+            break;
+
         case 'ENTER_EDIT':
             var category = action.location[0];
             var newCategory = category=='baseInfo'?Object.assign({},state[category]):Object.assign([],state[category]);
@@ -188,6 +194,7 @@ export default function todoApp(state = initialState, action) {
             tmp[action.location[0]] = newCategory;
             History.add(Object.assign({},state,tmp));
             return Object.assign({},state,tmp);
+            break;
 
         case 'ADD_CONTACT':
             var newBaseInfo = Object.assign({},state.baseInfo);
@@ -209,7 +216,9 @@ export default function todoApp(state = initialState, action) {
             }));
             return Object.assign({},state,{
                 baseInfo: newBaseInfo
-            })
+            });
+            break;
+
         case 'DELETE_CONTACT':
             var newBaseInfo = Object.assign({},state.baseInfo);
             newBaseInfo.contact.splice(action.index,1);
@@ -218,7 +227,9 @@ export default function todoApp(state = initialState, action) {
             }));
             return Object.assign({},state,{
                 baseInfo: newBaseInfo
-            })
+            });
+            break;
+
         case 'EDIT_AVATAR':
             var newBaseInfo = Object.assign({},state.baseInfo);
             newBaseInfo.avatar.isEditting = true;
@@ -228,6 +239,8 @@ export default function todoApp(state = initialState, action) {
             return Object.assign({},state,{
                 baseInfo: newBaseInfo
             });
+            break;
+
         case 'ENTER_AVATAR':
             var newBaseInfo = Object.assign({},state.baseInfo);
             newBaseInfo.avatar.isEditting = false;
@@ -238,6 +251,8 @@ export default function todoApp(state = initialState, action) {
             return Object.assign({},state,{
                 baseInfo: newBaseInfo
             });
+            break;
+
         case 'ADD_ITEM_IN_MAIN_INFO':
             var newMainInfo = Object.assign([],state.mainInfo);
             var targetArr = newMainInfo[action.indexInMainInfo].items;
@@ -264,18 +279,42 @@ export default function todoApp(state = initialState, action) {
                         isEditting:false
                 });
             }
+            if(action.category == 'practice'){
+                targetArr.push({
+                    id:shortid.generate(),
+                    name:{
+                        text:'项目名称abcdehgga项目名称',
+                        isEditting:false
+                    },
+                    time:{
+                        text:'项目时间',
+                        isEditting:false
+                    },
+                    content:{
+                        text:'项目内容项目内容项目内容项目内容项目内容项目内容项目内容abcdefgh项目内容项目内容',
+                        isEditting:false
+                    }
+                });
+            }
             History.add(Object.assign({},state,{
                 mainInfo: newMainInfo
             }));
             return Object.assign({},state,{
                 mainInfo: newMainInfo
             });
+            break;
+
         case 'HISTORY_BACKWARD':
             return History.backward();
+            break;
+
         case 'HISTORY_FORWARD':
             return History.forward();
+            break;
+
         default:
-            return Object.assign({},state)
+            return Object.assign({},state);
+            break;
     };
     
 }

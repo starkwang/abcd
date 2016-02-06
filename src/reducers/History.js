@@ -7,7 +7,6 @@ export var History = {
         this.histories = this.histories.slice(0, this.now + 1);
         this.histories.push(JSON.stringify(state));
         this.now++;
-        console.log('add history',this.histories);
     },
     backward: function() {
         if( this.now == 1 ){
