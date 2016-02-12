@@ -1,5 +1,5 @@
 import React from 'react';
-import Practice from '../components/Education';
+import Practice from '../components/Practice';
 import Text from '../components/Text';
 export default class PracticeCollection extends React.Component{
     constructor(props) {
@@ -16,7 +16,7 @@ export default class PracticeCollection extends React.Component{
         const { actions, indexInMainInfo } = this.props;
         var practices = [];
         items.forEach((item,index)=>{
-            practices.push(<Practice item={item} actions={actions} indexInMainInfo={indexInMainInfo} index={index} key={index}/>)
+            practices.push(<Practice item={item} id={item.id} actions={actions} indexInMainInfo={indexInMainInfo} index={index} key={index} location={['mainInfo',indexInMainInfo,'items']} beginDrag={actions.beginDrag} endDrag={actions.endDrag} itemSort={actions.itemSort}/>)
         })
         return (
             <div className="practice">

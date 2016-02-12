@@ -58,6 +58,7 @@ export const initialState = {
             isEditting:false
         },
         items:[{
+            id:shortid.generate(),
             name:{
                 text:'复旦大学',
                 isEditting:false
@@ -81,11 +82,13 @@ export const initialState = {
         items:[{
             id:shortid.generate(),
             text:'专业技能abcdjfalfsjkafw javascript 专业技能专业技能专业技能专业技能专业技能专业技能专业技能专业技能专业技能专业技能专业技能专业技能专业技能',
-            isEditting:false
+            isEditting:false,
+            isDragging:false
         },{
             id:shortid.generate(),
             text:'专业技能专业技能专业技能专业技能专业技能专业技能专业技能专业技能专业技能专业技能专业技能专业技能专业技能专业技能',
-            isEditting:false
+            isEditting:false,
+            isDragging:false
         }]
     },{
         id:shortid.generate(),
@@ -96,8 +99,9 @@ export const initialState = {
         },
         items:[{
             id:shortid.generate(),
+            isDragging:false,
             name:{
-                text:'项目名称abcdehgga项目名称',
+                text:'项目名称a',
                 isEditting:false
             },
             time:{
@@ -110,8 +114,32 @@ export const initialState = {
             }
         },{
             id:shortid.generate(),
+            isDragging:false,
             name:{
-                text:'项目名称abcdehgga项目名称',
+                text:'项目名称b',
+                isEditting:false
+            },
+            time:{
+                text:'项目时间',
+                isEditting:false
+            },
+            content:{
+                text:'项目内容项目内容项目内容项目内容项目内容项目内容项目内容abcdefgh项目内容项目内容',
+                isEditting:false
+            }
+        }]
+    },{
+        id:shortid.generate(),
+        type:'intern',
+        title:{
+            text:'实习经历',
+            isEditting:false
+        },
+        items:[{
+            id:shortid.generate(),
+            isDragging:false,
+            name:{
+                text:'项目名称a',
                 isEditting:false
             },
             time:{

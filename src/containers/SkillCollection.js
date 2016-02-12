@@ -16,7 +16,7 @@ export default class SkillCollection extends React.Component{
         const { actions, indexInMainInfo } = this.props;
         var skills = [];
         items.forEach((item,index)=>{
-            skills.push(<Skill item={item} id={item.id} location={['mainInfo',indexInMainInfo,'items']} actions={actions} indexInMainInfo={indexInMainInfo} index={index} key={index} beginDrag={actions.beginDrag} endDrag={actions.endDrag} itemSort={actions.itemSort}/>)
+            skills.push(<Skill item={item} isDragging={item.isDragging} id={item.id} location={['mainInfo',indexInMainInfo,'items']} actions={actions} indexInMainInfo={indexInMainInfo} index={index} key={index} beginDrag={actions.beginDrag} endDrag={actions.endDrag} itemSort={actions.itemSort}/>)
         })
         return (
             <div className="skill">

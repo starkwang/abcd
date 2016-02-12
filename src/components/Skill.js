@@ -45,9 +45,10 @@ class Skill extends React.Component{
     render() {
         const { text, isEditting } = this.props.item;
         const { textEdit, enterEdit } = this.props.actions;
-        const { indexInMainInfo, index, connectDragSource, connectDropTarget, location } = this.props;
+        const { indexInMainInfo, index, connectDragSource, connectDropTarget, location, isDragging } = this.props;
+        const opacity = isDragging?'0.5':'1';
         return connectDropTarget(connectDragSource((
-            <li className="item">
+            <li className="item isDraggable" style={{opacity:opacity}}>
                 <Text className="text" text={text} isEditting={isEditting} textEdit={textEdit} enterEdit={enterEdit} location={['mainInfo',indexInMainInfo,'items',index]}/>
             </li>
         )));

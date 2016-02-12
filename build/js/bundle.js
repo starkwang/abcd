@@ -60,7 +60,7 @@
 
 	var _App2 = _interopRequireDefault(_App);
 
-	var _reducers = __webpack_require__(307);
+	var _reducers = __webpack_require__(310);
 
 	var _reducers2 = _interopRequireDefault(_reducers);
 
@@ -20840,17 +20840,17 @@
 
 	var _redux = __webpack_require__(159);
 
-	var _actions = __webpack_require__(263);
+	var _actions = __webpack_require__(266);
 
 	var Actions = _interopRequireWildcard(_actions);
 
 	var _reactDnd = __webpack_require__(181);
 
-	var _reactDndHtml5Backend = __webpack_require__(264);
+	var _reactDndHtml5Backend = __webpack_require__(267);
 
 	var _reactDndHtml5Backend2 = _interopRequireDefault(_reactDndHtml5Backend);
 
-	var _reduxActions = __webpack_require__(295);
+	var _reduxActions = __webpack_require__(298);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
@@ -21235,7 +21235,7 @@
 	            var opacity = isDragging ? '0.5' : '1';
 	            return connectDropTarget(connectDragSource(_react2.default.createElement(
 	                'div',
-	                { className: 'contact-item', style: { opacity: opacity } },
+	                { className: 'contact-item isDraggable', style: { opacity: opacity } },
 	                _react2.default.createElement(
 	                    'button',
 	                    { className: 'delete', onClick: this.deleteContact },
@@ -21250,7 +21250,6 @@
 	    return Contact;
 	}(_react2.default.Component);
 
-	exports.default = Contact;
 	exports.default = (0, _reactDnd.DropTarget)(type, itemTarget, targetCollect)((0, _reactDnd.DragSource)(type, itemSource, sourceCollect)(Contact));
 
 /***/ },
@@ -25585,6 +25584,10 @@
 
 	var _PracticeCollection2 = _interopRequireDefault(_PracticeCollection);
 
+	var _MainInfoBlock = __webpack_require__(264);
+
+	var _MainInfoBlock2 = _interopRequireDefault(_MainInfoBlock);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -25612,17 +25615,18 @@
 	            var actions = this.props.actions;
 
 	            this.props.mainInfo.forEach(function (item, index) {
-	                switch (item.type) {
-	                    case 'education':
-	                        mainInfo.push(_react2.default.createElement(_EducationCollection2.default, { key: index, data: item, actions: actions, indexInMainInfo: index }));
-	                        break;
-	                    case 'skill':
-	                        mainInfo.push(_react2.default.createElement(_SkillCollection2.default, { key: index, data: item, actions: actions, indexInMainInfo: index }));
-	                        break;
-	                    case 'practice':
-	                        mainInfo.push(_react2.default.createElement(_PracticeCollection2.default, { key: index, data: item, actions: actions, indexInMainInfo: index }));
-	                        break;
-	                }
+	                mainInfo.push(_react2.default.createElement(_MainInfoBlock2.default, { data: item, key: index, actions: actions, indexInMainInfo: index }));
+	                // switch(item.type){
+	                //     case 'education':
+	                //         mainInfo.push(<EducationCollection key={index} data={item} actions={actions} indexInMainInfo={index}/>);
+	                //         break;
+	                //     case 'skill':
+	                //         mainInfo.push(<SkillCollection key={index} data={item} actions={actions} indexInMainInfo={index}/>);
+	                //         break;
+	                //     case 'practice':
+	                //         mainInfo.push(<PracticeCollection key={index} data={item} actions={actions} indexInMainInfo={index}/>);
+	                //         break;
+	                // }
 	            });
 	            return _react2.default.createElement(
 	                'div',
@@ -25780,7 +25784,7 @@
 	                { className: 'item' },
 	                _react2.default.createElement(_Text2.default, { className: 'name', text: name.text, isEditting: name.isEditting, textEdit: textEdit, enterEdit: enterEdit, location: ['mainInfo', indexInMainInfo, 'items', index, 'name'] }),
 	                _react2.default.createElement(_Text2.default, { className: 'time', text: time.text, isEditting: time.isEditting, textEdit: textEdit, enterEdit: enterEdit, location: ['mainInfo', indexInMainInfo, 'items', index, 'time'] }),
-	                _react2.default.createElement(_Text2.default, { className: 'content', text: content.text, isEditting: content.isEditting, textEdit: textEdit, enterEdit: enterEdit, location: ['mainInfo', indexInMainInfo, 'items', index, 'major'] })
+	                _react2.default.createElement(_Text2.default, { className: 'content', text: content.text, isEditting: content.isEditting, textEdit: textEdit, enterEdit: enterEdit, location: ['mainInfo', indexInMainInfo, 'items', index, 'content'] })
 	            );
 	        }
 	    }]);
@@ -25851,7 +25855,7 @@
 
 	            var skills = [];
 	            items.forEach(function (item, index) {
-	                skills.push(_react2.default.createElement(_Skill2.default, { item: item, id: item.id, location: ['mainInfo', indexInMainInfo, 'items'], actions: actions, indexInMainInfo: indexInMainInfo, index: index, key: index, beginDrag: actions.beginDrag, endDrag: actions.endDrag, itemSort: actions.itemSort }));
+	                skills.push(_react2.default.createElement(_Skill2.default, { item: item, isDragging: item.isDragging, id: item.id, location: ['mainInfo', indexInMainInfo, 'items'], actions: actions, indexInMainInfo: indexInMainInfo, index: index, key: index, beginDrag: actions.beginDrag, endDrag: actions.endDrag, itemSort: actions.itemSort }));
 	            });
 	            return _react2.default.createElement(
 	                'div',
@@ -25965,10 +25969,12 @@
 	            var connectDragSource = _props.connectDragSource;
 	            var connectDropTarget = _props.connectDropTarget;
 	            var location = _props.location;
+	            var isDragging = _props.isDragging;
 
+	            var opacity = isDragging ? '0.5' : '1';
 	            return connectDropTarget(connectDragSource(_react2.default.createElement(
 	                'li',
-	                { className: 'item' },
+	                { className: 'item isDraggable', style: { opacity: opacity } },
 	                _react2.default.createElement(_Text2.default, { className: 'text', text: text, isEditting: isEditting, textEdit: textEdit, enterEdit: enterEdit, location: ['mainInfo', indexInMainInfo, 'items', index] })
 	            )));
 	        }
@@ -25995,9 +26001,9 @@
 
 	var _react2 = _interopRequireDefault(_react);
 
-	var _Education = __webpack_require__(259);
+	var _Practice = __webpack_require__(263);
 
-	var _Education2 = _interopRequireDefault(_Education);
+	var _Practice2 = _interopRequireDefault(_Practice);
 
 	var _Text = __webpack_require__(179);
 
@@ -26040,7 +26046,7 @@
 
 	            var practices = [];
 	            items.forEach(function (item, index) {
-	                practices.push(_react2.default.createElement(_Education2.default, { item: item, actions: actions, indexInMainInfo: indexInMainInfo, index: index, key: index }));
+	                practices.push(_react2.default.createElement(_Practice2.default, { item: item, id: item.id, actions: actions, indexInMainInfo: indexInMainInfo, index: index, key: index, location: ['mainInfo', indexInMainInfo, 'items'], beginDrag: actions.beginDrag, endDrag: actions.endDrag, itemSort: actions.itemSort }));
 	            });
 	            return _react2.default.createElement(
 	                'div',
@@ -26068,6 +26074,365 @@
 
 /***/ },
 /* 263 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _Text = __webpack_require__(179);
+
+	var _Text2 = _interopRequireDefault(_Text);
+
+	var _reactDnd = __webpack_require__(181);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var type = 'practice-item';
+	var itemSource = {
+	    beginDrag: function beginDrag(props) {
+	        console.log(props);
+	        props.beginDrag(props.id, props.location);
+	        return {
+	            id: props.id
+	        };
+	    },
+	    endDrag: function endDrag(props, monitor) {
+	        props.endDrag(monitor.getItem().id, props.location);
+	    }
+	};
+	var itemTarget = {
+	    canDrop: function canDrop() {
+	        return false;
+	    },
+	    hover: function hover(props, monitor) {
+	        props.itemSort(monitor.getItem().id, props.id, props.location);
+	    }
+	};
+
+	function sourceCollect(connect, monitor) {
+	    return {
+	        connectDragSource: connect.dragSource()
+	    };
+	}
+
+	//isDragging: monitor.isDragging()
+	function targetCollect(connect) {
+	    return {
+	        connectDropTarget: connect.dropTarget()
+	    };
+	}
+
+	var Practice = function (_React$Component) {
+	    _inherits(Practice, _React$Component);
+
+	    function Practice(props) {
+	        _classCallCheck(this, Practice);
+
+	        return _possibleConstructorReturn(this, Object.getPrototypeOf(Practice).call(this, props));
+	    }
+
+	    _createClass(Practice, [{
+	        key: 'render',
+	        value: function render() {
+	            var _props$item = this.props.item;
+	            var name = _props$item.name;
+	            var time = _props$item.time;
+	            var content = _props$item.content;
+	            var _props$actions = this.props.actions;
+	            var textEdit = _props$actions.textEdit;
+	            var enterEdit = _props$actions.enterEdit;
+	            var _props = this.props;
+	            var indexInMainInfo = _props.indexInMainInfo;
+	            var index = _props.index;
+	            var connectDragSource = _props.connectDragSource;
+	            var connectDropTarget = _props.connectDropTarget;
+	            var location = _props.location;
+
+	            return connectDropTarget(connectDragSource(_react2.default.createElement(
+	                'div',
+	                { className: 'item isDraggable' },
+	                _react2.default.createElement(_Text2.default, { className: 'name', text: name.text, isEditting: name.isEditting, textEdit: textEdit, enterEdit: enterEdit, location: ['mainInfo', indexInMainInfo, 'items', index, 'name'] }),
+	                _react2.default.createElement(_Text2.default, { className: 'time', text: time.text, isEditting: time.isEditting, textEdit: textEdit, enterEdit: enterEdit, location: ['mainInfo', indexInMainInfo, 'items', index, 'time'] }),
+	                _react2.default.createElement(_Text2.default, { className: 'content', text: content.text, isEditting: content.isEditting, textEdit: textEdit, enterEdit: enterEdit, location: ['mainInfo', indexInMainInfo, 'items', index, 'content'] })
+	            )));
+	        }
+	    }]);
+
+	    return Practice;
+	}(_react2.default.Component);
+
+	exports.default = (0, _reactDnd.DropTarget)(type, itemTarget, targetCollect)((0, _reactDnd.DragSource)(type, itemSource, sourceCollect)(Practice));
+
+/***/ },
+/* 264 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _Text = __webpack_require__(179);
+
+	var _Text2 = _interopRequireDefault(_Text);
+
+	var _MainInfoItem = __webpack_require__(265);
+
+	var _MainInfoItem2 = _interopRequireDefault(_MainInfoItem);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	//主要信息块，块级组件，比如“教育经历”、“实践经历”等，所有数据均放在由props.data中
+	var Education = (0, _MainInfoItem2.default)('education-item');
+	var Practice = (0, _MainInfoItem2.default)('practice-item');
+
+	var MainInfoBlock = function (_React$Component) {
+	    _inherits(MainInfoBlock, _React$Component);
+
+	    function MainInfoBlock(props) {
+	        _classCallCheck(this, MainInfoBlock);
+
+	        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(MainInfoBlock).call(this, props));
+
+	        _this.addItemInMainInfo = _this.addItemInMainInfo.bind(_this);
+	        return _this;
+	    }
+
+	    _createClass(MainInfoBlock, [{
+	        key: 'addItemInMainInfo',
+	        value: function addItemInMainInfo() {
+	            this.props.actions.addItemInMainInfo(this.props.indexInMainInfo, this.props.data.type);
+	        }
+	    }, {
+	        key: 'render',
+	        value: function render() {
+	            var _props = this.props;
+	            var actions = _props.actions;
+	            var data = _props.data;
+	            var indexInMainInfo = _props.indexInMainInfo;
+
+	            var renderResult;
+	            var itemsInBlock = [];
+	            data.items.forEach(function (item, index) {
+	                switch (data.type) {
+	                    case 'education':
+	                        itemsInBlock.push(_react2.default.createElement(Education, { item: item, id: item.id, location: ['mainInfo', indexInMainInfo, 'items'], type: data.type, index: index, indexInMainInfo: indexInMainInfo, actions: actions }));
+	                        break;
+	                    case 'practice':
+	                        itemsInBlock.push(_react2.default.createElement(Practice, { item: item, id: item.id, location: ['mainInfo', indexInMainInfo, 'items'], type: data.type, index: index, indexInMainInfo: indexInMainInfo, actions: actions, beginDrag: actions.beginDrag, endDrag: actions.endDrag, itemSort: actions.itemSort }));
+	                        break;
+	                }
+	            });
+
+	            switch (data.type) {
+	                case 'education':
+	                    return _react2.default.createElement(
+	                        'div',
+	                        { className: data.type + " isDraggable", type: data.type },
+	                        _react2.default.createElement(
+	                            'i',
+	                            { className: 'iconfont' },
+	                            ''
+	                        ),
+	                        _react2.default.createElement(_Text2.default, { className: 'title', text: data.title.text, isEditting: data.title.isEditting, location: ['mainInfo', indexInMainInfo, 'title'], textEdit: actions.textEdit, enterEdit: actions.enterEdit }),
+	                        _react2.default.createElement(
+	                            'button',
+	                            { onClick: this.addItemInMainInfo },
+	                            '+'
+	                        ),
+	                        itemsInBlock
+	                    );
+	                case 'practice':
+	                    return _react2.default.createElement(
+	                        'div',
+	                        { className: data.type + " isDraggable" },
+	                        _react2.default.createElement(
+	                            'i',
+	                            { className: 'iconfont' },
+	                            ''
+	                        ),
+	                        _react2.default.createElement(_Text2.default, { className: 'title', text: data.title.text, isEditting: data.title.isEditting, location: ['mainInfo', indexInMainInfo, 'title'], textEdit: actions.textEdit, enterEdit: actions.enterEdit }),
+	                        _react2.default.createElement(
+	                            'button',
+	                            { onClick: this.addItemInMainInfo },
+	                            '+'
+	                        ),
+	                        itemsInBlock
+	                    );
+	                default:
+	                    return _react2.default.createElement(
+	                        'div',
+	                        { className: data.type, type: data.type },
+	                        _react2.default.createElement(
+	                            'i',
+	                            { className: 'iconfont' },
+	                            ''
+	                        ),
+	                        _react2.default.createElement(_Text2.default, { className: 'title', text: data.title.text, isEditting: data.title.isEditting, location: ['mainInfo', indexInMainInfo, 'title'], textEdit: actions.textEdit, enterEdit: actions.enterEdit }),
+	                        _react2.default.createElement(
+	                            'button',
+	                            { onClick: this.addItemInMainInfo },
+	                            '+'
+	                        ),
+	                        itemsInBlock
+	                    );
+	            }
+	        }
+	    }]);
+
+	    return MainInfoBlock;
+	}(_react2.default.Component);
+
+	exports.default = MainInfoBlock;
+
+/***/ },
+/* 265 */
+/***/ function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	Object.defineProperty(exports, "__esModule", {
+	    value: true
+	});
+	exports.default = DraggableItemConstroctor;
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _Text = __webpack_require__(179);
+
+	var _Text2 = _interopRequireDefault(_Text);
+
+	var _reactDnd = __webpack_require__(181);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var itemSource = {
+	    beginDrag: function beginDrag(props) {
+	        props.beginDrag(props.id, props.location);
+	        return {
+	            id: props.id
+	        };
+	    },
+	    endDrag: function endDrag(props, monitor) {
+	        props.endDrag(monitor.getItem().id, props.location);
+	    }
+	};
+	var itemTarget = {
+	    canDrop: function canDrop() {
+	        return false;
+	    },
+	    hover: function hover(props, monitor) {
+	        props.itemSort(monitor.getItem().id, props.id, props.location);
+	    }
+	};
+
+	function sourceCollect(connect, monitor) {
+	    return {
+	        connectDragSource: connect.dragSource()
+	    };
+	}
+
+	function targetCollect(connect) {
+	    return {
+	        connectDropTarget: connect.dropTarget()
+	    };
+	}
+
+	var MainInfoItem = function (_React$Component) {
+	    _inherits(MainInfoItem, _React$Component);
+
+	    function MainInfoItem(props) {
+	        _classCallCheck(this, MainInfoItem);
+
+	        return _possibleConstructorReturn(this, Object.getPrototypeOf(MainInfoItem).call(this, props));
+	    }
+
+	    _createClass(MainInfoItem, [{
+	        key: 'render',
+	        value: function render() {
+	            var _props = this.props;
+	            var type = _props.type;
+	            var item = _props.item;
+	            var index = _props.index;
+	            var indexInMainInfo = _props.indexInMainInfo;
+	            var _props$actions = this.props.actions;
+	            var textEdit = _props$actions.textEdit;
+	            var enterEdit = _props$actions.enterEdit;
+	            var _props2 = this.props;
+	            var connectDragSource = _props2.connectDragSource;
+	            var connectDropTarget = _props2.connectDropTarget;
+
+	            switch (type) {
+	                case 'education':
+	                case 'practice':
+	                    return connectDropTarget(connectDragSource(_react2.default.createElement(
+	                        'div',
+	                        { className: 'item isDraggable' },
+	                        _react2.default.createElement(_Text2.default, { className: 'name', text: item.name.text, isEditting: item.name.isEditting, textEdit: textEdit, enterEdit: enterEdit, location: ['mainInfo', indexInMainInfo, 'items', index, 'name'] }),
+	                        _react2.default.createElement(_Text2.default, { className: 'time', text: item.time.text, isEditting: item.time.isEditting, textEdit: textEdit, enterEdit: enterEdit, location: ['mainInfo', indexInMainInfo, 'items', index, 'time'] }),
+	                        _react2.default.createElement(_Text2.default, { className: 'content', text: item.content.text, isEditting: item.content.isEditting, textEdit: textEdit, enterEdit: enterEdit, location: ['mainInfo', indexInMainInfo, 'items', index, 'content'] })
+	                    )));
+
+	            }
+	            // const { text, isEditting } = this.props.item;
+	            // const { textEdit, enterEdit } = this.props.actions;
+	            // const { indexInMainInfo, index, connectDragSource, connectDropTarget, location, isDragging } = this.props;
+	            // const opacity = isDragging?'0.5':'1';
+	            // return connectDropTarget(connectDragSource((
+	            //     <li className="item isDraggable" style={{opacity:opacity}}>
+	            //         <Text className="text" text={text} isEditting={isEditting} textEdit={textEdit} enterEdit={enterEdit} location={['mainInfo',indexInMainInfo,'items',index]}/>
+	            //     </li>
+	            // )));
+	        }
+	    }]);
+
+	    return MainInfoItem;
+	}(_react2.default.Component);
+
+	function DraggableItemConstroctor(type) {
+	    return (0, _reactDnd.DropTarget)(type, itemTarget, targetCollect)((0, _reactDnd.DragSource)(type, itemSource, sourceCollect)(MainInfoItem));
+	}
+
+/***/ },
+/* 266 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -26205,7 +26570,7 @@
 	}
 
 /***/ },
-/* 264 */
+/* 267 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26217,15 +26582,15 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _HTML5Backend = __webpack_require__(265);
+	var _HTML5Backend = __webpack_require__(268);
 
 	var _HTML5Backend2 = _interopRequireDefault(_HTML5Backend);
 
-	var _getEmptyImage = __webpack_require__(294);
+	var _getEmptyImage = __webpack_require__(297);
 
 	var _getEmptyImage2 = _interopRequireDefault(_getEmptyImage);
 
-	var _NativeTypes = __webpack_require__(293);
+	var _NativeTypes = __webpack_require__(296);
 
 	var NativeTypes = _interopRequireWildcard(_NativeTypes);
 
@@ -26237,7 +26602,7 @@
 	}
 
 /***/ },
-/* 265 */
+/* 268 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -26250,25 +26615,25 @@
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-	var _lodashObjectDefaults = __webpack_require__(266);
+	var _lodashObjectDefaults = __webpack_require__(269);
 
 	var _lodashObjectDefaults2 = _interopRequireDefault(_lodashObjectDefaults);
 
-	var _shallowEqual = __webpack_require__(279);
+	var _shallowEqual = __webpack_require__(282);
 
 	var _shallowEqual2 = _interopRequireDefault(_shallowEqual);
 
-	var _EnterLeaveCounter = __webpack_require__(280);
+	var _EnterLeaveCounter = __webpack_require__(283);
 
 	var _EnterLeaveCounter2 = _interopRequireDefault(_EnterLeaveCounter);
 
-	var _BrowserDetector = __webpack_require__(283);
+	var _BrowserDetector = __webpack_require__(286);
 
-	var _OffsetUtils = __webpack_require__(290);
+	var _OffsetUtils = __webpack_require__(293);
 
-	var _NativeDragSources = __webpack_require__(292);
+	var _NativeDragSources = __webpack_require__(295);
 
-	var _NativeTypes = __webpack_require__(293);
+	var _NativeTypes = __webpack_require__(296);
 
 	var NativeTypes = _interopRequireWildcard(_NativeTypes);
 
@@ -26802,12 +27167,12 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 266 */
+/* 269 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var assign = __webpack_require__(267),
-	    assignDefaults = __webpack_require__(277),
-	    createDefaults = __webpack_require__(278);
+	var assign = __webpack_require__(270),
+	    assignDefaults = __webpack_require__(280),
+	    createDefaults = __webpack_require__(281);
 
 	/**
 	 * Assigns own enumerable properties of source object(s) to the destination
@@ -26833,12 +27198,12 @@
 
 
 /***/ },
-/* 267 */
+/* 270 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var assignWith = __webpack_require__(268),
-	    baseAssign = __webpack_require__(271),
-	    createAssigner = __webpack_require__(273);
+	var assignWith = __webpack_require__(271),
+	    baseAssign = __webpack_require__(274),
+	    createAssigner = __webpack_require__(276);
 
 	/**
 	 * Assigns own enumerable properties of source object(s) to the destination
@@ -26882,10 +27247,10 @@
 
 
 /***/ },
-/* 268 */
+/* 271 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var keys = __webpack_require__(269);
+	var keys = __webpack_require__(272);
 
 	/**
 	 * A specialized version of `_.assign` for customizing assigned values without
@@ -26920,13 +27285,13 @@
 
 
 /***/ },
-/* 269 */
+/* 272 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var getNative = __webpack_require__(190),
 	    isArrayLike = __webpack_require__(206),
 	    isObject = __webpack_require__(193),
-	    shimKeys = __webpack_require__(270);
+	    shimKeys = __webpack_require__(273);
 
 	/* Native method references for those with the same name as other `lodash` methods. */
 	var nativeKeys = getNative(Object, 'keys');
@@ -26971,7 +27336,7 @@
 
 
 /***/ },
-/* 270 */
+/* 273 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var isArguments = __webpack_require__(233),
@@ -27018,11 +27383,11 @@
 
 
 /***/ },
-/* 271 */
+/* 274 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var baseCopy = __webpack_require__(272),
-	    keys = __webpack_require__(269);
+	var baseCopy = __webpack_require__(275),
+	    keys = __webpack_require__(272);
 
 	/**
 	 * The base implementation of `_.assign` without support for argument juggling,
@@ -27043,7 +27408,7 @@
 
 
 /***/ },
-/* 272 */
+/* 275 */
 /***/ function(module, exports) {
 
 	/**
@@ -27072,11 +27437,11 @@
 
 
 /***/ },
-/* 273 */
+/* 276 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var bindCallback = __webpack_require__(274),
-	    isIterateeCall = __webpack_require__(276),
+	var bindCallback = __webpack_require__(277),
+	    isIterateeCall = __webpack_require__(279),
 	    restParam = __webpack_require__(209);
 
 	/**
@@ -27119,10 +27484,10 @@
 
 
 /***/ },
-/* 274 */
+/* 277 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var identity = __webpack_require__(275);
+	var identity = __webpack_require__(278);
 
 	/**
 	 * A specialized version of `baseCallback` which only supports `this` binding
@@ -27164,7 +27529,7 @@
 
 
 /***/ },
-/* 275 */
+/* 278 */
 /***/ function(module, exports) {
 
 	/**
@@ -27190,7 +27555,7 @@
 
 
 /***/ },
-/* 276 */
+/* 279 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var isArrayLike = __webpack_require__(206),
@@ -27224,7 +27589,7 @@
 
 
 /***/ },
-/* 277 */
+/* 280 */
 /***/ function(module, exports) {
 
 	/**
@@ -27243,7 +27608,7 @@
 
 
 /***/ },
-/* 278 */
+/* 281 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var restParam = __webpack_require__(209);
@@ -27271,7 +27636,7 @@
 
 
 /***/ },
-/* 279 */
+/* 282 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -27312,7 +27677,7 @@
 	module.exports = exports["default"];
 
 /***/ },
-/* 280 */
+/* 283 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -27323,7 +27688,7 @@
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError('Cannot call a class as a function'); } }
 
-	var _lodashArrayUnion = __webpack_require__(281);
+	var _lodashArrayUnion = __webpack_require__(284);
 
 	var _lodashArrayUnion2 = _interopRequireDefault(_lodashArrayUnion);
 
@@ -27369,10 +27734,10 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 281 */
+/* 284 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var baseFlatten = __webpack_require__(282),
+	var baseFlatten = __webpack_require__(285),
 	    baseUniq = __webpack_require__(214),
 	    restParam = __webpack_require__(209);
 
@@ -27399,7 +27764,7 @@
 
 
 /***/ },
-/* 282 */
+/* 285 */
 /***/ function(module, exports, __webpack_require__) {
 
 	var arrayPush = __webpack_require__(213),
@@ -27446,7 +27811,7 @@
 
 
 /***/ },
-/* 283 */
+/* 286 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -27455,7 +27820,7 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _lodashFunctionMemoize = __webpack_require__(284);
+	var _lodashFunctionMemoize = __webpack_require__(287);
 
 	var _lodashFunctionMemoize2 = _interopRequireDefault(_lodashFunctionMemoize);
 
@@ -27471,10 +27836,10 @@
 	exports.isSafari = isSafari;
 
 /***/ },
-/* 284 */
+/* 287 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var MapCache = __webpack_require__(285);
+	var MapCache = __webpack_require__(288);
 
 	/** Used as the `TypeError` message for "Functions" methods. */
 	var FUNC_ERROR_TEXT = 'Expected a function';
@@ -27557,13 +27922,13 @@
 
 
 /***/ },
-/* 285 */
+/* 288 */
 /***/ function(module, exports, __webpack_require__) {
 
-	var mapDelete = __webpack_require__(286),
-	    mapGet = __webpack_require__(287),
-	    mapHas = __webpack_require__(288),
-	    mapSet = __webpack_require__(289);
+	var mapDelete = __webpack_require__(289),
+	    mapGet = __webpack_require__(290),
+	    mapHas = __webpack_require__(291),
+	    mapSet = __webpack_require__(292);
 
 	/**
 	 * Creates a cache object to store key/value pairs.
@@ -27587,7 +27952,7 @@
 
 
 /***/ },
-/* 286 */
+/* 289 */
 /***/ function(module, exports) {
 
 	/**
@@ -27607,7 +27972,7 @@
 
 
 /***/ },
-/* 287 */
+/* 290 */
 /***/ function(module, exports) {
 
 	/**
@@ -27627,7 +27992,7 @@
 
 
 /***/ },
-/* 288 */
+/* 291 */
 /***/ function(module, exports) {
 
 	/** Used for native method references. */
@@ -27653,7 +28018,7 @@
 
 
 /***/ },
-/* 289 */
+/* 292 */
 /***/ function(module, exports) {
 
 	/**
@@ -27677,7 +28042,7 @@
 
 
 /***/ },
-/* 290 */
+/* 293 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -27689,9 +28054,9 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _BrowserDetector = __webpack_require__(283);
+	var _BrowserDetector = __webpack_require__(286);
 
-	var _MonotonicInterpolant = __webpack_require__(291);
+	var _MonotonicInterpolant = __webpack_require__(294);
 
 	var _MonotonicInterpolant2 = _interopRequireDefault(_MonotonicInterpolant);
 
@@ -27777,7 +28142,7 @@
 	}
 
 /***/ },
-/* 291 */
+/* 294 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -27894,7 +28259,7 @@
 	module.exports = exports["default"];
 
 /***/ },
-/* 292 */
+/* 295 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -27912,7 +28277,7 @@
 
 	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
-	var _NativeTypes = __webpack_require__(293);
+	var _NativeTypes = __webpack_require__(296);
 
 	var NativeTypes = _interopRequireWildcard(_NativeTypes);
 
@@ -28002,7 +28367,7 @@
 	}
 
 /***/ },
-/* 293 */
+/* 296 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -28016,7 +28381,7 @@
 	exports.TEXT = TEXT;
 
 /***/ },
-/* 294 */
+/* 297 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -28037,7 +28402,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 295 */
+/* 298 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -28046,15 +28411,15 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _createAction = __webpack_require__(296);
+	var _createAction = __webpack_require__(299);
 
 	var _createAction2 = _interopRequireDefault(_createAction);
 
-	var _handleAction = __webpack_require__(297);
+	var _handleAction = __webpack_require__(300);
 
 	var _handleAction2 = _interopRequireDefault(_handleAction);
 
-	var _handleActions = __webpack_require__(304);
+	var _handleActions = __webpack_require__(307);
 
 	var _handleActions2 = _interopRequireDefault(_handleActions);
 
@@ -28063,7 +28428,7 @@
 	exports.handleActions = _handleActions2['default'];
 
 /***/ },
-/* 296 */
+/* 299 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -28103,7 +28468,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 297 */
+/* 300 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -28111,7 +28476,7 @@
 	exports.__esModule = true;
 	exports['default'] = handleAction;
 
-	var _fluxStandardAction = __webpack_require__(298);
+	var _fluxStandardAction = __webpack_require__(301);
 
 	function isFunction(val) {
 	  return typeof val === 'function';
@@ -28139,7 +28504,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 298 */
+/* 301 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -28150,7 +28515,7 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _lodashIsplainobject = __webpack_require__(299);
+	var _lodashIsplainobject = __webpack_require__(302);
 
 	var _lodashIsplainobject2 = _interopRequireDefault(_lodashIsplainobject);
 
@@ -28169,7 +28534,7 @@
 	}
 
 /***/ },
-/* 299 */
+/* 302 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -28180,9 +28545,9 @@
 	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 * Available under MIT license <https://lodash.com/license>
 	 */
-	var baseFor = __webpack_require__(300),
-	    isArguments = __webpack_require__(301),
-	    keysIn = __webpack_require__(302);
+	var baseFor = __webpack_require__(303),
+	    isArguments = __webpack_require__(304),
+	    keysIn = __webpack_require__(305);
 
 	/** `Object#toString` result references. */
 	var objectTag = '[object Object]';
@@ -28278,7 +28643,7 @@
 
 
 /***/ },
-/* 300 */
+/* 303 */
 /***/ function(module, exports) {
 
 	/**
@@ -28332,7 +28697,7 @@
 
 
 /***/ },
-/* 301 */
+/* 304 */
 /***/ function(module, exports) {
 
 	/* WEBPACK VAR INJECTION */(function(global) {/**
@@ -28586,7 +28951,7 @@
 	/* WEBPACK VAR INJECTION */}.call(exports, (function() { return this; }())))
 
 /***/ },
-/* 302 */
+/* 305 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -28597,8 +28962,8 @@
 	 * Copyright 2009-2015 Jeremy Ashkenas, DocumentCloud and Investigative Reporters & Editors
 	 * Available under MIT license <https://lodash.com/license>
 	 */
-	var isArguments = __webpack_require__(301),
-	    isArray = __webpack_require__(303);
+	var isArguments = __webpack_require__(304),
+	    isArray = __webpack_require__(306);
 
 	/** Used to detect unsigned integer values. */
 	var reIsUint = /^\d+$/;
@@ -28724,7 +29089,7 @@
 
 
 /***/ },
-/* 303 */
+/* 306 */
 /***/ function(module, exports) {
 
 	/**
@@ -28910,7 +29275,7 @@
 
 
 /***/ },
-/* 304 */
+/* 307 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -28920,15 +29285,15 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { 'default': obj }; }
 
-	var _handleAction = __webpack_require__(297);
+	var _handleAction = __webpack_require__(300);
 
 	var _handleAction2 = _interopRequireDefault(_handleAction);
 
-	var _ownKeys = __webpack_require__(305);
+	var _ownKeys = __webpack_require__(308);
 
 	var _ownKeys2 = _interopRequireDefault(_ownKeys);
 
-	var _reduceReducers = __webpack_require__(306);
+	var _reduceReducers = __webpack_require__(309);
 
 	var _reduceReducers2 = _interopRequireDefault(_reduceReducers);
 
@@ -28946,7 +29311,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 305 */
+/* 308 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -28971,7 +29336,7 @@
 	module.exports = exports['default'];
 
 /***/ },
-/* 306 */
+/* 309 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -28994,7 +29359,7 @@
 	module.exports = exports["default"];
 
 /***/ },
-/* 307 */
+/* 310 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -29004,111 +29369,18 @@
 	});
 	exports.default = todoApp;
 
-	var _shortid = __webpack_require__(308);
+	var _shortid = __webpack_require__(311);
 
 	var _shortid2 = _interopRequireDefault(_shortid);
 
-	var _initialState = __webpack_require__(317);
+	var _initialState = __webpack_require__(320);
 
-	var _History = __webpack_require__(318);
+	var _History = __webpack_require__(321);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _toConsumableArray(arr) { if (Array.isArray(arr)) { for (var i = 0, arr2 = Array(arr.length); i < arr.length; i++) { arr2[i] = arr[i]; } return arr2; } else { return Array.from(arr); } }
 
-	// var History = [];
-	// const initialState = {
-	//     styleName:'base-style',
-	//     baseInfo:{
-	//         avatar:{
-	//             imgUrl:'http://sfault-avatar.b0.upaiyun.com/253/959/2539590481-562f620530b4c_huge256',
-	//             isEditting:false
-	//         },
-	//         name:{
-	//             text:'王小黑',
-	//             isEditting:false
-	//         },
-	//         job:{
-	//             text:'Web前端工程师',
-	//             isEditting:false
-	//         },
-	//         basic_info:[],
-	//         contact:[{
-	//             id:shortid.generate(),
-	//             name:{
-	//                 text:'手机',
-	//                 isEditting:false
-	//             },
-	//             value:{
-	//                 text:'13316919664',
-	//                 isEditting:false
-	//             },
-	//             isDragging:false
-	//         },{
-	//             id:shortid.generate(),
-	//             name:{
-	//                 text:'邮箱',
-	//                 isEditting:false
-	//             },
-	//             value:{
-	//                 text:'wjwang13@fudan.edu.cn',
-	//                 isEditting:false
-	//             },
-	//             isDragging:false
-	//         },{
-	//             id:shortid.generate(),
-	//             name:{
-	//                 text:'个人博客',
-	//                 isEditting:false
-	//             },
-	//             value:{
-	//                 text:'blog.starkwang.com',
-	//                 isEditting:false
-	//             },
-	//             isDragging:false
-	//         }]
-	//     },
-	//     mainInfo:[{
-	//         id:shortid.generate(),
-	//         type:'education',
-	//         title:{
-	//             text:'教育经历',
-	//             isEditting:false
-	//         },
-	//         items:[{
-	//             name:{
-	//                 text:'复旦大学',
-	//                 isEditting:false
-	//             },
-	//             time:{
-	//                 text:'2013年9月至2017年7月',
-	//                 isEditting:false
-	//             },
-	//             major:{
-	//                 text:'本科生，电子信息科学与技术专业',
-	//                 isEditting:false
-	//             }
-	//         },{
-	//             name:{
-	//                 text:'复旦大学',
-	//                 isEditting:false
-	//             },
-	//             time:{
-	//                 text:'2013年9月至2017年7月',
-	//                 isEditting:false
-	//             },
-	//             major:{
-	//                 text:'本科生，电子信息科学与技术专业',
-	//                 isEditting:false
-	//             }
-	//         }]
-	//     },{
-	//         id:shortid.generate(),
-	//         type:'skill',
-	//         title:'专业技能',
-	//         items:[]
-	//     }]
-	// }
 	function findItem(items, id) {
 	    var resultIndex;
 	    items.forEach(function (item, index) {
@@ -29274,6 +29546,7 @@
 	            var targetArr = newMainInfo[action.indexInMainInfo].items;
 	            if (action.category == 'education') {
 	                targetArr.push({
+	                    id: _shortid2.default.generate(),
 	                    name: {
 	                        text: '这里填入名称',
 	                        isEditting: false
@@ -29282,7 +29555,7 @@
 	                        text: '这里填入时间',
 	                        isEditting: false
 	                    },
-	                    major: {
+	                    content: {
 	                        text: '这里填入简介',
 	                        isEditting: false
 	                    }
@@ -29335,23 +29608,23 @@
 	}
 
 /***/ },
-/* 308 */
+/* 311 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	module.exports = __webpack_require__(309);
+	module.exports = __webpack_require__(312);
 
 
 /***/ },
-/* 309 */
+/* 312 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var alphabet = __webpack_require__(310);
-	var encode = __webpack_require__(312);
-	var decode = __webpack_require__(314);
-	var isValid = __webpack_require__(315);
+	var alphabet = __webpack_require__(313);
+	var encode = __webpack_require__(315);
+	var decode = __webpack_require__(317);
+	var isValid = __webpack_require__(318);
 
 	// Ignore all milliseconds before a certain time to reduce the size of the date entropy without sacrificing uniqueness.
 	// This number should be updated every year or so to keep the generated id short.
@@ -29366,7 +29639,7 @@
 	// has a unique value for worker
 	// Note: I don't know if this is automatically set when using third
 	// party cluster solutions such as pm2.
-	var clusterWorkerId = __webpack_require__(316) || 0;
+	var clusterWorkerId = __webpack_require__(319) || 0;
 
 	// Counter is used when shortid is called multiple times in one second.
 	var counter;
@@ -29449,12 +29722,12 @@
 
 
 /***/ },
-/* 310 */
+/* 313 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var randomFromSeed = __webpack_require__(311);
+	var randomFromSeed = __webpack_require__(314);
 
 	var ORIGINAL = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ_-';
 	var alphabet;
@@ -29553,7 +29826,7 @@
 
 
 /***/ },
-/* 311 */
+/* 314 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -29584,12 +29857,12 @@
 
 
 /***/ },
-/* 312 */
+/* 315 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
 
-	var randomByte = __webpack_require__(313);
+	var randomByte = __webpack_require__(316);
 
 	function encode(lookup, number) {
 	    var loopCounter = 0;
@@ -29609,7 +29882,7 @@
 
 
 /***/ },
-/* 313 */
+/* 316 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -29629,11 +29902,11 @@
 
 
 /***/ },
-/* 314 */
+/* 317 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var alphabet = __webpack_require__(310);
+	var alphabet = __webpack_require__(313);
 
 	/**
 	 * Decode the id to get the version and worker
@@ -29652,11 +29925,11 @@
 
 
 /***/ },
-/* 315 */
+/* 318 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
-	var alphabet = __webpack_require__(310);
+	var alphabet = __webpack_require__(313);
 
 	function isShortId(id) {
 	    if (!id || typeof id !== 'string' || id.length < 6 ) {
@@ -29677,7 +29950,7 @@
 
 
 /***/ },
-/* 316 */
+/* 319 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -29686,7 +29959,7 @@
 
 
 /***/ },
-/* 317 */
+/* 320 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -29696,7 +29969,7 @@
 	});
 	exports.initialState = undefined;
 
-	var _shortid = __webpack_require__(308);
+	var _shortid = __webpack_require__(311);
 
 	var _shortid2 = _interopRequireDefault(_shortid);
 
@@ -29761,6 +30034,7 @@
 	            isEditting: false
 	        },
 	        items: [{
+	            id: _shortid2.default.generate(),
 	            name: {
 	                text: '复旦大学',
 	                isEditting: false
@@ -29784,11 +30058,13 @@
 	        items: [{
 	            id: _shortid2.default.generate(),
 	            text: '专业技能abcdjfalfsjkafw javascript 专业技能专业技能专业技能专业技能专业技能专业技能专业技能专业技能专业技能专业技能专业技能专业技能专业技能',
-	            isEditting: false
+	            isEditting: false,
+	            isDragging: false
 	        }, {
 	            id: _shortid2.default.generate(),
 	            text: '专业技能专业技能专业技能专业技能专业技能专业技能专业技能专业技能专业技能专业技能专业技能专业技能专业技能专业技能',
-	            isEditting: false
+	            isEditting: false,
+	            isDragging: false
 	        }]
 	    }, {
 	        id: _shortid2.default.generate(),
@@ -29799,8 +30075,9 @@
 	        },
 	        items: [{
 	            id: _shortid2.default.generate(),
+	            isDragging: false,
 	            name: {
-	                text: '项目名称abcdehgga项目名称',
+	                text: '项目名称a',
 	                isEditting: false
 	            },
 	            time: {
@@ -29813,8 +30090,32 @@
 	            }
 	        }, {
 	            id: _shortid2.default.generate(),
+	            isDragging: false,
 	            name: {
-	                text: '项目名称abcdehgga项目名称',
+	                text: '项目名称b',
+	                isEditting: false
+	            },
+	            time: {
+	                text: '项目时间',
+	                isEditting: false
+	            },
+	            content: {
+	                text: '项目内容项目内容项目内容项目内容项目内容项目内容项目内容abcdefgh项目内容项目内容',
+	                isEditting: false
+	            }
+	        }]
+	    }, {
+	        id: _shortid2.default.generate(),
+	        type: 'intern',
+	        title: {
+	            text: '实习经历',
+	            isEditting: false
+	        },
+	        items: [{
+	            id: _shortid2.default.generate(),
+	            isDragging: false,
+	            name: {
+	                text: '项目名称a',
 	                isEditting: false
 	            },
 	            time: {
@@ -29830,7 +30131,7 @@
 	};
 
 /***/ },
-/* 318 */
+/* 321 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -29840,7 +30141,7 @@
 	});
 	exports.History = undefined;
 
-	var _initialState = __webpack_require__(317);
+	var _initialState = __webpack_require__(320);
 
 	var init = JSON.stringify(_initialState.initialState);
 	var History = exports.History = {

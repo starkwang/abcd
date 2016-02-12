@@ -1,3 +1,11 @@
+.isDraggable{
+    cursor: move !important;
+    transition: all 0.5s; 
+}
+.isDraggable:hover{
+    box-shadow: 0 8px 17px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
 .base-info,.main-info{
     float: left;
     height: 1355px;
@@ -80,7 +88,6 @@
             width: 100%;
             height: 24px;
             font-size: 16px;
-            cursor: move;
             .delete{
                 display: none;
                 top: 0;

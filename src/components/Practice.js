@@ -1,10 +1,11 @@
 import React from 'react';
 import Text from './Text';
-import { DragSource ,DropTarget} from 'react-dnd';
+import { DragSource ,DropTarget } from 'react-dnd';
 
 const type = 'practice-item';
 const itemSource = {
     beginDrag(props) {
+        console.log(props);
         props.beginDrag(props.id,props.location);
         return {
             id : props.id
@@ -47,7 +48,7 @@ class Practice extends React.Component{
         const { textEdit, enterEdit } = this.props.actions;
         const { indexInMainInfo, index, connectDragSource, connectDropTarget, location } = this.props;
         return connectDropTarget(connectDragSource((
-            <div className="item">
+            <div className="item isDraggable">
                 <Text className="name" text={name.text} isEditting={name.isEditting} textEdit={textEdit} enterEdit={enterEdit} location={['mainInfo',indexInMainInfo,'items',index,'name']}/>
                 <Text className="time" text={time.text} isEditting={time.isEditting} textEdit={textEdit} enterEdit={enterEdit} location={['mainInfo',indexInMainInfo,'items',index,'time']}/>
                 <Text className="content" text={content.text} isEditting={content.isEditting} textEdit={textEdit} enterEdit={enterEdit} location={['mainInfo',indexInMainInfo,'items',index,'content']}/>

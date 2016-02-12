@@ -13,7 +13,7 @@ export default class Education extends React.Component{
             <div className="item">
                 <Text className="name" text={name.text} isEditting={name.isEditting} textEdit={textEdit} enterEdit={enterEdit} location={['mainInfo',indexInMainInfo,'items',index,'name']}/>
                 <Text className="time" text={time.text} isEditting={time.isEditting} textEdit={textEdit} enterEdit={enterEdit} location={['mainInfo',indexInMainInfo,'items',index,'time']}/>
-                <Text className="content" text={content.text} isEditting={content.isEditting} textEdit={textEdit} enterEdit={enterEdit} location={['mainInfo',indexInMainInfo,'items',index,'major']}/>
+                <Text className="content" text={content.text} isEditting={content.isEditting} textEdit={textEdit} enterEdit={enterEdit} location={['mainInfo',indexInMainInfo,'items',index,'content']}/>
             </div>
         );
     }
