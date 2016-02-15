@@ -142,6 +142,10 @@ export const initialState = {
                 text:'项目名称a',
                 isEditting:false
             },
+            job:{
+                text:'职位',
+                isEditting:false
+            },
             time:{
                 text:'项目时间',
                 isEditting:false

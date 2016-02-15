@@ -26213,6 +26213,8 @@
 	//主要信息块，块级组件，比如“教育经历”、“实践经历”等，所有数据均放在由props.data中
 	var Education = (0, _MainInfoItem2.default)('education-item');
 	var Practice = (0, _MainInfoItem2.default)('practice-item');
+	var Skill = (0, _MainInfoItem2.default)('skill-item');
+	var Intern = (0, _MainInfoItem2.default)('intern-item');
 
 	var MainInfoBlock = function (_React$Component) {
 	    _inherits(MainInfoBlock, _React$Component);
@@ -26244,10 +26246,16 @@
 	            data.items.forEach(function (item, index) {
 	                switch (data.type) {
 	                    case 'education':
-	                        itemsInBlock.push(_react2.default.createElement(Education, { item: item, id: item.id, location: ['mainInfo', indexInMainInfo, 'items'], type: data.type, index: index, indexInMainInfo: indexInMainInfo, actions: actions }));
+	                        itemsInBlock.push(_react2.default.createElement(Education, { item: item, id: item.id, location: ['mainInfo', indexInMainInfo, 'items'], type: data.type, index: index, key: index, indexInMainInfo: indexInMainInfo, actions: actions, isDragging: item.isDragging, beginDrag: actions.beginDrag, endDrag: actions.endDrag, itemSort: actions.itemSort }));
 	                        break;
 	                    case 'practice':
-	                        itemsInBlock.push(_react2.default.createElement(Practice, { item: item, id: item.id, location: ['mainInfo', indexInMainInfo, 'items'], type: data.type, index: index, indexInMainInfo: indexInMainInfo, actions: actions, beginDrag: actions.beginDrag, endDrag: actions.endDrag, itemSort: actions.itemSort }));
+	                        itemsInBlock.push(_react2.default.createElement(Practice, { item: item, id: item.id, location: ['mainInfo', indexInMainInfo, 'items'], type: data.type, index: index, key: index, indexInMainInfo: indexInMainInfo, actions: actions, isDragging: item.isDragging, beginDrag: actions.beginDrag, endDrag: actions.endDrag, itemSort: actions.itemSort }));
+	                        break;
+	                    case 'skill':
+	                        itemsInBlock.push(_react2.default.createElement(Skill, { item: item, id: item.id, location: ['mainInfo', indexInMainInfo, 'items'], type: data.type, index: index, key: index, indexInMainInfo: indexInMainInfo, actions: actions, isDragging: item.isDragging, beginDrag: actions.beginDrag, endDrag: actions.endDrag, itemSort: actions.itemSort }));
+	                        break;
+	                    case 'intern':
+	                        itemsInBlock.push(_react2.default.createElement(Intern, { item: item, id: item.id, location: ['mainInfo', indexInMainInfo, 'items'], type: data.type, index: index, key: index, indexInMainInfo: indexInMainInfo, actions: actions, isDragging: item.isDragging, beginDrag: actions.beginDrag, endDrag: actions.endDrag, itemSort: actions.itemSort }));
 	                        break;
 	                }
 	            });
@@ -26271,6 +26279,40 @@
 	                        itemsInBlock
 	                    );
 	                case 'practice':
+	                    return _react2.default.createElement(
+	                        'div',
+	                        { className: data.type + " isDraggable" },
+	                        _react2.default.createElement(
+	                            'i',
+	                            { className: 'iconfont' },
+	                            ''
+	                        ),
+	                        _react2.default.createElement(_Text2.default, { className: 'title', text: data.title.text, isEditting: data.title.isEditting, location: ['mainInfo', indexInMainInfo, 'title'], textEdit: actions.textEdit, enterEdit: actions.enterEdit }),
+	                        _react2.default.createElement(
+	                            'button',
+	                            { onClick: this.addItemInMainInfo },
+	                            '+'
+	                        ),
+	                        itemsInBlock
+	                    );
+	                case 'skill':
+	                    return _react2.default.createElement(
+	                        'div',
+	                        { className: data.type + " isDraggable" },
+	                        _react2.default.createElement(
+	                            'i',
+	                            { className: 'iconfont' },
+	                            ''
+	                        ),
+	                        _react2.default.createElement(_Text2.default, { className: 'title', text: data.title.text, isEditting: data.title.isEditting, location: ['mainInfo', indexInMainInfo, 'title'], textEdit: actions.textEdit, enterEdit: actions.enterEdit }),
+	                        _react2.default.createElement(
+	                            'button',
+	                            { onClick: this.addItemInMainInfo },
+	                            '+'
+	                        ),
+	                        itemsInBlock
+	                    );
+	                case 'intern':
 	                    return _react2.default.createElement(
 	                        'div',
 	                        { className: data.type + " isDraggable" },
@@ -26393,6 +26435,7 @@
 	            var item = _props.item;
 	            var index = _props.index;
 	            var indexInMainInfo = _props.indexInMainInfo;
+	            var isDragging = _props.isDragging;
 	            var _props$actions = this.props.actions;
 	            var textEdit = _props$actions.textEdit;
 	            var enterEdit = _props$actions.enterEdit;
@@ -26400,17 +26443,32 @@
 	            var connectDragSource = _props2.connectDragSource;
 	            var connectDropTarget = _props2.connectDropTarget;
 
+	            var opacity = isDragging ? '0.5' : '1';
 	            switch (type) {
 	                case 'education':
 	                case 'practice':
 	                    return connectDropTarget(connectDragSource(_react2.default.createElement(
 	                        'div',
-	                        { className: 'item isDraggable' },
+	                        { className: 'item isDraggable', style: { opacity: opacity } },
 	                        _react2.default.createElement(_Text2.default, { className: 'name', text: item.name.text, isEditting: item.name.isEditting, textEdit: textEdit, enterEdit: enterEdit, location: ['mainInfo', indexInMainInfo, 'items', index, 'name'] }),
 	                        _react2.default.createElement(_Text2.default, { className: 'time', text: item.time.text, isEditting: item.time.isEditting, textEdit: textEdit, enterEdit: enterEdit, location: ['mainInfo', indexInMainInfo, 'items', index, 'time'] }),
 	                        _react2.default.createElement(_Text2.default, { className: 'content', text: item.content.text, isEditting: item.content.isEditting, textEdit: textEdit, enterEdit: enterEdit, location: ['mainInfo', indexInMainInfo, 'items', index, 'content'] })
 	                    )));
-
+	                case 'skill':
+	                    return connectDropTarget(connectDragSource(_react2.default.createElement(
+	                        'li',
+	                        { className: 'item isDraggable', style: { opacity: opacity } },
+	                        _react2.default.createElement(_Text2.default, { className: 'text', text: item.text, isEditting: item.isEditting, textEdit: textEdit, enterEdit: enterEdit, location: ['mainInfo', indexInMainInfo, 'items', index] })
+	                    )));
+	                case 'intern':
+	                    return connectDropTarget(connectDragSource(_react2.default.createElement(
+	                        'div',
+	                        { className: 'item isDraggable', style: { opacity: opacity } },
+	                        _react2.default.createElement(_Text2.default, { className: 'name', text: item.name.text, isEditting: item.name.isEditting, textEdit: textEdit, enterEdit: enterEdit, location: ['mainInfo', indexInMainInfo, 'items', index, 'name'] }),
+	                        _react2.default.createElement(_Text2.default, { className: 'job', text: item.job.text, isEditting: item.job.isEditting, textEdit: textEdit, enterEdit: enterEdit, location: ['mainInfo', indexInMainInfo, 'items', index, 'job'] }),
+	                        _react2.default.createElement(_Text2.default, { className: 'time-2', text: item.time.text, isEditting: item.time.isEditting, textEdit: textEdit, enterEdit: enterEdit, location: ['mainInfo', indexInMainInfo, 'items', index, 'time'] }),
+	                        _react2.default.createElement(_Text2.default, { className: 'content', text: item.content.text, isEditting: item.content.isEditting, textEdit: textEdit, enterEdit: enterEdit, location: ['mainInfo', indexInMainInfo, 'items', index, 'content'] })
+	                    )));
 	            }
 	            // const { text, isEditting } = this.props.item;
 	            // const { textEdit, enterEdit } = this.props.actions;
@@ -29547,6 +29605,7 @@
 	            if (action.category == 'education') {
 	                targetArr.push({
 	                    id: _shortid2.default.generate(),
+	                    isDragging: false,
 	                    name: {
 	                        text: '这里填入名称',
 	                        isEditting: false
@@ -29564,6 +29623,7 @@
 	            if (action.category == 'skill') {
 	                targetArr.push({
 	                    id: _shortid2.default.generate(),
+	                    isDragging: false,
 	                    text: '这里填入专业技能',
 	                    isEditting: false
 	                });
@@ -29571,12 +29631,35 @@
 	            if (action.category == 'practice') {
 	                targetArr.push({
 	                    id: _shortid2.default.generate(),
+	                    isDragging: false,
 	                    name: {
 	                        text: '项目名称abcdehgga项目名称',
 	                        isEditting: false
 	                    },
 	                    time: {
 	                        text: '项目时间',
+	                        isEditting: false
+	                    },
+	                    content: {
+	                        text: '项目内容项目内容项目内容项目内容项目内容项目内容项目内容abcdefgh项目内容项目内容',
+	                        isEditting: false
+	                    }
+	                });
+	            }
+	            if (action.category == 'intern') {
+	                targetArr.push({
+	                    id: _shortid2.default.generate(),
+	                    isDragging: false,
+	                    name: {
+	                        text: '项目名称abcdehgga项目名称',
+	                        isEditting: false
+	                    },
+	                    time: {
+	                        text: '项目时间',
+	                        isEditting: false
+	                    },
+	                    job: {
+	                        text: '职位',
 	                        isEditting: false
 	                    },
 	                    content: {
@@ -30116,6 +30199,10 @@
 	            isDragging: false,
 	            name: {
 	                text: '项目名称a',
+	                isEditting: false
+	            },
+	            job: {
+	                text: '职位',
 	                isEditting: false
 	            },
 	            time: {

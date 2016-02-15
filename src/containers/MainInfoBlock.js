@@ -4,6 +4,9 @@ import DraggableItemConstroctor from '../components/MainInfoItem';
 //主要信息块，块级组件，比如“教育经历”、“实践经历”等，所有数据均放在由props.data中
 var Education = DraggableItemConstroctor('education-item');
 var Practice = DraggableItemConstroctor('practice-item');
+var Skill = DraggableItemConstroctor('skill-item');
+var Intern = DraggableItemConstroctor('intern-item');
+
 export default class MainInfoBlock extends React.Component{
     constructor(props) {
         super(props);
@@ -22,12 +25,22 @@ export default class MainInfoBlock extends React.Component{
             switch(data.type){
                 case 'education':
                     itemsInBlock.push(
-                        <Education item={item} id={item.id} location={['mainInfo',indexInMainInfo,'items']} type={data.type} index={index} indexInMainInfo={indexInMainInfo} actions={actions}/>
+                        <Education item={item} id={item.id} location={['mainInfo',indexInMainInfo,'items']} type={data.type} index={index} key={index} indexInMainInfo={indexInMainInfo} actions={actions} isDragging={item.isDragging} beginDrag={actions.beginDrag} endDrag={actions.endDrag} itemSort={actions.itemSort}/>
                     );
                     break;
                 case 'practice':
                     itemsInBlock.push(
-                        <Practice item={item} id={item.id} location={['mainInfo',indexInMainInfo,'items']} type={data.type} index={index} indexInMainInfo={indexInMainInfo} actions={actions} beginDrag={actions.beginDrag} endDrag={actions.endDrag} itemSort={actions.itemSort}/>
+                        <Practice item={item} id={item.id} location={['mainInfo',indexInMainInfo,'items']} type={data.type} index={index} key={index} indexInMainInfo={indexInMainInfo} actions={actions} isDragging={item.isDragging} beginDrag={actions.beginDrag} endDrag={actions.endDrag} itemSort={actions.itemSort}/>
+                    );
+                    break;
+                case 'skill':
+                    itemsInBlock.push(
+                        <Skill item={item} id={item.id} location={['mainInfo',indexInMainInfo,'items']} type={data.type} index={index} key={index} indexInMainInfo={indexInMainInfo} actions={actions} isDragging={item.isDragging} beginDrag={actions.beginDrag} endDrag={actions.endDrag} itemSort={actions.itemSort}/>
+                    );
+                    break;
+                case 'intern':
+                    itemsInBlock.push(
+                        <Intern item={item} id={item.id} location={['mainInfo',indexInMainInfo,'items']} type={data.type} index={index} key={index} indexInMainInfo={indexInMainInfo} actions={actions} isDragging={item.isDragging} beginDrag={actions.beginDrag} endDrag={actions.endDrag} itemSort={actions.itemSort}/>
                     );
                     break;
             }
@@ -45,6 +58,24 @@ export default class MainInfoBlock extends React.Component{
                     </div>
                 );
             case 'practice':
+                return(
+                    <div className={data.type + " isDraggable"}>
+                        <i className="iconfont">&#xe603;</i>
+                        <Text className="title" text={data.title.text} isEditting={data.title.isEditting} location={['mainInfo',indexInMainInfo,'title']} textEdit={actions.textEdit} enterEdit={actions.enterEdit} />
+                        <button onClick={this.addItemInMainInfo}>+</button>
+                        {itemsInBlock}
+                    </div>
+                );
+            case 'skill':
+                return(
+                    <div className={data.type + " isDraggable"}>
+                        <i className="iconfont">&#xe603;</i>
+                        <Text className="title" text={data.title.text} isEditting={data.title.isEditting} location={['mainInfo',indexInMainInfo,'title']} textEdit={actions.textEdit} enterEdit={actions.enterEdit} />
+                        <button onClick={this.addItemInMainInfo}>+</button>
+                        {itemsInBlock}
+                    </div>
+                );
+            case 'intern':
                 return(
                     <div className={data.type + " isDraggable"}>
                         <i className="iconfont">&#xe603;</i>

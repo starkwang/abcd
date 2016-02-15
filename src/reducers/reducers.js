@@ -167,6 +167,7 @@ export default function todoApp(state = initialState, action) {
             if(action.category == 'education'){
                 targetArr.push({
                     id:shortid.generate(),
+                    isDragging:false,
                     name:{
                         text:'这里填入名称',
                         isEditting:false
@@ -184,6 +185,7 @@ export default function todoApp(state = initialState, action) {
             if(action.category == 'skill'){
                 targetArr.push({
                         id:shortid.generate(),
+                        isDragging:false,
                         text:'这里填入专业技能',
                         isEditting:false
                 });
@@ -191,12 +193,35 @@ export default function todoApp(state = initialState, action) {
             if(action.category == 'practice'){
                 targetArr.push({
                     id:shortid.generate(),
+                    isDragging:false,
                     name:{
                         text:'项目名称abcdehgga项目名称',
                         isEditting:false
                     },
                     time:{
                         text:'项目时间',
+                        isEditting:false
+                    },
+                    content:{
+                        text:'项目内容项目内容项目内容项目内容项目内容项目内容项目内容abcdefgh项目内容项目内容',
+                        isEditting:false
+                    }
+                });
+            }
+            if(action.category == 'intern'){
+                targetArr.push({
+                    id:shortid.generate(),
+                    isDragging:false,
+                    name:{
+                        text:'项目名称abcdehgga项目名称',
+                        isEditting:false
+                    },
+                    time:{
+                        text:'项目时间',
+                        isEditting:false
+                    },
+                    job:{
+                        text:'职位',
                         isEditting:false
                     },
                     content:{
