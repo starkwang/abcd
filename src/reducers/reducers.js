@@ -230,6 +230,20 @@ export default function todoApp(state = initialState, action) {
                     }
                 });
             }
+            if(action.category == 'honor'){
+                targetArr.push({
+                    id:shortid.generate(),
+                    isDragging:false,
+                    name:{
+                        text:'项目名称abcdehgga项目名称',
+                        isEditting:false
+                    },
+                    time:{
+                        text:'项目时间',
+                        isEditting:false
+                    }
+                });
+            }
             History.add(Object.assign({},state,{
                 mainInfo: newMainInfo
             }));

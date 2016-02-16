@@ -21106,18 +21106,32 @@
 	            var className = _props3.className;
 	            var text = _props3.text;
 	            var isEditting = _props3.isEditting;
+	            var isTextArea = _props3.isTextArea;
 
 	            if (isEditting) {
-	                return _react2.default.createElement(
-	                    "div",
-	                    { className: "text-wrapper" },
-	                    _react2.default.createElement("input", { defaultValue: text, className: className, onChange: this.onChange }),
-	                    _react2.default.createElement(
-	                        "button",
-	                        { className: className, onClick: this.enterEdit },
-	                        "确认"
-	                    )
-	                );
+	                if (isTextArea) {
+	                    return _react2.default.createElement(
+	                        "div",
+	                        { className: "text-wrapper" },
+	                        _react2.default.createElement("textarea", { defaultValue: text, className: className, onChange: this.onChange }),
+	                        _react2.default.createElement(
+	                            "button",
+	                            { className: className, onClick: this.enterEdit },
+	                            "确认"
+	                        )
+	                    );
+	                } else {
+	                    return _react2.default.createElement(
+	                        "div",
+	                        { className: "text-wrapper" },
+	                        _react2.default.createElement("input", { defaultValue: text, className: className, onChange: this.onChange }),
+	                        _react2.default.createElement(
+	                            "button",
+	                            { className: className, onClick: this.enterEdit },
+	                            "确认"
+	                        )
+	                    );
+	                }
 	            } else {
 	                return _react2.default.createElement(
 	                    "p",
@@ -26215,6 +26229,7 @@
 	var Practice = (0, _MainInfoItem2.default)('practice-item');
 	var Skill = (0, _MainInfoItem2.default)('skill-item');
 	var Intern = (0, _MainInfoItem2.default)('intern-item');
+	var Honor = (0, _MainInfoItem2.default)('honor-item');
 
 	var MainInfoBlock = function (_React$Component) {
 	    _inherits(MainInfoBlock, _React$Component);
@@ -26257,6 +26272,9 @@
 	                    case 'intern':
 	                        itemsInBlock.push(_react2.default.createElement(Intern, { item: item, id: item.id, location: ['mainInfo', indexInMainInfo, 'items'], type: data.type, index: index, key: index, indexInMainInfo: indexInMainInfo, actions: actions, isDragging: item.isDragging, beginDrag: actions.beginDrag, endDrag: actions.endDrag, itemSort: actions.itemSort }));
 	                        break;
+	                    case 'honor':
+	                        itemsInBlock.push(_react2.default.createElement(Honor, { item: item, id: item.id, location: ['mainInfo', indexInMainInfo, 'items'], type: data.type, index: index, key: index, indexInMainInfo: indexInMainInfo, actions: actions, isDragging: item.isDragging, beginDrag: actions.beginDrag, endDrag: actions.endDrag, itemSort: actions.itemSort }));
+	                        break;
 	                }
 	            });
 
@@ -26285,7 +26303,7 @@
 	                        _react2.default.createElement(
 	                            'i',
 	                            { className: 'iconfont' },
-	                            ''
+	                            ''
 	                        ),
 	                        _react2.default.createElement(_Text2.default, { className: 'title', text: data.title.text, isEditting: data.title.isEditting, location: ['mainInfo', indexInMainInfo, 'title'], textEdit: actions.textEdit, enterEdit: actions.enterEdit }),
 	                        _react2.default.createElement(
@@ -26302,7 +26320,7 @@
 	                        _react2.default.createElement(
 	                            'i',
 	                            { className: 'iconfont' },
-	                            ''
+	                            ''
 	                        ),
 	                        _react2.default.createElement(_Text2.default, { className: 'title', text: data.title.text, isEditting: data.title.isEditting, location: ['mainInfo', indexInMainInfo, 'title'], textEdit: actions.textEdit, enterEdit: actions.enterEdit }),
 	                        _react2.default.createElement(
@@ -26319,7 +26337,24 @@
 	                        _react2.default.createElement(
 	                            'i',
 	                            { className: 'iconfont' },
-	                            ''
+	                            ''
+	                        ),
+	                        _react2.default.createElement(_Text2.default, { className: 'title', text: data.title.text, isEditting: data.title.isEditting, location: ['mainInfo', indexInMainInfo, 'title'], textEdit: actions.textEdit, enterEdit: actions.enterEdit }),
+	                        _react2.default.createElement(
+	                            'button',
+	                            { onClick: this.addItemInMainInfo },
+	                            '+'
+	                        ),
+	                        itemsInBlock
+	                    );
+	                case 'honor':
+	                    return _react2.default.createElement(
+	                        'div',
+	                        { className: data.type + " isDraggable" },
+	                        _react2.default.createElement(
+	                            'i',
+	                            { className: 'iconfont' },
+	                            ''
 	                        ),
 	                        _react2.default.createElement(_Text2.default, { className: 'title', text: data.title.text, isEditting: data.title.isEditting, location: ['mainInfo', indexInMainInfo, 'title'], textEdit: actions.textEdit, enterEdit: actions.enterEdit }),
 	                        _react2.default.createElement(
@@ -26452,13 +26487,13 @@
 	                        { className: 'item isDraggable', style: { opacity: opacity } },
 	                        _react2.default.createElement(_Text2.default, { className: 'name', text: item.name.text, isEditting: item.name.isEditting, textEdit: textEdit, enterEdit: enterEdit, location: ['mainInfo', indexInMainInfo, 'items', index, 'name'] }),
 	                        _react2.default.createElement(_Text2.default, { className: 'time', text: item.time.text, isEditting: item.time.isEditting, textEdit: textEdit, enterEdit: enterEdit, location: ['mainInfo', indexInMainInfo, 'items', index, 'time'] }),
-	                        _react2.default.createElement(_Text2.default, { className: 'content', text: item.content.text, isEditting: item.content.isEditting, textEdit: textEdit, enterEdit: enterEdit, location: ['mainInfo', indexInMainInfo, 'items', index, 'content'] })
+	                        _react2.default.createElement(_Text2.default, { className: 'content', text: item.content.text, isTextArea: true, isEditting: item.content.isEditting, textEdit: textEdit, enterEdit: enterEdit, location: ['mainInfo', indexInMainInfo, 'items', index, 'content'] })
 	                    )));
 	                case 'skill':
 	                    return connectDropTarget(connectDragSource(_react2.default.createElement(
 	                        'li',
 	                        { className: 'item isDraggable', style: { opacity: opacity } },
-	                        _react2.default.createElement(_Text2.default, { className: 'text', text: item.text, isEditting: item.isEditting, textEdit: textEdit, enterEdit: enterEdit, location: ['mainInfo', indexInMainInfo, 'items', index] })
+	                        _react2.default.createElement(_Text2.default, { className: 'text', text: item.text, isTextArea: true, isEditting: item.isEditting, textEdit: textEdit, enterEdit: enterEdit, location: ['mainInfo', indexInMainInfo, 'items', index] })
 	                    )));
 	                case 'intern':
 	                    return connectDropTarget(connectDragSource(_react2.default.createElement(
@@ -26467,18 +26502,16 @@
 	                        _react2.default.createElement(_Text2.default, { className: 'name', text: item.name.text, isEditting: item.name.isEditting, textEdit: textEdit, enterEdit: enterEdit, location: ['mainInfo', indexInMainInfo, 'items', index, 'name'] }),
 	                        _react2.default.createElement(_Text2.default, { className: 'job', text: item.job.text, isEditting: item.job.isEditting, textEdit: textEdit, enterEdit: enterEdit, location: ['mainInfo', indexInMainInfo, 'items', index, 'job'] }),
 	                        _react2.default.createElement(_Text2.default, { className: 'time-2', text: item.time.text, isEditting: item.time.isEditting, textEdit: textEdit, enterEdit: enterEdit, location: ['mainInfo', indexInMainInfo, 'items', index, 'time'] }),
-	                        _react2.default.createElement(_Text2.default, { className: 'content', text: item.content.text, isEditting: item.content.isEditting, textEdit: textEdit, enterEdit: enterEdit, location: ['mainInfo', indexInMainInfo, 'items', index, 'content'] })
+	                        _react2.default.createElement(_Text2.default, { className: 'content', text: item.content.text, isTextArea: true, isEditting: item.content.isEditting, textEdit: textEdit, enterEdit: enterEdit, location: ['mainInfo', indexInMainInfo, 'items', index, 'content'] })
+	                    )));
+	                case 'honor':
+	                    return connectDropTarget(connectDragSource(_react2.default.createElement(
+	                        'div',
+	                        { className: 'item isDraggable', style: { opacity: opacity } },
+	                        _react2.default.createElement(_Text2.default, { className: 'name', text: item.name.text, isEditting: item.name.isEditting, textEdit: textEdit, enterEdit: enterEdit, location: ['mainInfo', indexInMainInfo, 'items', index, 'name'] }),
+	                        _react2.default.createElement(_Text2.default, { className: 'time', text: item.time.text, isEditting: item.time.isEditting, textEdit: textEdit, enterEdit: enterEdit, location: ['mainInfo', indexInMainInfo, 'items', index, 'time'] })
 	                    )));
 	            }
-	            // const { text, isEditting } = this.props.item;
-	            // const { textEdit, enterEdit } = this.props.actions;
-	            // const { indexInMainInfo, index, connectDragSource, connectDropTarget, location, isDragging } = this.props;
-	            // const opacity = isDragging?'0.5':'1';
-	            // return connectDropTarget(connectDragSource((
-	            //     <li className="item isDraggable" style={{opacity:opacity}}>
-	            //         <Text className="text" text={text} isEditting={isEditting} textEdit={textEdit} enterEdit={enterEdit} location={['mainInfo',indexInMainInfo,'items',index]}/>
-	            //     </li>
-	            // )));
 	        }
 	    }]);
 
@@ -29668,6 +29701,20 @@
 	                    }
 	                });
 	            }
+	            if (action.category == 'honor') {
+	                targetArr.push({
+	                    id: _shortid2.default.generate(),
+	                    isDragging: false,
+	                    name: {
+	                        text: '项目名称abcdehgga项目名称',
+	                        isEditting: false
+	                    },
+	                    time: {
+	                        text: '项目时间',
+	                        isEditting: false
+	                    }
+	                });
+	            }
 	            _History.History.add(Object.assign({}, state, {
 	                mainInfo: newMainInfo
 	            }));
@@ -30211,6 +30258,25 @@
 	            },
 	            content: {
 	                text: '项目内容项目内容项目内容项目内容项目内容项目内容项目内容abcdefgh项目内容项目内容',
+	                isEditting: false
+	            }
+	        }]
+	    }, {
+	        id: _shortid2.default.generate(),
+	        type: 'honor',
+	        title: {
+	            text: '荣誉奖项',
+	            isEditting: false
+	        },
+	        items: [{
+	            id: _shortid2.default.generate(),
+	            isDragging: false,
+	            name: {
+	                text: '奖项名称',
+	                isEditting: false
+	            },
+	            time: {
+	                text: '奖项内容',
 	                isEditting: false
 	            }
 	        }]

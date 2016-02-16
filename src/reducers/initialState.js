@@ -155,5 +155,24 @@ export const initialState = {
                 isEditting:false
             }
         }]
+    },{
+        id:shortid.generate(),
+        type:'honor',
+        title:{
+            text:'荣誉奖项',
+            isEditting:false
+        },
+        items:[{
+            id:shortid.generate(),
+            isDragging:false,
+            name:{
+                text:'奖项名称',
+                isEditting:false
+            },
+            time:{
+                text:'奖项内容',
+                isEditting:false
+            }
+        }]
     }]
 }

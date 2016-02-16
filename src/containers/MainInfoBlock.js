@@ -6,7 +6,7 @@ var Education = DraggableItemConstroctor('education-item');
 var Practice = DraggableItemConstroctor('practice-item');
 var Skill = DraggableItemConstroctor('skill-item');
 var Intern = DraggableItemConstroctor('intern-item');
-
+var Honor = DraggableItemConstroctor('honor-item');
 export default class MainInfoBlock extends React.Component{
     constructor(props) {
         super(props);
@@ -43,6 +43,11 @@ export default class MainInfoBlock extends React.Component{
                         <Intern item={item} id={item.id} location={['mainInfo',indexInMainInfo,'items']} type={data.type} index={index} key={index} indexInMainInfo={indexInMainInfo} actions={actions} isDragging={item.isDragging} beginDrag={actions.beginDrag} endDrag={actions.endDrag} itemSort={actions.itemSort}/>
                     );
                     break;
+                case 'honor':
+                    itemsInBlock.push(
+                        <Honor item={item} id={item.id} location={['mainInfo',indexInMainInfo,'items']} type={data.type} index={index} key={index} indexInMainInfo={indexInMainInfo} actions={actions} isDragging={item.isDragging} beginDrag={actions.beginDrag} endDrag={actions.endDrag} itemSort={actions.itemSort}/>
+                    );
+                    break;
             }
             
         });
@@ -60,7 +65,7 @@ export default class MainInfoBlock extends React.Component{
             case 'practice':
                 return(
                     <div className={data.type + " isDraggable"}>
-                        <i className="iconfont">&#xe603;</i>
+                        <i className="iconfont">&#xe601;</i>
                         <Text className="title" text={data.title.text} isEditting={data.title.isEditting} location={['mainInfo',indexInMainInfo,'title']} textEdit={actions.textEdit} enterEdit={actions.enterEdit} />
                         <button onClick={this.addItemInMainInfo}>+</button>
                         {itemsInBlock}
@@ -69,7 +74,7 @@ export default class MainInfoBlock extends React.Component{
             case 'skill':
                 return(
                     <div className={data.type + " isDraggable"}>
-                        <i className="iconfont">&#xe603;</i>
+                        <i className="iconfont">&#xe605;</i>
                         <Text className="title" text={data.title.text} isEditting={data.title.isEditting} location={['mainInfo',indexInMainInfo,'title']} textEdit={actions.textEdit} enterEdit={actions.enterEdit} />
                         <button onClick={this.addItemInMainInfo}>+</button>
                         {itemsInBlock}
@@ -78,7 +83,16 @@ export default class MainInfoBlock extends React.Component{
             case 'intern':
                 return(
                     <div className={data.type + " isDraggable"}>
-                        <i className="iconfont">&#xe603;</i>
+                        <i className="iconfont">&#xe600;</i>
+                        <Text className="title" text={data.title.text} isEditting={data.title.isEditting} location={['mainInfo',indexInMainInfo,'title']} textEdit={actions.textEdit} enterEdit={actions.enterEdit} />
+                        <button onClick={this.addItemInMainInfo}>+</button>
+                        {itemsInBlock}
+                    </div>
+                );
+            case 'honor':
+                return(
+                    <div className={data.type + " isDraggable"}>
+                        <i className="iconfont">&#xe604;</i>
                         <Text className="title" text={data.title.text} isEditting={data.title.isEditting} location={['mainInfo',indexInMainInfo,'title']} textEdit={actions.textEdit} enterEdit={actions.enterEdit} />
                         <button onClick={this.addItemInMainInfo}>+</button>
                         {itemsInBlock}
