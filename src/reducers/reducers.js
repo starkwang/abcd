@@ -251,6 +251,18 @@ export default function todoApp(state = initialState, action) {
                 mainInfo: newMainInfo
             });
             break;
+            
+        case 'REMOVE_ITEM_IN_MAIN_INFO':
+            var newMainInfo = Object.assign([],state.mainInfo);
+            var targetArr = newMainInfo[action.indexInMainInfo].items;
+            targetArr.splice(action.index,1);
+            History.add(Object.assign({},state,{
+                mainInfo: newMainInfo
+            }));
+            return Object.assign({},state,{
+                mainInfo: newMainInfo
+            });
+            break;
 
         case 'HISTORY_BACKWARD':
             return History.backward();

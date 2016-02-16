@@ -1,8 +1,5 @@
 import React from 'react';
 import Text from '../components/Text';
-import EducationCollection from './EducationCollection';
-import SkillCollection from './SkillCollection';
-import PracticeCollection from './PracticeCollection';
 import MainInfoBlock from './MainInfoBlock';
 
 export default class MainInfo extends React.Component{

@@ -1,9 +1,4 @@
 import React from 'react';
-// import Hello from '../components/Hello';
-// import Change from '../components/Change';
-// import InputAddButton from '../components/InputAddButton';
-// import InputArea from './InputArea';
-// import DragBox from './DragBox';
 import BaseInfo from './BaseInfo';
 import MainInfo from './MainInfo';
 
@@ -14,25 +9,12 @@ import * as Actions from '../actions/actions';
 import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd-html5-backend';
 
-import { createAction, handleAction, handleActions } from 'redux-actions';
-
-setInterval(function(){
-    createAction('ADD_CONTACT');
-},1000);
-
 class App extends React.Component{
     constructor(props) {
         super(props);
     }
     render() {
         const { actions, baseInfo, mainInfo, styleName, name} = this.props;
-        var dragItems = [{
-            text:'abcsawfwaf'
-        },{
-            text:'wwwwwwwwww'
-        },{
-            text:'ffffffffff'
-        }];
         if(styleName == 'base-style'){
             return (
                 <div className="main-editor">

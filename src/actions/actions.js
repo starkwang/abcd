@@ -99,6 +99,14 @@ export function addItemInMainInfo(indexInMainInfo, category) {
     }
 }
 
+export function removeItemInMainInfo(indexInMainInfo, index){
+    return {
+        type: 'REMOVE_ITEM_IN_MAIN_INFO',
+        indexInMainInfo:indexInMainInfo,
+        index:index
+    }
+}
+
 export function historyBackward() {
     return {
         type:'HISTORY_BACKWARD'
