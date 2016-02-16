@@ -1,3 +1,5 @@
+import qwest from 'qwest';
+
 export function changeText() {
     return {
         type: 'CHANGE_TEXT'
@@ -116,5 +118,19 @@ export function historyBackward() {
 export function historyForward() {
     return {
         type:'HISTORY_FORWARD'
+    }
+}
+
+export function createResume(){
+    return function(dispatch, getstate){
+        qwest.post('/create',{ data: JSON.stringify(getstate()) }).then(
+            result => dispatch(resumeComplete())
+        )
+    }
+}
+
+export function resumeComplete(){
+    return {
+        type: 'RESUME_COMPLETE'
     }
 }

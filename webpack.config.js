@@ -1,3 +1,4 @@
+var webpack = require('webpack');
 module.exports = {
     entry: './src/index.js',
     output: {
@@ -13,10 +14,15 @@ module.exports = {
         }, {
             test: /\.jsx?$/,
             exclude: /(node_modules|bower_components)/,
-            loader: 'babel', // 'babel-loader' is also a legal name to reference
+            loader: 'babel',
             query: {
                 presets: ['es2015','react']
             }
         }]
-    }
+    },
+    plugins: [
+        new webpack.ProvidePlugin({
+           'fetch': 'imports?this=>global!exports?global.fetch!whatwg-fetch'
+        })
+    ]
 };
