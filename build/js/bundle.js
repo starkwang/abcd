@@ -20911,14 +20911,6 @@
 	    return App;
 	}(_react2.default.Component);
 
-	//<Hello actions={actions} text={text} />
-	//<Change actions={actions} />
-
-	//<InputArea inputs={inputs} actions={actions} />
-	//<InputAddButton actions={actions} />
-
-	//<DragBox dragItems={items} actions={actions} />
-
 	function mapStateToProps(state) {
 	    return {
 	        baseInfo: state.baseInfo,
@@ -25599,18 +25591,7 @@
 	            var actions = this.props.actions;
 
 	            this.props.mainInfo.forEach(function (item, index) {
-	                mainInfo.push(_react2.default.createElement(_MainInfoBlock2.default, { data: item, key: index, actions: actions, indexInMainInfo: index }));
-	                // switch(item.type){
-	                //     case 'education':
-	                //         mainInfo.push(<EducationCollection key={index} data={item} actions={actions} indexInMainInfo={index}/>);
-	                //         break;
-	                //     case 'skill':
-	                //         mainInfo.push(<SkillCollection key={index} data={item} actions={actions} indexInMainInfo={index}/>);
-	                //         break;
-	                //     case 'practice':
-	                //         mainInfo.push(<PracticeCollection key={index} data={item} actions={actions} indexInMainInfo={index}/>);
-	                //         break;
-	                // }
+	                mainInfo.push(_react2.default.createElement(_MainInfoBlock2.default, { data: item, key: index, id: item.id, actions: actions, location: ['mainInfo'], indexInMainInfo: index, isDragging: item.isDragging, beginDrag: actions.beginDrag, endDrag: actions.endDrag, itemSort: actions.itemSort }));
 	            });
 	            return _react2.default.createElement(
 	                'div',
@@ -25649,6 +25630,8 @@
 
 	var _MainInfoItem2 = _interopRequireDefault(_MainInfoItem);
 
+	var _reactDnd = __webpack_require__(181);
+
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -25663,6 +25646,38 @@
 	var Skill = (0, _MainInfoItem2.default)('skill-item');
 	var Intern = (0, _MainInfoItem2.default)('intern-item');
 	var Honor = (0, _MainInfoItem2.default)('honor-item');
+
+	var itemSource = {
+	    beginDrag: function beginDrag(props) {
+	        props.beginDrag(props.id, props.location);
+	        return {
+	            id: props.id
+	        };
+	    },
+	    endDrag: function endDrag(props, monitor) {
+	        props.endDrag(monitor.getItem().id, props.location);
+	    }
+	};
+	var itemTarget = {
+	    canDrop: function canDrop() {
+	        return false;
+	    },
+	    hover: function hover(props, monitor) {
+	        props.itemSort(monitor.getItem().id, props.id, props.location);
+	    }
+	};
+
+	function sourceCollect(connect, monitor) {
+	    return {
+	        connectDragSource: connect.dragSource()
+	    };
+	}
+
+	function targetCollect(connect) {
+	    return {
+	        connectDropTarget: connect.dropTarget()
+	    };
+	}
 
 	var MainInfoBlock = function (_React$Component) {
 	    _inherits(MainInfoBlock, _React$Component);
@@ -25821,7 +25836,8 @@
 	    return MainInfoBlock;
 	}(_react2.default.Component);
 
-	exports.default = MainInfoBlock;
+	var dragType = 'mainInfo-item';
+	exports.default = (0, _reactDnd.DropTarget)(dragType, itemTarget, targetCollect)((0, _reactDnd.DragSource)(dragType, itemSource, sourceCollect)(MainInfoBlock));
 
 /***/ },
 /* 259 */

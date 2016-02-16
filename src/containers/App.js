@@ -32,14 +32,6 @@ class App extends React.Component{
     }
 }
 
-//<Hello actions={actions} text={text} />
-//<Change actions={actions} />
-
-//<InputArea inputs={inputs} actions={actions} />
-//<InputAddButton actions={actions} />
-
-//<DragBox dragItems={items} actions={actions} />
-
 
 function mapStateToProps(state) {
     return {

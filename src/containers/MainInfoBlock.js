@@ -1,13 +1,48 @@
 import React from 'react';
 import Text from '../components/Text';
 import DraggableItemConstroctor from '../components/MainInfoItem';
+import { DragSource ,DropTarget } from 'react-dnd';
 //主要信息块，块级组件，比如“教育经历”、“实践经历”等，所有数据均放在由props.data中
 var Education = DraggableItemConstroctor('education-item');
 var Practice = DraggableItemConstroctor('practice-item');
 var Skill = DraggableItemConstroctor('skill-item');
 var Intern = DraggableItemConstroctor('intern-item');
 var Honor = DraggableItemConstroctor('honor-item');
-export default class MainInfoBlock extends React.Component{
+
+const itemSource = {
+    beginDrag(props) {
+        props.beginDrag(props.id,props.location);
+        return {
+            id : props.id
+        };
+    },
+    endDrag(props, monitor) {
+        props.endDrag(monitor.getItem().id,props.location);
+    }
+};
+const itemTarget = {
+    canDrop() {
+        return false;
+    },
+
+    hover(props, monitor) {
+        props.itemSort(monitor.getItem().id, props.id, props.location);
+    }
+};
+
+function sourceCollect(connect, monitor) {
+    return {
+        connectDragSource: connect.dragSource(),
+    }
+}
+
+function targetCollect(connect) {
+    return {
+        connectDropTarget: connect.dropTarget()
+    }
+}
+
+class MainInfoBlock extends React.Component{
     constructor(props) {
         super(props);
         this.addItemInMainInfo = this.addItemInMainInfo.bind(this);
@@ -111,3 +146,6 @@ export default class MainInfoBlock extends React.Component{
         
     }
 }
+
+const dragType = 'mainInfo-item'
+export default DropTarget(dragType, itemTarget, targetCollect)(DragSource(dragType, itemSource, sourceCollect)(MainInfoBlock));
