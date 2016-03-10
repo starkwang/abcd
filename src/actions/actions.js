@@ -123,9 +123,8 @@ export function historyForward() {
 
 export function createResume(){
     return function(dispatch, getstate){
-        qwest.post('/create',{ data: JSON.stringify(getstate()) }).then(
-            result => dispatch(resumeComplete())
-        )
+        qwest.post('/create',{ data: JSON.stringify(getstate()) })
+        .then( result => dispatch(resumeComplete()) );
     }
 }
 

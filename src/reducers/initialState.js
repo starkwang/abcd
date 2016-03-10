@@ -170,7 +170,7 @@ export const initialState = {
                 isEditting:false
             },
             time:{
-                text:'奖项内容',
+                text:'奖项时间',
                 isEditting:false
             }
         }]
